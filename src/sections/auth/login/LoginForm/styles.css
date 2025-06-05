@@ -1,0 +1,65 @@
+/* Login form  */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.login-form .ant-form-item-explain-error {
+  font-size: 14px;
+}
+
+/* email address input */
+.email-address-input {
+  font-size: 30px;
+  background: #f0edff !important;
+  opacity: 80% !important;
+  height: 52px;
+  border-radius: 14px !important;
+}
+
+/* password-input */
+.password-input {
+  font-size: 30px;
+  background: #f0edff !important;
+  opacity: 80% !important;
+  height: 52px;
+  border-radius: 14px !important;
+}
+
+/* Login button */
+.login-button-wrapper {
+  text-align: center !important;
+}
+
+.login-button {
+  background: #7754f6 !important;
+  height: 52px !important;
+  width: 124px !important;
+  font-weight: 600 !important;
+  border-radius: 14px !important;
+}
+
+/* Remember me checkbox */
+.remember-wrapper {
+  margin-bottom: 12px !important;
+}
+.remember-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #7754f6;
+  border-color: #7754f6;
+}
+.remember-checkbox .ant-checkbox-inner {
+  border-color: #7754f6;
+}
+.remember-checkbox .ant-checkbox-checked .ant-checkbox-inner::after {
+  border-color: white;
+}
+.remember-checkbox .ant-checkbox-label {
+  color: #818181;
+}
+
+/* Forgot password button */
+.forgot-password-button,
+.forgot-password-button:hover {
+  color: #7754f6;
+}
