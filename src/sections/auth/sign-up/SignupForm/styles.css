@@ -1,11 +1,11 @@
 /* Login form  */
-.login-form {
+.signup-form {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.login-form .ant-form-item-explain-error {
+.signup-form .ant-form-item-explain-error {
   font-size: 14px;
 }
 
@@ -28,14 +28,14 @@
 }
 
 /* Login button */
-.login-button-wrapper {
+.signup-button-wrapper {
   text-align: center !important;
 }
 
-.login-button {
+.signup-button {
   background: #7754f6 !important;
   height: 52px !important;
-  width: 124px !important;
+  width: 172px !important;
   font-weight: 600 !important;
   border-radius: 14px !important;
 }
@@ -45,11 +45,11 @@
   margin-bottom: 12px !important;
 }
 .remember-checkbox .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #7754f6 !important;
-  border-color: #7754f6 !important;
+  background-color: #7754f6;
+  border-color: #7754f6;
 }
 .remember-checkbox .ant-checkbox-inner {
-  border-color: #d9d9d9 !important;
+  border-color: #7754f6;
 }
 .remember-checkbox .ant-checkbox-checked .ant-checkbox-inner::after {
   border-color: white;

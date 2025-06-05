@@ -1,0 +1,42 @@
+/* signup-wrapper */
+.signup-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  max-width: 50%;
+  height: 100vh;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+/* signup-title */
+.signup-title {
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 60px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* signup-description */
+.signup-description {
+  color: #525252;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* have-account */
+.have-account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.have-account p {
+  color: #818181;
+  font-size: 14px;
+}
+
+.login-now-button {
+  padding: 0 !important;
+}

@@ -20,7 +20,7 @@
 
 /* login-description */
 .login-description {
-  color: #818181;
+  color: #525252;
   margin-bottom: 16px;
   text-align: center;
 }
@@ -30,11 +30,16 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 20px;
 }
 
-.no-account a {
-  text-decoration: none;
-  color: #7754f6;
+.no-account p {
+  color: #818181;
+  font-size: 14px;
+}
+
+.sign-up-button {
+  padding: 0 !important;
 }
 
 /* login-with-others */

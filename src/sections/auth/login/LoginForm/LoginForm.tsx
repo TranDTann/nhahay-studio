@@ -62,9 +62,9 @@ const LoginForm = () => {
           <Form.Item name="remember" valuePropName="checked" noStyle>
             <Checkbox className="remember-checkbox">Remember me</Checkbox>
           </Form.Item>
-          <a href="" className="forgot-password-button">
+          <Button type="link" className="forgot-password-button">
             Forgot password
-          </a>
+          </Button>
         </Flex>
       </Form.Item>
       <Form.Item className="login-button-wrapper">
