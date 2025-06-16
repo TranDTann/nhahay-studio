@@ -1,18 +1,28 @@
 const roots = {
-  auth: "/auth",
-  dashboard: "/dashboard",
-};
+  auth: '/auth',
+  dashboard: '/dashboard',
+  admin: '/admin'
+}
 
 const paths = {
   auth: {
     root: roots.auth,
     login: `${roots.auth}/login`,
     signup: `${roots.auth}/sign-up`,
+    admin: `${roots.auth}/admin`
   },
   dashboard: {
-    root: () => "/home",
-    home: () => "/home",
+    root: () => '/home',
+    home: () => '/home'
   },
-};
+  admin: {
+    root: () => `${roots.admin}`,
+    home: () => `${roots.admin}/home`,
+    articles: () => `${roots.admin}/articles`,
+    article: (id: string) => `${roots.admin}/articles/${id}`,
+    categories: () => `${roots.admin}/categories`,
+    tags: () => `${roots.admin}/tags`
+  }
+}
 
-export default paths;
+export default paths
