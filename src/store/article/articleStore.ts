@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { articleCrud } from './crud'
 
 interface Article {
   id: string
@@ -28,9 +29,8 @@ export const useArticleStore = create<ArticleState>((set) => ({
   getArticles: async () => {
     set({ loading: true, error: null })
     try {
-      const response = await fetch('/api/articles')
-      const data = await response.json()
-      set({ articles: data, loading: false })
+      const response = await articleCrud.getArticles()
+      set({ articles: response.result, loading: false })
     } catch (error) {
       set({ error: 'Failed to fetch articles', loading: false })
     }
@@ -39,14 +39,9 @@ export const useArticleStore = create<ArticleState>((set) => ({
   createArticle: async (articleData) => {
     set({ loading: true, error: null })
     try {
-      const response = await fetch('/api/articles', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(articleData)
-      })
-      const newArticle = await response.json()
+      const response = await articleCrud.createArticle(articleData)
       set((state) => ({
-        articles: [...state.articles, newArticle],
+        articles: [...state.articles, response.result],
         loading: false
       }))
     } catch (error) {
@@ -57,15 +52,10 @@ export const useArticleStore = create<ArticleState>((set) => ({
   updateArticle: async (id, articleData) => {
     set({ loading: true, error: null })
     try {
-      const response = await fetch(`/api/articles/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(articleData)
-      })
-      const updatedArticle = await response.json()
+      const response = await articleCrud.updateArticle(id, articleData)
       set((state) => ({
         articles: state.articles.map((article) =>
-          article.id === id ? updatedArticle : article
+          article.id === id ? response.result : article
         ),
         loading: false
       }))
@@ -77,7 +67,7 @@ export const useArticleStore = create<ArticleState>((set) => ({
   deleteArticle: async (id) => {
     set({ loading: true, error: null })
     try {
-      await fetch(`/api/articles/${id}`, { method: 'DELETE' })
+      const response = await articleCrud.deleteArticle(id)
       set((state) => ({
         articles: state.articles.filter((article) => article.id !== id),
         loading: false

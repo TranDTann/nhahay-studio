@@ -10,6 +10,7 @@ import 'react-quill-new/dist/quill.snow.css';
 import { Select, Form, App } from 'antd';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
+import { imageCrud } from '@/store/image/crud';
 
 // Register highlight.js languages
 hljs.registerLanguage('javascript', javascript);
@@ -351,6 +352,15 @@ export default function FormBlog({ id }: FormBlogProps) {
 
     const handleSave = async () => {
         try {
+            const imageUrl = await imageCrud.createImage(article.coverImage)
+            const articleData = {
+                title: article.title,
+                description: article.description,
+                content: article.content,
+                coverImage: imageUrl,
+                categoryId: article.categoryId,
+                tagIds: article.tagIds
+            }
             // Mock save - Replace with actual API call
             messageApi.success('Article saved successfully');
             router.push(paths.admin.articles());
