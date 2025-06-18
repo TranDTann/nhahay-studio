@@ -3,22 +3,20 @@
 import { Button, Checkbox, Flex, Form, FormProps, Input } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import './styles.css'
-
-type TLoginForm = {
-  username?: string
-  password?: string
-  remember?: string
-}
+import { TLoginForm } from '../types'
+import { useRouter } from 'next/navigation'
+import paths from '@/routes/paths'
+import { useAuthStore } from '@/store/auth/authStore'
 
 const LoginForm = () => {
-  const onFinish: FormProps<TLoginForm>['onFinish'] = (values) => {
-    console.log('Success:', values)
-  }
+  const router = useRouter()
+  const { login } = useAuthStore((state) => state)
 
-  const onFinishFailed: FormProps<TLoginForm>['onFinishFailed'] = (
-    errorInfo
-  ) => {
-    console.log('Failed:', errorInfo)
+  const onFinish: FormProps<TLoginForm>['onFinish'] = async (values) => {
+    try {
+      await login(values)
+      router.push(paths.dashboard.home())
+    } catch (error) {}
   }
 
   return (
@@ -29,7 +27,6 @@ const LoginForm = () => {
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
       className="login-form"
     >

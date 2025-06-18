@@ -1,4 +1,5 @@
-type TLoginFormInputs = {
-  email: string
-  password: string
+export type TLoginForm = {
+  username?: string
+  password?: string
+  remember?: string
 }

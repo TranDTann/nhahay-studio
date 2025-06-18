@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import paths from '../routes/paths'
 import useAuth from './useAuth'
-import useAuthStore from './useAuthStore'
+import { useAuthStore } from '@/store/auth/authStore'
 
 export default function useAuthRouter() {
   const router = useRouter()
@@ -10,7 +9,7 @@ export default function useAuthRouter() {
   const [authComplete, setAuthComplete] = useState<boolean>(true)
   useAuth(setAuthComplete)
 
-  const { authUser, userLoading } = useAuthStore((state) => state)
+  const { authUser } = useAuthStore((state) => state)
 
   useEffect(() => {
     const checkFirebaseUser = () => {
@@ -24,8 +23,8 @@ export default function useAuthRouter() {
   }, [authComplete])
 
   useEffect(() => {
-    if (!authComplete || userLoading || !authUser) return
+    if (!authComplete || !authUser) return
     // signOut()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authUser, userLoading, pathname, authComplete])
+  }, [authUser, pathname, authComplete])
 }

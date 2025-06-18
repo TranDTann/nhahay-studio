@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
-import useAuthStore from './useAuthStore'
 import { useFirstLoad } from '@/hooks/useFirstLoad'
+import { useAuthStore } from '@/store/auth/authStore'
 
 const useAuth = (onAuthComplete) => {
   const { isLoggingIn, isSigningUp } = useAuthStore((state) => state)

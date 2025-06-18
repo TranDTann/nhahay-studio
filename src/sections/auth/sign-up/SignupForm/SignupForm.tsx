@@ -3,22 +3,25 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Form, FormProps, Input } from 'antd'
 import './styles.css'
-
-type TSignupForm = {
-  username?: string
-  password?: string
-  confirmPassword?: string
-}
+import { TSignupForm } from '../types'
+import { useAuthStore } from '@/store/auth/authStore'
+import paths from '@/routes/paths'
+import { useRouter } from 'next/navigation'
 
 const SignupForm = () => {
-  const onFinish: FormProps<TSignupForm>['onFinish'] = (values) => {
-    console.log('Success:', values)
-  }
+  const router = useRouter()
+  const { signup } = useAuthStore((state) => state)
 
-  const onFinishFailed: FormProps<TSignupForm>['onFinishFailed'] = (
-    errorInfo
-  ) => {
-    console.log('Failed:', errorInfo)
+  const onFinish: FormProps<TSignupForm>['onFinish'] = async (values) => {
+    try {
+      await signup({
+        username: values.username,
+        email: values.username,
+        password: values.password
+      })
+
+      router.push(paths.dashboard.home())
+    } catch (error) {}
   }
 
   return (
@@ -29,7 +32,6 @@ const SignupForm = () => {
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
       className="signup-form"
     >
