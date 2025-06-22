@@ -11,6 +11,10 @@ import { Select, Form, App } from 'antd';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
 import { imageCrud } from '@/store/image/crud';
+import { articleCrud } from '@/store/article/crud';
+import { tagCrud } from '@/store/tags/crud';
+import { categoryCrud } from '@/store/categories/crud';
+import { styleArticle } from '@/utils/styleArticle';
 
 // Register highlight.js languages
 hljs.registerLanguage('javascript', javascript);
@@ -33,7 +37,7 @@ interface Article {
     title: string;
     description: string;
     content: string;
-    coverImage: File | null;
+    coverImage: string | null;
     coverImagePreview: string;
     categoryId?: string;
     tagIds?: string[];
@@ -63,6 +67,8 @@ export default function FormBlog({ id }: FormBlogProps) {
     const router = useRouter();
     const { message: messageApi } = App.useApp();
     const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const [text, setText] = useState('');
     const [quillInstance, setQuillInstance] = useState<any>(null);
     const [editorHtml, setEditorHtml] = useState('');
@@ -98,38 +104,40 @@ export default function FormBlog({ id }: FormBlogProps) {
     });
 
     useEffect(() => {
-        // Mock data - Replace with actual API calls
-        const mockCategories: Category[] = [
-            { id: '1', name: 'Frontend' },
-            { id: '2', name: 'Backend' },
-        ];
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                // Fetch tags, category
+                const res = await Promise.all([
+                    tagCrud.getTags(),
+                    categoryCrud.getCategory()
+                ])
+                setTags(res[0].result?.map(tag => ({ ...tag, id: tag.id! })) || []);
+                setCategories(res[1].result?.map(category => ({ ...category, id: category.id! })) || []);
 
-        const mockTags: Tag[] = [
-            { id: '1', name: 'React' },
-            { id: '2', name: 'JavaScript' },
-            { id: '3', name: 'Next.js' },
-        ];
-
-        if (id && id !== 'new') {
-            // Mock article data - Replace with actual API call
-            const mockArticle: Article = {
-                title: 'Sample Article',
-                description: 'This is a sample article',
-                content: '<p>Article content here...</p>',
-                coverImage: null,
-                coverImagePreview: '/placeholder-image.jpg',
-                categoryId: '1',
-                tagIds: ['1', '2']
-            };
-
-            setArticle(mockArticle);
-            setText(mockArticle.content);
-            setEditorHtml(mockArticle.content);
-        }
-
-        setCategories(mockCategories);
-        setTags(mockTags);
-        setIsLoading(false);
+                if (id && id !== 'new') {
+                    // Fetch article detail
+                    const articleRes = await articleCrud.getArticleById(id);
+                    const detail = articleRes;
+                    setArticle({
+                        title: detail.title || '',
+                        description: detail.description || '',
+                        content: detail.content || '',
+                        coverImage: detail.image || '',
+                        coverImagePreview: detail.image || '',
+                        categoryId: detail.categoryId || undefined,
+                        tagIds: detail.tags || [],
+                    });
+                    setText(detail.content || '');
+                    setEditorHtml(detail.content || '');
+                }
+            } catch (error: any) {
+                messageApi.error(error.response?.data?.message || 'Failed to fetch article detail');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchData();
     }, [id]);
 
     useEffect(() => {
@@ -167,161 +175,7 @@ export default function FormBlog({ id }: FormBlogProps) {
 
         // Add required styles for preview
         const style = document.createElement('style');
-        style.innerHTML = `
-            .preview {
-                padding: 20px;
-                background: #fff;
-                min-height: 200px;
-                margin-top: 20px;
-                border: 1px solid #ccc;
-            }
-            .preview p[data-align="center"] {
-                text-align: center;
-            }
-            .preview p[data-align="right"] {
-                text-align: right;
-            }
-            .preview p[data-align="justify"] {
-                text-align: justify;
-            }
-            .preview img {
-                max-width: 100%;
-                height: auto;
-            }
-            .preview blockquote {
-                border-left: 4px solid #ccc;
-                margin: 0;
-                padding-left: 16px;
-            }
-            .preview pre {
-                background: #f4f4f4;
-                padding: 10px;
-                border-radius: 4px;
-            }
-            .preview-button-container {
-                margin: 20px 0;
-                display: flex;
-                justify-content: flex-end;
-            }
-            .preview-button {
-                background-color: #06c;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 4px;
-                font-size: 14px;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-            .preview-button:hover {
-                background-color: #004c99;
-            }
-            .preview-button:active {
-                background-color: #003366;
-            }
-            .preview-button:focus {
-                outline: none;
-                box-shadow: 0 0 0 2px rgba(0,102,204,0.3);
-            }
-            .blog-form {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-            .form-group {
-                margin-bottom: 20px;
-            }
-            .form-label {
-                display: block;
-                margin-bottom: 8px;
-                font-weight: 500;
-                color: #333;
-            }
-            .form-input {
-                width: 100%;
-                padding: 8px 12px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 16px;
-                transition: border-color 0.2s ease;
-            }
-            .form-input:focus {
-                outline: none;
-                border-color: #06c;
-                box-shadow: 0 0 0 2px rgba(0,102,204,0.1);
-            }
-            .form-textarea {
-                min-height: 100px;
-                resize: vertical;
-            }
-            .image-upload {
-                display: flex;
-                align-items: center;
-                gap: 20px;
-            }
-            .image-preview {
-                width: 200px;
-                height: 120px;
-                border-radius: 4px;
-                border: 1px solid #ccc;
-                object-fit: cover;
-                display: none;
-            }
-            .image-preview.has-image {
-                display: block;
-            }
-            .upload-button {
-                padding: 8px 16px;
-                background-color: #f4f4f4;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-            .upload-button:hover {
-                background-color: #e7e7e7;
-            }
-            .upload-button svg {
-                width: 20px;
-                height: 20px;
-            }
-            .loading-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(255, 255, 255, 0.9);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            }
-            .loading-spinner {
-                width: 50px;
-                height: 50px;
-                border: 3px solid #f3f3f3;
-                border-top: 3px solid #06c;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-            }
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-            .loading-text {
-                margin-top: 16px;
-                color: #333;
-                font-size: 16px;
-                text-align: center;
-            }
-        `;
+        style.innerHTML = styleArticle;
         document.head.appendChild(style);
 
         return () => {
@@ -335,37 +189,100 @@ export default function FormBlog({ id }: FormBlogProps) {
         setArticle(prev => ({ ...prev, content }));
     };
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setArticle(prev => ({
-                    ...prev,
-                    coverImage: file,
-                    coverImagePreview: reader.result as string
-                }));
-            };
-            reader.readAsDataURL(file);
+            try {
+                setIsUploading(true);
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setArticle(prev => ({
+                        ...prev,
+                        coverImage: base64String
+                    }));
+                    setIsUploading(false);
+                };
+                reader.onerror = () => {
+                    messageApi.error('Failed to read image file');
+                    setIsUploading(false);
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                messageApi.error('Failed to process image');
+                setIsUploading(false);
+            }
         }
     };
 
     const handleSave = async () => {
+        if (!article.title.trim()) {
+            messageApi.error('Please enter article title');
+            return;
+        }
+        if (!article.description.trim()) {
+            messageApi.error('Please enter article description');
+            return;
+        }
+        if (!article.content.trim()) {
+            messageApi.error('Please enter article content');
+            return;
+        }
+        if (!article.coverImagePreview) {
+            messageApi.error('Please upload a cover image');
+            return;
+        }
+
         try {
-            const imageUrl = await imageCrud.createImage(article.coverImage)
+            setIsSaving(true);
+            let imageUrl = article.coverImagePreview;
+
+            // Only process new image if coverImage is base64 (new upload)
+            if (article.coverImage && article.coverImage.startsWith('data:image')) {
+                // Convert base64 to File
+                const base64Data = article.coverImage.split(',')[1];
+                const byteCharacters = atob(base64Data);
+                const byteArrays = [];
+                for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                    const slice = byteCharacters.slice(offset, offset + 512);
+                    const byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    byteArrays.push(byteArray);
+                }
+                const blob = new Blob(byteArrays, { type: 'image/jpeg' });
+                const file = new File([blob], 'cover-image.jpg', { type: 'image/jpeg' });
+
+                const imageResponse = await imageCrud.createImage(file);
+                imageUrl = imageResponse.url;
+            }
+
             const articleData = {
                 title: article.title,
                 description: article.description,
                 content: article.content,
-                coverImage: imageUrl,
-                categoryId: article.categoryId,
-                tagIds: article.tagIds
+                image: imageUrl,
+                tags: article.tagIds,
             }
-            // Mock save - Replace with actual API call
-            messageApi.success('Article saved successfully');
+
+            if (id && id !== 'new') {
+                // Update existing article
+                await articleCrud.updateArticle(id, articleData);
+                messageApi.success('Article updated successfully');
+            } else {
+                // Create new article
+                await articleCrud.createArticle(articleData);
+                messageApi.success('Article created successfully');
+            }
+
             router.push(paths.admin.articles());
-        } catch (error) {
-            messageApi.error('Failed to save article');
+        } catch (error: any) {
+            console.error('Error saving article:', error);
+            messageApi.error(error.response?.data?.message || 'Failed to save article');
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -422,15 +339,19 @@ export default function FormBlog({ id }: FormBlogProps) {
                 <label className="form-label">Cover Image</label>
                 <div className="image-upload">
                     <img
-                        src={article.coverImagePreview || '/placeholder-image.jpg'}
+                        src={article.coverImage || '/placeholder-image.jpg'}
                         alt="Cover preview"
-                        className={`image-preview ${article.coverImagePreview ? 'has-image' : ''}`}
+                        className={`image-preview ${article.coverImage ? 'has-image' : ''}`}
                     />
                     <label className="upload-button" htmlFor="cover-image">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 5V19M5 12H19" stroke="#666" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                        Upload Cover Image
+                        {isUploading ? (
+                            <div className="loading-spinner" style={{ width: '20px', height: '20px' }}></div>
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 5V19M5 12H19" stroke="#666" strokeWidth="2" strokeLinecap="round" />
+                            </svg>
+                        )}
+                        {isUploading ? 'Uploading...' : 'Upload Cover Image'}
                     </label>
                     <input
                         id="cover-image"
@@ -439,6 +360,7 @@ export default function FormBlog({ id }: FormBlogProps) {
                         onChange={handleImageChange}
                         accept="image/*"
                         style={{ display: 'none' }}
+                        disabled={isUploading}
                     />
                 </div>
             </div>
@@ -498,7 +420,11 @@ export default function FormBlog({ id }: FormBlogProps) {
             </div>
 
             <div style={{ marginTop: '24px', display: 'flex', gap: '12px' }}>
-                <button className="preview-button" onClick={previewHtml}>
+                <button
+                    className="preview-button"
+                    onClick={previewHtml}
+                    disabled={isSaving}
+                >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor" />
                     </svg>
@@ -508,8 +434,16 @@ export default function FormBlog({ id }: FormBlogProps) {
                     className="preview-button"
                     onClick={handleSave}
                     style={{ backgroundColor: '#52c41a' }}
+                    disabled={isSaving}
                 >
-                    Save Article
+                    {isSaving ? (
+                        <>
+                            <div className="loading-spinner" style={{ width: '16px', height: '16px' }}></div>
+                            Saving...
+                        </>
+                    ) : (
+                        'Save Article'
+                    )}
                 </button>
             </div>
 

@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 interface CategoryFormProps {
     visible: boolean;
     onCancel: () => void;
-    onSubmit: (values: Omit<Category, 'id' | 'createdAt'>) => Promise<void>;
+    onSubmit: (name: string) => Promise<void>;
     initialValues?: Category | null;
     title: string;
     loading?: boolean;
@@ -13,7 +13,6 @@ interface CategoryFormProps {
 
 export default function CategoryForm({ visible, onCancel, onSubmit, initialValues, title, loading = false }: CategoryFormProps) {
     const [form] = Form.useForm();
-
 
     useEffect(() => {
         if (visible) {
@@ -24,7 +23,7 @@ export default function CategoryForm({ visible, onCancel, onSubmit, initialValue
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
-            await onSubmit(values);
+            await onSubmit(values.name);
         } catch (error) {
             console.error('Validation failed:', error);
         }

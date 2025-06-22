@@ -1,34 +1,88 @@
 import { Table, Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { Tag } from '@/store/tags/crud';
+import { useEffect, useState } from 'react';
 
 interface TagTableProps {
     tags: Tag[];
     loading: boolean;
     onEdit: (record: Tag) => void;
     onDelete: (record: Tag) => void;
+    onSort: (field: string) => void;
+    sortField: string;
+    sortDirection: number;
+    total?: number;
+    currentPage?: number;
+    pageSize?: number;
+    onPageChange?: (page: number, pageSize: number) => void;
 }
 
-export default function TagTable({ tags, loading, onEdit, onDelete }: TagTableProps) {
+export default function TagTable({
+    tags,
+    loading,
+    onEdit,
+    onDelete,
+    onSort,
+    sortField,
+    sortDirection,
+    total = 0,
+    currentPage = 1,
+    pageSize = 10,
+    onPageChange
+}: TagTableProps) {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+
+        return () => window.removeEventListener('resize', checkScreenSize);
+    }, []);
+
     const columns: ColumnsType<Tag> = [
         {
-            title: 'Name',
+            title: (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span>Name</span>
+                    <Button
+                        type="text"
+                        size="small"
+                        icon={sortField === 'name' ? (sortDirection === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
+                        onClick={() => onSort('name')}
+                        style={{ marginLeft: 8 }}
+                    />
+                </div>
+            ),
             dataIndex: 'name',
             key: 'name',
-            sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
-            ellipsis: true,
+            render: (description) => description || '-',
         },
         {
-            title: 'Created At',
+            title: (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span>Created Date</span>
+                    <Button
+                        type="text"
+                        size="small"
+                        icon={sortField === 'createdAt' ? (sortDirection === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
+                        onClick={() => onSort('createdAt')}
+                        style={{ marginLeft: 8 }}
+                    />
+                </div>
+            ),
             dataIndex: 'createdAt',
             key: 'createdAt',
-            sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+            render: (date) => date ? new Date(date).toLocaleDateString() : '-',
         },
         {
             title: 'Actions',
@@ -40,14 +94,14 @@ export default function TagTable({ tags, loading, onEdit, onDelete }: TagTablePr
                         icon={<EditOutlined />}
                         onClick={() => onEdit(record)}
                     >
-                        Edit
+                        {!isMobile && 'Edit'}
                     </Button>
                     <Button
                         danger
                         icon={<DeleteOutlined />}
                         onClick={() => onDelete(record)}
                     >
-                        Delete
+                        {!isMobile && 'Delete'}
                     </Button>
                 </Space>
             ),
@@ -61,9 +115,14 @@ export default function TagTable({ tags, loading, onEdit, onDelete }: TagTablePr
             rowKey="id"
             loading={loading}
             pagination={{
-                pageSize: 10,
+                current: currentPage,
+                pageSize: pageSize,
+                total: total,
                 showSizeChanger: true,
-                showTotal: (total) => `Total ${total} items`,
+                showQuickJumper: true,
+                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                onChange: onPageChange,
+                onShowSizeChange: onPageChange,
             }}
         />
     );

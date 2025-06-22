@@ -6,10 +6,7 @@ const axiosInstance = axios.create({
   timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',
-    Accept: 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    Accept: 'application/json'
   },
   withCredentials: true
 })
@@ -20,8 +17,9 @@ axiosInstance.interceptors.request.use(
     // You can add auth token here if needed
     const token = localStorage.getItem('token')
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      //   config.headers.Authorization = `Bearer ${token}`
     }
+    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJjNmVkNDUwYy1mNWNmLTQ1YjAtNDBlNy0wOGRkYWRhZThhZTYiLCJlbWFpbCI6ImdpYW5nQGV4YW1wbGUuY29tIiwiZ2l2ZW5fbmFtZSI6ImdpYW5nYWRtaW4iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NTAyNjMwMjMsImV4cCI6MTc1MDg2NzgyMywiaWF0IjoxNzUwMjYzMDIzLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3Mjg5IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.mIu41tDXxBRDFOgUT_Umm3Z3Jq7uwHl3xuqPg2Nzn7c`
     return config
   },
   (error) => {

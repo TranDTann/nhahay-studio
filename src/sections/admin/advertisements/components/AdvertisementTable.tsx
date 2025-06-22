@@ -1,14 +1,14 @@
-import { Table, Button, Space } from 'antd';
+import { Table, Button, Space, Image } from 'antd';
 import { EditOutlined, DeleteOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { Category } from '@/store/categories/crud';
+import { Advertisement } from '@/store/advertisement/crud';
 import { useEffect, useState } from 'react';
 
-interface CategoryTableProps {
-    categories: Category[];
+interface AdvertisementTableProps {
+    advertisements: Advertisement[];
     loading: boolean;
-    onEdit: (record: Category) => void;
-    onDelete: (record: Category) => void;
+    onEdit: (record: Advertisement) => void;
+    onDelete: (record: Advertisement) => void;
     onSort: (field: string) => void;
     sortField: string;
     sortDirection: number;
@@ -18,8 +18,8 @@ interface CategoryTableProps {
     onPageChange?: (page: number, pageSize: number) => void;
 }
 
-export default function CategoryTable({
-    categories,
+export default function AdvertisementTable({
+    advertisements,
     loading,
     onEdit,
     onDelete,
@@ -30,7 +30,7 @@ export default function CategoryTable({
     currentPage = 1,
     pageSize = 10,
     onPageChange
-}: CategoryTableProps) {
+}: AdvertisementTableProps) {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -44,28 +44,58 @@ export default function CategoryTable({
         return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
-    const columns: ColumnsType<Category> = [
+    const columns: ColumnsType<Advertisement> = [
         {
             title: (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span>Name</span>
+                    <span>Title</span>
                     <Button
                         type="text"
                         size="small"
-                        icon={sortField === 'name' ? (sortDirection === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
-                        onClick={() => onSort('name')}
+                        icon={sortField === 'title' ? (sortDirection === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
+                        onClick={() => onSort('title')}
                         style={{ marginLeft: 8 }}
                     />
                 </div>
             ),
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'title',
+            key: 'title',
         },
         {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
             render: (description) => description || '-',
+        },
+        {
+            title: 'Category',
+            dataIndex: 'category',
+            key: 'category',
+            render: (category) => category?.name || '-',
+        },
+        {
+            title: 'Image',
+            dataIndex: 'image',
+            key: 'image',
+            render: (image) => image ? (
+                <Image
+                    src={image}
+                    alt="Advertisement"
+                    width={60}
+                    height={40}
+                    style={{ objectFit: 'cover' }}
+                />
+            ) : '-',
+        },
+        {
+            title: 'Link',
+            dataIndex: 'link',
+            key: 'link',
+            render: (link) => link ? (
+                <a href={link} target="_blank" rel="noopener noreferrer">
+                    {link.length > 30 ? `${link.substring(0, 30)}...` : link}
+                </a>
+            ) : '-',
         },
         {
             title: (
@@ -82,7 +112,7 @@ export default function CategoryTable({
             ),
             dataIndex: 'createdAt',
             key: 'createdAt',
-            render: (date) => date ? new Date(date).toLocaleDateString() : '-',
+            render: (date) => date ? new Date(date).toLocaleDateString('vi-VN') : '-',
         },
         {
             title: 'Actions',
@@ -111,7 +141,7 @@ export default function CategoryTable({
     return (
         <Table
             columns={columns}
-            dataSource={categories}
+            dataSource={advertisements}
             rowKey="id"
             loading={loading}
             pagination={{
@@ -120,7 +150,7 @@ export default function CategoryTable({
                 total: total,
                 showSizeChanger: true,
                 showQuickJumper: true,
-                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                showTotal: (total, range) => `${range[0]}-${range[1]} của ${total} mục`,
                 onChange: onPageChange,
                 onShowSizeChange: onPageChange,
             }}

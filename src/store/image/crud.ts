@@ -6,7 +6,11 @@ export const imageCrud = {
     try {
       const formData = new FormData()
       formData.append('file', file)
-      const response = await axiosInstance.post('/api/image', formData)
+      const response = await axiosInstance.post('/api/image/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
       return response.data
     } catch (error) {
       handleApiError(error)
