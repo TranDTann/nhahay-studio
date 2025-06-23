@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Input, Card, Button, Space, Select, Row, Col, App, Spin } from 'antd';
-import { SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
 import { articleCrud } from '@/store/article/crud';
 import { tagCrud, Tag as ApiTag } from '@/store/tags/crud';
 import { categoryCrud, Category as ApiCategory } from '@/store/categories/crud';
+import { ImgComparisonSlider } from '@img-comparison-slider/react';
 
 interface Article {
     id: string;
@@ -92,6 +93,10 @@ export default function ArticlesList() {
         router.push(paths.admin.article(id));
     };
 
+    const handleView = (id: string) => {
+        router.push(paths.admin.articleView(id));
+    };
+
     const handleDelete = async (id: string) => {
         try {
             setDeleteLoading(id);
@@ -126,7 +131,6 @@ export default function ArticlesList() {
         <div className="articles-container" style={{ padding: '24px' }}>
             <div style={{ marginBottom: '24px' }}>
                 <h1 style={{ marginBottom: '24px' }}>Articles</h1>
-
                 <Space direction="vertical" style={{ width: '100%' }} size="middle">
                     <Row gutter={[16, 16]}>
                         <Col lg={8} md={12} span={24}>
@@ -191,6 +195,14 @@ export default function ArticlesList() {
                                     />
                                 }
                                 actions={[
+                                    <Button
+                                        key="view"
+                                        type="text"
+                                        icon={<EyeOutlined />}
+                                        onClick={() => handleView(article.id)}
+                                    >
+                                        View
+                                    </Button>,
                                     <Button
                                         key="edit"
                                         type="text"

@@ -1,0 +1,46 @@
+@import '@/styles/variables.scss';
+
+// Variables
+$primary-color: #1890ff;
+$border-radius: 8px;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+$container-max-width: 1200px;
+$padding-desktop: 24px;
+$padding-mobile: 16px;
+$loading-padding: 50px;
+
+.container {
+  padding: $spacing-lg;
+  max-width: $container-max-width;
+  margin: 0 auto;
+}
+
+.coverImage {
+  text-align: center;
+  margin: $spacing-lg 0;
+
+  img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-base;
+  }
+}
+
+.loadingContainer {
+  @include flex-center;
+  padding: $spacing-xxl;
+}
+
+.errorContainer {
+  @include flex-center;
+  padding: $spacing-xxl;
+}
+
+// Responsive design
+@include responsive($breakpoint-md) {
+  .container {
+    padding: $spacing-md;
+  }
+}

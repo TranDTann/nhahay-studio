@@ -1,0 +1,254 @@
+@import './variables.scss';
+
+// Variables
+$primary-color: #1890ff;
+$secondary-color: #8c8c8c;
+$text-color: #262626;
+$text-secondary: #595959;
+$border-color: #d9d9d9;
+$background-light: #f6f8fa;
+$background-lighter: #fafafa;
+$code-color: #e36209;
+$border-radius: 8px;
+$border-radius-small: 4px;
+$border-radius-code: 3px;
+$box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+// Typography
+$font-size-base: 16px;
+$font-size-small: 14px;
+$font-size-code: 0.9em;
+$line-height-base: 1.8;
+$line-height-small: 1.6;
+
+// Spacing
+$spacing-xs: 8px;
+$spacing-sm: 12px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+
+// Breakpoints
+$mobile-breakpoint: 768px;
+
+// Mixins
+@mixin responsive($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin code-block {
+  background-color: $code-background;
+  padding: $spacing-md;
+  border-radius: $border-radius-base;
+  overflow-x: auto;
+  margin: $spacing-md 0;
+  border: 1px solid #e1e4e8;
+}
+
+@mixin heading-style($size, $border-bottom: none) {
+  font-size: $size;
+  margin-top: $spacing-lg;
+  margin-bottom: $spacing-md;
+  font-weight: 600;
+  color: $text-color;
+
+  @if $border-bottom {
+    border-bottom: $border-bottom;
+    padding-bottom: $spacing-xs;
+  }
+}
+
+// Main article renderer styles
+.article-renderer {
+  font-size: $font-size-base;
+  line-height: $line-height-relaxed;
+  text-align: justify;
+
+  // Headings
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @include heading-style(1.25em);
+  }
+
+  h1 {
+    @include heading-style(2em, 2px solid $primary-color);
+  }
+
+  h2 {
+    @include heading-style(1.5em, 1px solid $border-color);
+  }
+
+  // Paragraphs
+  p {
+    margin-bottom: $spacing-md;
+    color: $text-color-secondary;
+
+    &[data-align='center'] {
+      text-align: center;
+    }
+
+    &[data-align='right'] {
+      text-align: right;
+    }
+
+    &[data-align='justify'] {
+      text-align: justify;
+    }
+  }
+
+  // Images
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: $border-radius-lg;
+    margin: $spacing-md 0;
+    box-shadow: $shadow-base;
+  }
+
+  // Blockquotes
+  blockquote {
+    border-left: 4px solid $primary-color;
+    padding: $spacing-md 20px;
+    margin: $spacing-md 0;
+    font-style: italic;
+    background-color: $code-background;
+    border-radius: $border-radius-sm;
+    color: $text-color-secondary;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  // Code blocks
+  pre {
+    @include code-block;
+  }
+
+  code {
+    background-color: $code-background;
+    padding: 2px 6px;
+    border-radius: $border-radius-xs;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 0.9em;
+    color: $code-color;
+
+    // Code inside pre blocks
+    pre & {
+      background-color: transparent;
+      padding: 0;
+      border-radius: 0;
+      color: inherit;
+    }
+  }
+
+  // Lists
+  ul,
+  ol {
+    margin: $spacing-md 0;
+    padding-left: $spacing-lg;
+    color: $text-color-secondary;
+  }
+
+  li {
+    margin-bottom: $spacing-xs;
+  }
+
+  ul li {
+    list-style-type: disc;
+  }
+
+  ol li {
+    list-style-type: decimal;
+  }
+
+  // Tables
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: $spacing-md 0;
+    border: 1px solid $border-color;
+  }
+
+  th,
+  td {
+    padding: $spacing-sm;
+    text-align: left;
+    border: 1px solid $border-color;
+  }
+
+  th {
+    background-color: $background-color-light;
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) {
+    background-color: $background-color-light;
+  }
+
+  // Links
+  a {
+    color: $primary-color;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // Text formatting
+  strong {
+    font-weight: 600;
+    color: $text-color;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  // Horizontal rule
+  hr {
+    border: none;
+    border-top: 1px solid $border-color;
+    margin: $spacing-lg 0;
+  }
+}
+
+// Responsive design
+@include responsive($breakpoint-md) {
+  .article-renderer {
+    font-size: $font-size-sm;
+    line-height: $line-height-base;
+
+    h1 {
+      font-size: 1.75em;
+    }
+
+    h2 {
+      font-size: 1.4em;
+    }
+
+    h3 {
+      font-size: 1.2em;
+    }
+
+    pre {
+      padding: $spacing-sm;
+      font-size: $font-size-xs;
+    }
+
+    table {
+      font-size: $font-size-xs;
+    }
+
+    th,
+    td {
+      padding: $spacing-xs;
+    }
+  }
+}

@@ -7,7 +7,11 @@ import { App as AntApp, ConfigProvider } from 'antd';
 import { HomeLayout } from '@/layout/home';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import theme from '../../config/themeConfig';
-import './global.css';
+import '@/styles/variables.scss';
+import '@/styles/global.scss';
+import '@/styles/components.scss';
+import '@/styles/content-blocks.scss';
+import '@/styles/article-renderer.scss';
 
 const inter = Inter({ subsets: ['latin'] });
 
