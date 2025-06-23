@@ -1,0 +1,63 @@
+/* login-wrapper */
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  max-width: 50%;
+  height: 100vh;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+/* login-title */
+.login-title {
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 60px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* login-description */
+.login-description {
+  color: #525252;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* no-account */
+.no-account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.no-account p {
+  color: #818181;
+  font-size: 14px;
+}
+
+.sign-up-button {
+  padding: 0 !important;
+}
+
+/* login-with-others */
+.login-with-others {
+  border-color: #dfdfdf !important;
+}
+
+.login-with-others .ant-divider-inner-text {
+  display: flex !important;
+}
+
+.login-with-others p:first-child {
+  font-weight: 700;
+  margin-right: 6px;
+  font-size: 16px;
+}
+
+.login-with-others p:nth-of-type(2) {
+  font-weight: 400;
+  font-size: 16px;
+}

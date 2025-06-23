@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 // Create axios instance with custom config
 const axiosInstance = axios.create({
@@ -7,7 +8,7 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    'Access-Control-Allow-Origin': '*',
+    // 'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization'
   },
@@ -17,8 +18,7 @@ const axiosInstance = axios.create({
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // You can add auth token here if needed
-    const token = localStorage.getItem('token')
+    const token = Cookies.get('token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
