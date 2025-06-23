@@ -2,6 +2,7 @@
 import axiosInstance from '@/api/axiosConfig'
 import { TLoginForm } from '@/sections/auth/login/types'
 import { TSignupForm } from '@/sections/auth/sign-up/types'
+import Cookies from 'js-cookie'
 
 export class ApiError extends Error {
   constructor(message: string, public status?: number) {
@@ -17,6 +18,16 @@ export const authCrud = {
         '/api/account/login',
         loginFormData
       )
+      const token = response.data
+      if (token) {
+        Cookies.set('token', token, {
+          expires: loginFormData.remember ? 7 : undefined,
+          secure: false,
+          // secure: process.env.NODE_ENV === 'production',
+          sameSite: 'Lax'
+        })
+      }
+
       return response.data
     } catch (error: any) {
       throw new ApiError(
@@ -41,7 +52,7 @@ export const authCrud = {
     }
   },
 
-  googleLogin: async (googleAccountData: TLoginForm) => {
+  loginWithGoogle: async (googleAccountData: TLoginForm) => {
     try {
       const response = await axiosInstance.post<TLoginForm[]>(
         '/api/auth/google-login',

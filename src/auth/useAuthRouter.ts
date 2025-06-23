@@ -2,29 +2,36 @@ import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import useAuth from './useAuth'
 import { useAuthStore } from '@/store/auth/authStore'
+import paths from '@/routes/paths'
+import Cookies from 'js-cookie'
 
 export default function useAuthRouter() {
   const router = useRouter()
   const pathname = usePathname()
-  const [authComplete, setAuthComplete] = useState<boolean>(true)
+  const [authComplete, setAuthComplete] = useState<boolean>(false)
+
   useAuth(setAuthComplete)
 
-  const { authUser } = useAuthStore((state) => state)
+  // const { authUser } = useAuthStore((state) => state)
 
   useEffect(() => {
-    const checkFirebaseUser = () => {
-      // if (!authComplete) return
+    if (!authComplete) return
+    const token = Cookies.get('token')
+
+    const isLoginPage = pathname === paths.auth.login
+    const isAuthRequiredPage = ![paths.auth.login, paths.auth.signup].includes(
+      pathname
+    )
+    if (!token && isAuthRequiredPage) {
+      // if (!authUser && isAuthRequiredPage) {
+      router.replace(paths.auth.login)
+      return
     }
 
-    setTimeout(() => {
-      checkFirebaseUser()
-    }, 500)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authComplete])
-
-  useEffect(() => {
-    if (!authComplete || !authUser) return
-    // signOut()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authUser, pathname, authComplete])
+    if (token && isLoginPage) {
+      // if (authUser && isLoginPage) {
+      router.replace(paths.dashboard.home())
+    }
+  }, [pathname, authComplete, router])
+  // }, [authUser, pathname, authComplete, router])
 }

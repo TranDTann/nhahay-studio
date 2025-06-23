@@ -16,6 +16,7 @@
     "axios": "^1.10.0",
     "css-loader": "^7.1.2",
     "highlight.js": "^11.9.0",
+    "js-cookie": "^3.0.5",
     "next": "14.1.0",
     "quill-delta-to-html": "^0.12.1",
     "quill-image-resize-module": "^3.0.0",

@@ -15,7 +15,7 @@ interface AuthState {
 interface AuthActions {
   login: (loginData: TLoginForm) => Promise<void>
   signup: (signtPpData: TSignupForm) => Promise<void>
-  // googleLogin: (loginData: TLoginForm) => Promise<void>
+  loginWithGoogle: (loginData: TLoginForm) => Promise<void>
 }
 
 export const useAuthStore = create<AuthState & AuthActions>((set) => ({
@@ -50,6 +50,21 @@ export const useAuthStore = create<AuthState & AuthActions>((set) => ({
     } catch (error) {
       const message = error instanceof ApiError ? error.message : 'Login failed'
       set({ errorMessage: message, isSigningUp: false })
+      throw error
+    }
+  },
+  loginWithGoogle: async (googleAccountData: TLoginForm) => {
+    set({ isLoggingIn: true, errorMessage: null })
+    try {
+      const status = await authCrud.loginWithGoogle(googleAccountData)
+      set(() => ({
+        isSigningUp: false
+      }))
+    } catch (error) {
+      const message = error?.message ? error.message : 'Login failed!'
+      set({ errorMessage: message, isLoggingIn: false })
+      showToast.error(message)
+
       throw error
     }
   }
