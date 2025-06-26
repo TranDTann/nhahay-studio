@@ -22,6 +22,11 @@ export default function useAuthRouter() {
     const isAuthRequiredPage = ![paths.auth.login, paths.auth.signup].includes(
       pathname
     )
+    if (pathname === '/' && token) {
+      router.push(paths.dashboard.home())
+      return
+    }
+
     if (!token && isAuthRequiredPage) {
       // if (!authUser && isAuthRequiredPage) {
       router.replace(paths.auth.login)
