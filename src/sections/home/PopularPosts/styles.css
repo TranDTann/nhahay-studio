@@ -1,0 +1,24 @@
+.popular-post-title {
+  font-size: 24px;
+  line-height: 40px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.first-post-wrapper {
+  height: fit-content;
+}
+
+.center-post-wrapper {
+  height: fit-content;
+  display: flex !important;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.end-post-wrapper {
+  height: fit-content;
+  display: flex !important;
+  flex-direction: column;
+  gap: 24px;
+}

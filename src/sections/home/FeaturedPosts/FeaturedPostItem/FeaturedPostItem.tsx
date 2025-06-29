@@ -19,7 +19,9 @@ const FeaturedPostItem = ({ postData }: TFeaturedPostItemProps) => {
       />
       <div className="post-item-content">
         <CategoryTag tagName={postData.category} />
-        <h3 className="post-item-title">{postData.title}</h3>
+        <h3 className="post-item-title display-max-2-lines">
+          {postData.title}
+        </h3>
         <div className="post-item-date">
           <MdOutlineDateRange color="#bacce1" /> <p>{postData.date}</p>
         </div>

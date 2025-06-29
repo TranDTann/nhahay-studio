@@ -17,7 +17,7 @@ const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
       <img src={postData.photo} alt="image-product" className="post-image" />
       <div className="post-content">
         <CategoryTag tagName={postData.category} />
-        <h3 className="post-title">{postData.title}</h3>
+        <h3 className="post-title display-max-3-lines">{postData.title}</h3>
         <div className="post-info-container">
           <div className="post-info-item">
             <FaRegUserCircle color="#bacce1" />

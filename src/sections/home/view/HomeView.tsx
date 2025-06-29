@@ -2,6 +2,7 @@
 
 import CategoriesBlock from '../CategoriesBlock/CategoriesBlock'
 import { FeaturedPosts } from '../FeaturedPosts'
+import { PopularPosts } from '../PopularPosts'
 import './styles.css'
 
 const HomeView = () => {
@@ -9,6 +10,7 @@ const HomeView = () => {
     <div className="home-container">
       <FeaturedPosts />
       <CategoriesBlock />
+      <PopularPosts />
     </div>
   )
 }

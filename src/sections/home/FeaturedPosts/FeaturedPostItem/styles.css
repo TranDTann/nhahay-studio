@@ -22,12 +22,7 @@
 .post-item-title {
   color: #ffffff;
   font-weight: 700;
-  font-size: 16px; /* display max 2 lines */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 16px;
 }
 .post-item-date {
   display: flex;
