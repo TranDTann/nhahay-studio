@@ -13,11 +13,11 @@ type TTrendingPostItemProps = {
 const TrendingPostItem = ({ postData }: TTrendingPostItemProps) => {
   return (
     <div className="trending-post-item-container">
-      <div className="trending-post-image-container">
+      <div className="trending-post-item-image-container">
         <img
           src={postData.photo}
           alt="image-product"
-          className="trending-post-item-image"
+          className="trending-post-item-image image-hover-zoom"
         />
         <div className="trending-category-tag">
           <CategoryTag tagName={postData.category} />

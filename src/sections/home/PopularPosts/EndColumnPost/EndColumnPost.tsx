@@ -10,7 +10,13 @@ const EndColumnPost = ({ post }: TEndColumnPostProps) => {
   return (
     <Row gutter={24} className="end-post-container">
       <Col span={8}>
-        <img src={post.photo} alt="end-post-image" className="end-post-image" />
+        <div className="end-post-image-container">
+          <img
+            src={post.photo}
+            alt="end-post-image"
+            className="end-post-image image-hover-zoom"
+          />
+        </div>
       </Col>
       <Col span={16} className="end-post-info">
         <h2 className="display-max-3-lines end-post-title">{post.name}</h2>

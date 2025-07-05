@@ -14,7 +14,13 @@ type TMainRecentPostProps = {
 const MainRecentPost = ({ postData }: TMainRecentPostProps) => {
   return (
     <div className="post-container">
-      <img src={postData.photo} alt="image-product" className="post-image" />
+      <div className="post-image-container">
+        <img
+          src={postData.photo}
+          alt="image-product"
+          className="post-image image-hover-zoom"
+        />
+      </div>
       <div className="post-content">
         <CategoryTag tagName={postData.category} />
         <h3 className="post-title display-max-3-lines">{postData.title}</h3>

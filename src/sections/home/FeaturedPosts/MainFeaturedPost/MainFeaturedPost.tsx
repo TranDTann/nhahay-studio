@@ -13,21 +13,29 @@ type TMainFeaturedPostProps = {
 
 const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
   return (
-    <div className="post-container">
-      <img src={postData.photo} alt="image-product" className="post-image" />
-      <div className="post-content">
+    <div className="featured-post-container">
+      <div className="featured-post-image-container">
+        <img
+          src={postData.photo}
+          alt="image-product"
+          className="featured-post-image image-hover-zoom"
+        />
+      </div>
+      <div className="featured-post-content">
         <CategoryTag tagName={postData.category} />
-        <h3 className="post-title display-max-3-lines">{postData.title}</h3>
-        <div className="post-info-container">
-          <div className="post-info-item">
+        <h3 className="featured-post-title display-max-3-lines">
+          {postData.title}
+        </h3>
+        <div className="featured-post-info-container">
+          <div className="featured-post-info-item">
             <FaRegUserCircle color="#bacce1" />
             <p>{postData.author}</p>
           </div>
-          <div className="post-info-item">
+          <div className="featured-post-info-item">
             <IoIosTimer color="#bacce1" />
             <p>{postData.readMins}</p>
           </div>
-          <div className="post-info-item">
+          <div className="featured-post-info-item">
             <MdOutlineDateRange color="#bacce1" />
             <p>{postData.date}</p>
           </div>

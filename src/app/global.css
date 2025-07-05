@@ -61,3 +61,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.image-hover-zoom {
+  transition: transform 0.5s ease;
+  overflow: hidden;
+}
+
+.image-hover-zoom:hover {
+  overflow: hidden;
+  transform: scale(1.05);
+}

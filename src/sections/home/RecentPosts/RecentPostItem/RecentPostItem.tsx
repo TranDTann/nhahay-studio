@@ -12,11 +12,13 @@ type TRecentPostItemProps = {
 const RecentPostItem = ({ postData }: TRecentPostItemProps) => {
   return (
     <div className="post-item-container">
-      <img
-        src={postData.photo}
-        alt="image-product"
-        className="post-item-image"
-      />
+      <div className="post-item-image-container">
+        <img
+          src={postData.photo}
+          alt="image-product"
+          className="post-item-image image-hover-zoom"
+        />
+      </div>
       <div className="post-item-content">
         <CategoryTag tagName={postData.category} />
         <h3 className="post-item-title display-max-2-lines">

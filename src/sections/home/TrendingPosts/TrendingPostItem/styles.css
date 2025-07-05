@@ -4,8 +4,13 @@
   overflow: hidden;
 }
 
-.trending-post-image-container {
+.trending-post-item-image-container {
   position: relative;
+  width: 100%;
+  height: 264px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .trending-category-tag {
@@ -16,7 +21,7 @@
 
 .trending-post-item-image {
   width: 100%;
-  height: 264px;
+  height: 100%;
   object-fit: cover;
   border-radius: 4px;
 }

@@ -8,11 +8,13 @@ type TFirstPostProps = {
 const FirstPost = ({ post }: TFirstPostProps) => {
   return (
     <div className="first-post-container">
-      <img
-        src={post.photo}
-        alt="first-post-image"
-        className="first-post-image"
-      />
+      <div className="first-post-image-container">
+        <img
+          src={post.photo}
+          alt="first-post-image"
+          className="first-post-image image-hover-zoom"
+        />
+      </div>
       <h2 className="first-post-title display-max-3-lines">{post.name}</h2>
       <p className="first-post-description display-max-3-lines">
         {post.content}

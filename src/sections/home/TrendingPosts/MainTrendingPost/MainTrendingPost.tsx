@@ -17,11 +17,13 @@ const MainTrendingPost = ({ postData }: TMainTrendingPostProps) => {
     <div className="trending-post-container">
       <Row gutter={24}>
         <Col span={12}>
-          <img
-            src={postData.photo}
-            alt="image-product"
-            className="trending-post-image"
-          />
+          <div className="trending-post-image-container">
+            <img
+              src={postData.photo}
+              alt="image-product"
+              className="trending-post-image image-hover-zoom"
+            />
+          </div>
         </Col>
         <Col span={12}>
           <div className="trending-post-content">
