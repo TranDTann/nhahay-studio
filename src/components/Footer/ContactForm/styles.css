@@ -12,8 +12,14 @@
   margin-bottom: 16px;
 }
 
-.contact-input .ant-input::placeholder {
+.contact-input .ant-input::placeholder,
+.contact-input::placeholder {
   font-size: 14px;
+}
+
+.contact-form-container .ant-form-item-explain-error {
+  font-size: 12px;
+  text-align: left;
 }
 
 .submit-button span {

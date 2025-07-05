@@ -1,0 +1,7 @@
+.recent-post_advertising-image {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 4px;
+}

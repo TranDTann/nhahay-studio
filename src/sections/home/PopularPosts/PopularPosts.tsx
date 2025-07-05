@@ -14,8 +14,8 @@ const PopularPosts = () => {
 
   return (
     <div>
-      <h1 className="poular-post-title">Popular</h1>
-      <Row gutter={24} className="popular-posts-container">
+      <h1 className="popular-post-title">Phổ biến</h1>
+      <Row gutter={24}>
         <Col span={8} className="first-post-wrapper">
           <FirstPost post={firstPost} />
         </Col>
