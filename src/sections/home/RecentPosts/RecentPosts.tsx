@@ -4,8 +4,9 @@ import { Col, Row } from 'antd'
 import RecentPostItem from './RecentPostItem/RecentPostItem'
 import { MOCK_RECENT_POSTS } from './data'
 import MainRecentPost from './MainRecentPost/MainRecentPost'
-import './styles.css'
 import { RecentPostsAdvertising } from './RecentPostsAdvertising'
+import BlockHeader from '../components/BlockHeader/BlockHeader'
+import './styles.css'
 
 const RecentPosts = () => {
   const mainPost = MOCK_RECENT_POSTS[0]
@@ -28,7 +29,7 @@ const RecentPosts = () => {
 
   return (
     <div>
-      <h1 className="recent-posts-title">Bài viết gần đây</h1>
+      <BlockHeader title="Bài viết gần đây" />
       <Row gutter={24}>
         <Col span={16}>{recentPostsContent}</Col>
         <Col span={8}>

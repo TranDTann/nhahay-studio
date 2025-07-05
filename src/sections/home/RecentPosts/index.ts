@@ -1,1 +1,1 @@
-export { default as FeaturedPosts } from './RecentPosts'
+export { default as RecentPosts } from './RecentPosts'

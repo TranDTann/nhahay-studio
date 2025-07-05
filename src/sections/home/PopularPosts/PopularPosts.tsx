@@ -5,6 +5,7 @@ import { FirstPost } from './FirstPost'
 import { POPULAR_POSTS } from './data'
 import { CenterColumnPost } from './ CenterColumnPost'
 import { EndColumnPost } from './EndColumnPost'
+import BlockHeader from '../components/BlockHeader/BlockHeader'
 import './styles.css'
 
 const PopularPosts = () => {
@@ -14,7 +15,7 @@ const PopularPosts = () => {
 
   return (
     <div>
-      <h1 className="popular-post-title">Phổ biến</h1>
+      <BlockHeader title="Phổ biến" />
       <Row gutter={24}>
         <Col span={8} className="first-post-wrapper">
           <FirstPost post={firstPost} />

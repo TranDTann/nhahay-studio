@@ -1,0 +1,6 @@
+.below-posts-container {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}

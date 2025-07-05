@@ -1,0 +1,51 @@
+.trending-post-container {
+  height: 100%;
+  width: 100%;
+}
+
+.trending-post-image {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.trending-post-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trending-post-info-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trending-post-title {
+  color: #183354;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.trending-post-info-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trending-post-info-item p {
+  color: #6d757f;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.trending-post-description {
+  margin-top: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #545e69;
+}

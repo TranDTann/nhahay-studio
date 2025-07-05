@@ -6,6 +6,7 @@ import { PopularPosts } from '../PopularPosts'
 import RecentPosts from '../RecentPosts/RecentPosts'
 import { Advertising } from '../Advertising'
 import './styles.css'
+import { TrendingPosts } from '../TrendingPosts'
 
 const HomeView = () => {
   return (
@@ -15,6 +16,7 @@ const HomeView = () => {
       <PopularPosts />
       <RecentPosts />
       <Advertising />
+      <TrendingPosts />
     </div>
   )
 }
