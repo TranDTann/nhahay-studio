@@ -9,11 +9,13 @@ type TCategoryItemProps = {
 const CategoryItem = ({ categoryData }: TCategoryItemProps) => {
   return (
     <div className="category-container">
-      <img
-        src={categoryData.thumbnail}
-        alt="category-thumbnail"
-        className="category-thumbnail"
-      />
+      <div className="category-thumbnail-container">
+        <img
+          src={categoryData.thumbnail}
+          alt="category-thumbnail"
+          className="category-thumbnail image-hover-zoom"
+        />
+      </div>
       <div className="category-tag">
         <CategoryTag tagName={categoryData.name} isCategoriesList />
       </div>

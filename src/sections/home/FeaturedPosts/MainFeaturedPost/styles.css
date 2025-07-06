@@ -1,16 +1,22 @@
-.post-container {
+.featured-post-container {
   position: relative;
   height: 100%;
+  cursor: pointer;
 }
 
-.post-image {
+.featured-post-image-container {
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.featured-post-image {
   object-fit: cover;
   border-radius: 4px;
 }
 
-.post-content {
+.featured-post-content {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -20,25 +26,25 @@
   gap: 8px;
 }
 
-.post-info-container {
+.featured-post-info-container {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.post-title {
+.featured-post-title {
   color: #ffffff;
   font-weight: 700;
   font-size: 28px;
 }
 
-.post-info-item {
+.featured-post-info-item {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.post-info-item p {
+.featured-post-info-item p {
   color: #bacce1;
   font-size: 13px;
   font-weight: 600;

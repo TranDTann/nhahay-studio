@@ -4,6 +4,7 @@ import NavigationBar from '@/components/Navigation/NavigationBar'
 import paths from '@/routes/paths'
 import { useAuthStore } from '@/store/auth/authStore'
 import { usePathname } from 'next/navigation'
+import { Footer } from '@/components/Footer'
 import './styles.css'
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
@@ -26,6 +27,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <div id="main-body" className="main-container">
         {content}
       </div>
+      <Footer />
     </div>
   )
 }

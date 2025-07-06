@@ -10,11 +10,13 @@ const CenterColumnPost = ({ post }: TCenterColumnPostProps) => {
   return (
     <Row gutter={24} className="center-post-container">
       <Col span={12}>
-        <img
-          src={post.photo}
-          alt="center-post-image"
-          className="center-post-image"
-        />
+        <div className="center-post-image-container">
+          <img
+            src={post.photo}
+            alt="center-post-image"
+            className="center-post-image image-hover-zoom"
+          />
+        </div>
       </Col>
       <Col span={12} className="center-post-info">
         <h2 className="display-max-2-lines center-post-title">{post.name}</h2>
