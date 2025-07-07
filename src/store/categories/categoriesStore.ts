@@ -1,89 +1,134 @@
 import { create } from 'zustand'
-import { categoryCrud, Category, ApiError } from './crud'
+import { categoryCrud, Category, CategoryFilters } from './crud'
+import { message } from 'antd'
 
 interface CategoriesState {
   categories: Category[]
   loading: boolean
   error: string | null
-  getCategories: () => Promise<void>
-  createCategory: (
-    categoryData: Omit<Category, 'id' | 'createdAt'>
-  ) => Promise<void>
-  updateCategory: (
-    id: string,
-    categoryData: Partial<Omit<Category, 'id' | 'createdAt'>>
-  ) => Promise<void>
+  filters: CategoryFilters
+  total: number
+  currentPage: number
+  pageSize: number
+  getCategories: (filters?: CategoryFilters) => Promise<void>
+  setFilters: (filters: CategoryFilters) => void
+  setPage: (page: number, pageSize: number) => void
+  createCategory: (title: string) => Promise<void>
+  updateCategory: (id: string, title: string) => Promise<void>
   deleteCategory: (id: string) => Promise<void>
 }
 
-export const useCategoriesStore = create<CategoriesState>((set) => ({
+export const useCategoriesStore = create<CategoriesState>((set, get) => ({
   categories: [],
   loading: false,
   error: null,
+  filters: {},
+  total: 0,
+  currentPage: 1,
+  pageSize: 10,
 
-  getCategories: async () => {
+  getCategories: async (filters?: CategoryFilters) => {
+    const currentFilters = filters || get().filters
     set({ loading: true, error: null })
     try {
-      const data = await categoryCrud.getCategories()
-      set({ categories: data, loading: false })
-    } catch (error) {
-      const message =
-        error instanceof ApiError ? error.message : 'Failed to fetch categories'
-      set({ error: message, loading: false })
-      throw error
-    }
-  },
-
-  createCategory: async (categoryData) => {
-    set({ loading: true, error: null })
-    try {
-      const newCategory = await categoryCrud.createCategory(categoryData)
-      set((state) => ({
-        categories: [...state.categories, newCategory],
+      const response = await categoryCrud.getCategory(currentFilters)
+      set({
+        categories: response.result,
+        total: response.count,
         loading: false
-      }))
+      })
     } catch (error) {
-      const message =
-        error instanceof ApiError ? error.message : 'Failed to create category'
-      set({ error: message, loading: false })
-      throw error
+      set({ error: 'Failed to fetch categories', loading: false })
+      message.error('Failed to fetch categories')
     }
   },
 
-  updateCategory: async (id, categoryData) => {
+  setFilters: (filters: CategoryFilters) => {
+    const currentState = get()
+    const newFilters = {
+      ...filters,
+      take: currentState.pageSize,
+      skip: (currentState.currentPage - 1) * currentState.pageSize
+    }
+    set({ filters: newFilters })
+    get().getCategories(newFilters)
+  },
+
+  setPage: (page: number, pageSize: number) => {
+    set({ currentPage: page, pageSize })
+    get().getCategories({
+      ...get().filters,
+      skip: (page - 1) * pageSize,
+      take: pageSize
+    })
+  },
+
+  createCategory: async (title: string) => {
     set({ loading: true, error: null })
     try {
-      const updatedCategory = await categoryCrud.updateCategory(
-        id,
-        categoryData
-      )
-      set((state) => ({
-        categories: state.categories.map((category) =>
-          category.id === id ? updatedCategory : category
-        ),
+      await categoryCrud.createCategory(title)
+      message.success('Category created successfully')
+      // Fetch updated list after creating with current pagination
+      const currentState = get()
+      const response = await categoryCrud.getCategory({
+        ...currentState.filters,
+        take: currentState.pageSize,
+        skip: (currentState.currentPage - 1) * currentState.pageSize
+      })
+      set({
+        categories: response.result,
+        total: response.count,
         loading: false
-      }))
+      })
     } catch (error) {
-      const message =
-        error instanceof ApiError ? error.message : 'Failed to update category'
-      set({ error: message, loading: false })
-      throw error
+      set({ error: 'Failed to create category', loading: false })
+      message.error('Failed to create category')
     }
   },
 
-  deleteCategory: async (id) => {
+  updateCategory: async (id: string, title: string) => {
+    set({ loading: true, error: null })
+    try {
+      await categoryCrud.updateCategory(id, title)
+      message.success('Category updated successfully')
+      // Fetch updated list after updating with current pagination
+      const currentState = get()
+      const response = await categoryCrud.getCategory({
+        ...currentState.filters,
+        take: currentState.pageSize,
+        skip: (currentState.currentPage - 1) * currentState.pageSize
+      })
+      set({
+        categories: response.result,
+        total: response.count,
+        loading: false
+      })
+    } catch (error) {
+      set({ error: 'Failed to update category', loading: false })
+      message.error('Failed to update category')
+    }
+  },
+
+  deleteCategory: async (id: string) => {
     set({ loading: true, error: null })
     try {
       await categoryCrud.deleteCategory(id)
-      set((state) => ({
-        categories: state.categories.filter((category) => category.id !== id),
+      message.success('Category deleted successfully')
+      // Fetch updated list after deleting with current pagination
+      const currentState = get()
+      const response = await categoryCrud.getCategory({
+        ...currentState.filters,
+        take: currentState.pageSize,
+        skip: (currentState.currentPage - 1) * currentState.pageSize
+      })
+      set({
+        categories: response.result,
+        total: response.count,
         loading: false
-      }))
+      })
     } catch (error) {
-      const message =
-        error instanceof ApiError ? error.message : 'Failed to delete category'
-      set({ error: message, loading: false })
-      throw error
+      set({ error: 'Failed to delete category', loading: false })
+      message.error('Failed to delete category')
     }
   }
 }))

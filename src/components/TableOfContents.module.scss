@@ -1,0 +1,29 @@
+.tableOfContents {
+  @media (max-width: 1280px) {
+    position: static !important;
+    max-height: none !important;
+    margin-bottom: 16px !important;
+  }
+}
+
+.tableOfContentsWrapper {
+  width: 100%;
+}
+
+// Desktop TOC Card
+.desktopTocCard {
+  display: block;
+
+  @media (max-width: 1280px) {
+    display: none;
+  }
+}
+
+// Mobile TOC Collapse
+.mobileTocCollapse {
+  display: none;
+
+  @media (max-width: 1280px) {
+    display: block;
+  }
+}

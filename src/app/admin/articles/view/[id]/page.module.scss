@@ -1,0 +1,138 @@
+@import '@/styles/variables.scss';
+
+// Variables
+$primary-color: #1890ff;
+$border-radius: 8px;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+$container-max-width: 1200px;
+$padding-desktop: 24px;
+$padding-mobile: 16px;
+$loading-padding: 50px;
+
+.container {
+  padding: $spacing-lg;
+  margin: 0 auto;
+}
+
+.coverImage {
+  text-align: center;
+  margin: $spacing-lg 0;
+
+  img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-base;
+  }
+}
+
+.loadingContainer {
+  @include flex-center;
+  padding: $spacing-xxl;
+}
+
+.errorContainer {
+  @include flex-center;
+  padding: $spacing-xxl;
+}
+
+// Responsive design
+@include responsive($breakpoint-md) {
+  .container {
+    padding: $spacing-md;
+  }
+}
+
+// Article layout responsive
+.articleLayout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+
+  @media (max-width: 1280px) {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  @include responsive($breakpoint-lg) {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.tableOfContentsWrapper {
+  width: 280px;
+  flex-shrink: 0;
+
+  @media (max-width: 1280px) {
+    width: 100%;
+    order: -1;
+  }
+
+  @include responsive($breakpoint-lg) {
+    width: 100%;
+    order: -1;
+  }
+}
+
+.articleContentWrapper {
+  flex: 1;
+  min-width: 0;
+
+  @media (max-width: 1280px) {
+    width: 100%;
+  }
+}
+
+// Container responsive
+.container {
+  padding: $spacing-lg;
+  margin: 0 auto;
+
+  @media (max-width: 1280px) {
+    padding: $spacing-md;
+    max-width: 100%;
+  }
+}
+
+// Social Media Card responsive
+.socialMediaCard {
+  @media (max-width: 1280px) {
+    margin-bottom: 16px;
+  }
+}
+
+// Desktop Social Card
+.desktopSocialCard {
+  display: block;
+
+  @media (max-width: 1280px) {
+    display: none;
+  }
+}
+
+// Mobile Social Collapse
+.mobileSocialCollapse {
+  display: none;
+
+  @media (max-width: 1280px) {
+    display: block;
+  }
+}
+
+// Intro Card responsive
+.introCard {
+  @media (max-width: 1280px) {
+    padding: 16px !important;
+    margin: 16px 0 !important;
+
+    h4 {
+      font-size: 16px !important;
+    }
+
+    p {
+      font-size: 14px !important;
+    }
+  }
+}

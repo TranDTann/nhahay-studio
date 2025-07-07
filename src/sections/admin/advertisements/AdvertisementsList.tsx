@@ -3,43 +3,49 @@
 import { useState, useEffect } from 'react';
 import { Input, Button, Space, Modal, Spin, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { useTagsStore } from '@/store/tags/tagsStore';
-import { Tag } from '@/store/tags/crud';
-import TagTable from './components/TagTable';
-import TagForm from './components/TagForm';
+import { useAdvertisementStore } from '@/store/advertisement/advertisementStore';
+import { Advertisement } from '@/store/advertisement/crud';
+import { categoryCrud, Category } from '@/store/categories/crud';
+import AdvertisementTable from './components/AdvertisementTable';
+import AdvertisementForm from './components/AdvertisementForm';
 
-export default function TagsList() {
+export default function AdvertisementsList() {
     const {
-        tags,
+        advertisements,
         loading,
         error,
         total,
         currentPage,
         pageSize,
-        getTags,
+        getAdvertisements,
         setFilters,
         setPage,
-        createTag,
-        updateTag,
-        deleteTag
-    } = useTagsStore();
+        createAdvertisement,
+        updateAdvertisement,
+        deleteAdvertisement
+    } = useAdvertisementStore();
+
     const [searchText, setSearchText] = useState('');
     const [sortField, setSortField] = useState<string>('');
     const [sortDirection, setSortDirection] = useState<number>(0);
     const [editModalVisible, setEditModalVisible] = useState(false);
-    const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
+    const [selectedAdvertisement, setSelectedAdvertisement] = useState<Advertisement | null>(null);
     const [formLoading, setFormLoading] = useState(false);
+    const [categories, setCategories] = useState<Category[]>([]);
 
     useEffect(() => {
-        const fetchTags = async () => {
+        const fetchData = async () => {
             try {
-                await getTags();
+                await getAdvertisements();
+                // Fetch categories for the form
+                const categoryRes = await categoryCrud.getCategory();
+                setCategories(categoryRes.result || []);
             } catch (error) {
                 // Error is already handled in the store
             }
         };
-        fetchTags();
-    }, []);
+        fetchData();
+    }, [getAdvertisements]);
 
     const handleSearch = (value: string) => {
         setSearchText(value);
@@ -64,21 +70,21 @@ export default function TagsList() {
         setFilters(filters);
     };
 
-    const handleEdit = (record: Tag) => {
-        setSelectedTag(record);
+    const handleEdit = (record: Advertisement) => {
+        setSelectedAdvertisement(record);
         setEditModalVisible(true);
     };
 
-    const handleDelete = (record: Tag) => {
+    const handleDelete = (record: Advertisement) => {
         Modal.confirm({
-            title: 'Are you sure you want to delete this tag?',
+            title: 'Are you sure you want to delete this advertisement?',
             content: 'This action cannot be undone.',
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
             async onOk() {
                 try {
-                    await deleteTag(record.id);
+                    await deleteAdvertisement(record.id!);
                 } catch (error) {
                     // Error is already handled in the store
                 }
@@ -86,20 +92,16 @@ export default function TagsList() {
         });
     };
 
-    const handleFormSubmit = async (name: string) => {
+    const handleFormSubmit = async (data: Omit<Advertisement, 'id' | 'createdAt'>) => {
         setFormLoading(true);
         try {
-            if (selectedTag) {
-                const params = {
-                    name,
-                    id: selectedTag.id
-                }
-                await updateTag(params);
+            if (selectedAdvertisement) {
+                await updateAdvertisement(selectedAdvertisement.id!, data);
             } else {
-                await createTag(name);
+                await createAdvertisement(data);
             }
             setEditModalVisible(false);
-            setSelectedTag(null);
+            setSelectedAdvertisement(null);
         } catch (error) {
             // Error is already handled in the store
         } finally {
@@ -111,7 +113,7 @@ export default function TagsList() {
         setPage(page, pageSize);
     };
 
-    if (loading && tags.length === 0) {
+    if (loading && advertisements.length === 0) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <Spin size="large" />
@@ -120,15 +122,15 @@ export default function TagsList() {
     }
 
     return (
-        <div className="tags-container" style={{ padding: '24px' }}>
+        <div className="advertisements-container" style={{ padding: '24px' }}>
             <div style={{ marginBottom: '24px' }}>
-                <h1 style={{ marginBottom: '24px' }}>Tags</h1>
+                <h1 style={{ marginBottom: '24px' }}>Advertisement Management</h1>
 
                 <Space direction="vertical" style={{ width: '100%' }} size="middle">
                     <Row gutter={[16, 16]}>
                         <Col lg={16} md={16} span={24}>
                             <Input
-                                placeholder="Search tags"
+                                placeholder="Search advertisements"
                                 prefix={<SearchOutlined />}
                                 onChange={e => handleSearch(e.target.value)}
                                 style={{ width: '100%' }}
@@ -136,18 +138,18 @@ export default function TagsList() {
                         </Col>
                         <Col lg={8} md={8} span={24}>
                             <Button type="primary" onClick={() => {
-                                setSelectedTag(null);
+                                setSelectedAdvertisement(null);
                                 setEditModalVisible(true);
                             }}>
-                                Add Tag
+                                Add Advertisement
                             </Button>
                         </Col>
                     </Row>
                 </Space>
             </div>
 
-            <TagTable
-                tags={tags}
+            <AdvertisementTable
+                advertisements={advertisements}
                 loading={loading}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
@@ -159,20 +161,21 @@ export default function TagsList() {
                 pageSize={pageSize}
                 onPageChange={handlePageChange}
             />
-            {
-                editModalVisible && (
-                    <TagForm
-                        visible={editModalVisible}
-                        onCancel={() => {
-                            setEditModalVisible(false);
-                            setSelectedTag(null);
-                        }}
-                        onSubmit={handleFormSubmit}
-                        initialValues={selectedTag}
-                        title={selectedTag ? "Edit Tag" : "Add Tag"}
-                        loading={formLoading}
-                    />
-                )}
+
+            {editModalVisible && (
+                <AdvertisementForm
+                    visible={editModalVisible}
+                    onCancel={() => {
+                        setEditModalVisible(false);
+                        setSelectedAdvertisement(null);
+                    }}
+                    onSubmit={handleFormSubmit}
+                    initialValues={selectedAdvertisement}
+                    title={selectedAdvertisement ? "Edit Advertisement" : "Add Advertisement"}
+                    loading={formLoading}
+                    categories={categories}
+                />
+            )}
         </div>
     );
 } 

@@ -2,96 +2,78 @@
 
 import { useState, useEffect } from 'react';
 import { Input, Card, Button, Space, Select, Row, Col, App, Spin } from 'antd';
-import { SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
+import { articleCrud } from '@/store/article/crud';
+import { tagCrud, Tag as ApiTag } from '@/store/tags/crud';
+import { categoryCrud, Category as ApiCategory } from '@/store/categories/crud';
+import { ImgComparisonSlider } from '@img-comparison-slider/react';
 
 interface Article {
     id: string;
     title: string;
     description: string;
     content: string;
-    coverImage: string;
-    categoryId: string;
-    tagIds: string[];
+    image: string;
+    tags: string[];
+    categoryId?: string;
     createdAt: string;
-}
-
-interface Category {
-    id: string;
-    name: string;
-}
-
-interface Tag {
-    id: string;
-    name: string;
+    updatedAt: string;
 }
 
 export default function ArticlesList() {
     const router = useRouter();
     const { message: messageApi } = App.useApp();
     const [articles, setArticles] = useState<Article[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [tags, setTags] = useState<Tag[]>([]);
+    const [tags, setTags] = useState<ApiTag[]>([]);
+    const [categories, setCategories] = useState<ApiCategory[]>([]);
     const [searchText, setSearchText] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [loading, setLoading] = useState(true);
     const [filterLoading, setFilterLoading] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
 
-    // Mock data - Replace with actual API calls
     useEffect(() => {
-        const mockArticles: Article[] = [
-            {
-                id: '1',
-                title: 'Introduction to React',
-                description: 'Learn the basics of React and its core concepts',
-                content: 'Full content here...',
-                coverImage: '/placeholder-image.jpg',
-                categoryId: '1',
-                tagIds: ['1', '2'],
-                createdAt: '2024-03-06'
-            },
-            {
-                id: '2',
-                title: 'Next.js 13 Features',
-                description: 'Explore the new features in Next.js 13',
-                content: 'Full content here...',
-                coverImage: '/placeholder-image.jpg',
-                categoryId: '2',
-                tagIds: ['2', '3'],
-                createdAt: '2024-03-06'
-            },
-        ];
-
-        const mockCategories: Category[] = [
-            { id: '1', name: 'Frontend' },
-            { id: '2', name: 'Backend' },
-        ];
-
-        const mockTags: Tag[] = [
-            { id: '1', name: 'React' },
-            { id: '2', name: 'JavaScript' },
-            { id: '3', name: 'Next.js' },
-        ];
-
-        setTimeout(() => {
-            setArticles(mockArticles);
-            setCategories(mockCategories);
-            setTags(mockTags);
-            setLoading(false);
-        }, 1000);
+        fetchArticles();
+        fetchTags();
+        fetchCategories();
     }, []);
+
+    const fetchArticles = async () => {
+        try {
+            setLoading(true);
+            const response = await articleCrud.getArticles();
+            setArticles(response.result || []);
+        } catch (error: any) {
+            messageApi.error(error.response?.data?.message || 'Failed to fetch articles');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchTags = async () => {
+        try {
+            const response = await tagCrud.getTags();
+            setTags(response.result || []);
+        } catch (error: any) {
+            messageApi.error(error.response?.data?.message || 'Failed to fetch tags');
+        }
+    };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await categoryCrud.getCategory();
+            setCategories(response.result || []);
+        } catch (error: any) {
+            messageApi.error(error.response?.data?.message || 'Failed to fetch categories');
+        }
+    };
 
     const handleSearch = (value: string) => {
         setFilterLoading(true);
         setSearchText(value);
-        setTimeout(() => setFilterLoading(false), 500); // Simulate API delay
-    };
-
-    const handleCategoryChange = (value: string | null) => {
-        setFilterLoading(true);
-        setSelectedCategory(value);
         setTimeout(() => setFilterLoading(false), 500); // Simulate API delay
     };
 
@@ -101,22 +83,40 @@ export default function ArticlesList() {
         setTimeout(() => setFilterLoading(false), 500); // Simulate API delay
     };
 
+    const handleCategoryChange = (value: string) => {
+        setFilterLoading(true);
+        setSelectedCategory(value);
+        setTimeout(() => setFilterLoading(false), 500); // Simulate API delay
+    };
+
     const handleEdit = (id: string) => {
         router.push(paths.admin.article(id));
     };
 
-    const handleDelete = (id: string) => {
-        // Mock delete - Replace with actual API call
-        setArticles(prev => prev.filter(article => article.id !== id));
-        messageApi.success('Article deleted successfully');
+    const handleView = (id: string) => {
+        router.push(paths.admin.articleView(id));
+    };
+
+    const handleDelete = async (id: string) => {
+        try {
+            setDeleteLoading(id);
+            await articleCrud.deleteArticle(id);
+            const response = await articleCrud.getArticles();
+            setArticles(response.result || []);
+            messageApi.success('Article deleted successfully');
+        } catch (error: any) {
+            messageApi.error(error.response?.data?.message || 'Failed to delete article');
+        } finally {
+            setDeleteLoading(null);
+        }
     };
 
     const filteredArticles = articles.filter(article => {
         const matchesSearch = article.title.toLowerCase().includes(searchText.toLowerCase()) ||
             article.description.toLowerCase().includes(searchText.toLowerCase());
+        const matchesTags = selectedTags.length === 0 || selectedTags.every(tag => article.tags.includes(tag));
         const matchesCategory = !selectedCategory || article.categoryId === selectedCategory;
-        const matchesTags = selectedTags.length === 0 || selectedTags.every(tag => article.tagIds.includes(tag));
-        return matchesSearch && matchesCategory && matchesTags;
+        return matchesSearch && matchesTags && matchesCategory;
     });
 
     if (loading) {
@@ -131,10 +131,9 @@ export default function ArticlesList() {
         <div className="articles-container" style={{ padding: '24px' }}>
             <div style={{ marginBottom: '24px' }}>
                 <h1 style={{ marginBottom: '24px' }}>Articles</h1>
-
                 <Space direction="vertical" style={{ width: '100%' }} size="middle">
-                    <Row gutter={16}>
-                        <Col span={8}>
+                    <Row gutter={[16, 16]}>
+                        <Col lg={8} md={12} span={24}>
                             <Input
                                 placeholder="Search articles"
                                 prefix={<SearchOutlined />}
@@ -142,12 +141,13 @@ export default function ArticlesList() {
                                 style={{ width: '100%' }}
                             />
                         </Col>
-                        <Col span={6}>
+                        <Col lg={6} md={12} span={24}>
                             <Select
                                 style={{ width: '100%' }}
                                 placeholder="Select Category"
-                                allowClear
+                                value={selectedCategory}
                                 onChange={handleCategoryChange}
+                                allowClear
                             >
                                 {categories.map(category => (
                                     <Select.Option key={category.id} value={category.id}>
@@ -156,12 +156,14 @@ export default function ArticlesList() {
                                 ))}
                             </Select>
                         </Col>
-                        <Col span={6}>
+                        <Col lg={6} md={12} span={24}>
                             <Select
                                 mode="multiple"
                                 style={{ width: '100%' }}
                                 placeholder="Select Tags"
+                                value={selectedTags}
                                 onChange={handleTagsChange}
+                                allowClear
                             >
                                 {tags.map(tag => (
                                     <Select.Option key={tag.id} value={tag.id}>
@@ -170,7 +172,7 @@ export default function ArticlesList() {
                                 ))}
                             </Select>
                         </Col>
-                        <Col span={4}>
+                        <Col lg={4} md={12} span={24}>
                             <Button type="primary" onClick={() => router.push(paths.admin.article('new'))}>
                                 Add Article
                             </Button>
@@ -188,11 +190,19 @@ export default function ArticlesList() {
                                 cover={
                                     <img
                                         alt={article.title}
-                                        src={article.coverImage}
+                                        src={article.image}
                                         style={{ height: 200, objectFit: 'cover' }}
                                     />
                                 }
                                 actions={[
+                                    <Button
+                                        key="view"
+                                        type="text"
+                                        icon={<EyeOutlined />}
+                                        onClick={() => handleView(article.id)}
+                                    >
+                                        View
+                                    </Button>,
                                     <Button
                                         key="edit"
                                         type="text"
@@ -207,6 +217,7 @@ export default function ArticlesList() {
                                         danger
                                         icon={<DeleteOutlined />}
                                         onClick={() => handleDelete(article.id)}
+                                        loading={deleteLoading === article.id}
                                     >
                                         Delete
                                     </Button>
@@ -217,20 +228,31 @@ export default function ArticlesList() {
                                     description={
                                         <div>
                                             <p>{article.description}</p>
-                                            <Space>
-                                                {article.tagIds.map(tagId => {
-                                                    const tag = tags.find(t => t.id === tagId);
-                                                    return tag ? (
-                                                        <span key={tag.id} style={{
-                                                            background: '#f0f0f0',
-                                                            padding: '2px 8px',
-                                                            borderRadius: '4px',
-                                                            fontSize: '12px'
-                                                        }}>
-                                                            {tag.name}
-                                                        </span>
-                                                    ) : null;
-                                                })}
+                                            <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                                                {article.categoryId && (
+                                                    <div>
+                                                        <strong>Category:</strong>{' '}
+                                                        {categories.find(cat => cat.id === article.categoryId)?.name || 'Unknown'}
+                                                    </div>
+                                                )}
+                                                <div>
+                                                    <strong>Tags:</strong>
+                                                    <Space wrap>
+                                                        {article.tags.map(tagId => {
+                                                            const tag = tags.find(t => t.id === tagId);
+                                                            return tag ? (
+                                                                <span key={tag.id} style={{
+                                                                    background: '#f0f0f0',
+                                                                    padding: '2px 8px',
+                                                                    borderRadius: '4px',
+                                                                    fontSize: '12px'
+                                                                }}>
+                                                                    {tag.name}
+                                                                </span>
+                                                            ) : null;
+                                                        })}
+                                                    </Space>
+                                                </div>
                                             </Space>
                                         </div>
                                     }

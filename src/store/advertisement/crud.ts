@@ -1,15 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/api/axiosConfig'
 import { handleApiError } from '@/api/error'
 
-export interface Category {
+export interface Advertisement {
   id?: string
-  name: string
+  title: string
   description?: string
+  image?: string
+  link?: string
+  categoryId?: string
+  category?: {
+    id: string
+    name: string
+  }
   createdAt?: string
 }
 
-export interface CategoryFilters {
+export interface AdvertisementFilters {
   search?: string
   sort?: string
   sortDis?: number
@@ -24,8 +30,8 @@ export class ApiError extends Error {
   }
 }
 
-export const categoryCrud = {
-  getCategory: async (filters?: CategoryFilters) => {
+export const advertisementCrud = {
+  getAdvertisements: async (filters?: AdvertisementFilters) => {
     try {
       const params = new URLSearchParams()
       if (filters?.search) params.append('search', filters.search)
@@ -35,11 +41,11 @@ export const categoryCrud = {
       if (filters?.take) params.append('take', filters.take.toString())
       if (filters?.skip) params.append('skip', filters.skip.toString())
 
-      const url = `/api/category${
+      const url = `/api/advertisement${
         params.toString() ? `?${params.toString()}` : ''
       }`
       const response = await axiosInstance.get<{
-        result: Category[]
+        result: Advertisement[]
         count: number
       }>(url)
       return response.data
@@ -48,42 +54,44 @@ export const categoryCrud = {
     }
   },
 
-  createCategory: async (title: string) => {
+  createAdvertisement: async (
+    data: Omit<Advertisement, 'id' | 'createdAt'>
+  ) => {
     try {
-      const response = await axiosInstance.post<Category>(
-        '/api/category',
-        title
+      const response = await axiosInstance.post<Advertisement>(
+        '/api/advertisement',
+        data
       )
       return response.data
     } catch (error: any) {
       throw new ApiError(
-        error.response?.data?.message || 'Failed to create category',
+        error.response?.data?.message || 'Failed to create advertisement',
         error.response?.status
       )
     }
   },
 
-  updateCategory: async (id: string, title: string) => {
+  updateAdvertisement: async (id: string, data: Partial<Advertisement>) => {
     try {
-      const response = await axiosInstance.put<Category>(
-        `/api/category/${id}`,
-        { name: title, id }
+      const response = await axiosInstance.put<Advertisement>(
+        `/api/advertisement/${id}`,
+        data
       )
       return response.data
     } catch (error: any) {
       throw new ApiError(
-        error.response?.data?.message || 'Failed to update category',
+        error.response?.data?.message || 'Failed to update advertisement',
         error.response?.status
       )
     }
   },
 
-  deleteCategory: async (id: string) => {
+  deleteAdvertisement: async (id: string) => {
     try {
-      await axiosInstance.delete(`/api/category/${id}`)
+      await axiosInstance.delete(`/api/advertisement/${id}`)
     } catch (error: any) {
       throw new ApiError(
-        error.response?.data?.message || 'Failed to delete category',
+        error.response?.data?.message || 'Failed to delete advertisement',
         error.response?.status
       )
     }

@@ -1,13 +1,18 @@
 'use client'
-
-import { Suspense } from 'react'
-import Head from 'next/head'
+import { Suspense } from 'react';
+import Head from 'next/head';
+import { Inter } from 'next/font/google';
+import { App as AntApp, ConfigProvider } from 'antd';
+import { HomeLayout } from '@/layout/home';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
+import theme from '../../config/themeConfig';
+import '@/styles/variables.scss';
+import '@/styles/global.scss';
+import '@/styles/components.scss';
+import '@/styles/content-blocks.scss';
+import '@/styles/article-renderer.scss';
 import { Be_Vietnam_Pro } from 'next/font/google'
-import { App as AntApp, ConfigProvider } from 'antd'
-import { AntdRegistry } from '@ant-design/nextjs-registry'
-import theme from '../../config/themeConfig'
 import './global.css'
-import { HomeLayout } from '@/layout/home'
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ['vietnamese'],

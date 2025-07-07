@@ -15,7 +15,6 @@ export default function TagForm({ visible, onCancel, onSubmit, initialValues, ti
     const [form] = Form.useForm();
 
     useEffect(() => {
-        console.log(initialValues)
         return () => {
             form.resetFields();
         };
