@@ -1,7 +1,7 @@
 'use client';
 
-import { Tag, Space, Typography } from 'antd';
-import { CalendarOutlined, EditOutlined, TagOutlined, FolderOutlined } from '@ant-design/icons';
+import { Tag, Space, Typography, Rate } from 'antd';
+import { CalendarOutlined, EditOutlined, TagOutlined, FolderOutlined, StarFilled } from '@ant-design/icons';
 import moment from 'moment';
 
 const { Text } = Typography;
@@ -26,14 +26,33 @@ export default function ArticleMeta({ createdAt, updatedAt, categoryName, tags }
             border: '1px solid #f0f0f0'
         }}>
             <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                <div>
+                    <Text type="secondary">
+                        Tác giả: <span style={{ fontWeight: 'bold' }}>Phạm Giang</span>
+                    </Text>
+                </div>
                 <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
                     <Space>
                         <CalendarOutlined style={{ color: '#8c8c8c' }} />
                         <Text type="secondary">
-                            {formatDate(createdAt)}
+                            {formatDate(updatedAt || createdAt)}
                         </Text>
                     </Space>
                 </div>
+                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <Space>
+                        <Text type="secondary">
+                            Điểm đánh giá:
+                        </Text>
+                        <Rate
+                            disabled
+                            defaultValue={4.5}
+                            allowHalf
+                            style={{ fontSize: '14px' }}
+                        />
+                    </Space>
+                </div>
+
 
                 <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
                     <Space>

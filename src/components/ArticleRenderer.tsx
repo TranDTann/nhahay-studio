@@ -40,6 +40,23 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                 p.setAttribute('data-align', 'justify');
             }
         });
+
+        // Add IDs to h2 elements for table of contents
+        setTimeout(() => {
+            const h2Elements = document.querySelectorAll('h2');
+            h2Elements.forEach((h2, index) => {
+                if (!h2.id) {
+                    // Create a more stable ID based on content
+                    const text = h2.textContent || '';
+                    const sanitizedText = text
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s]/g, '')
+                        .replace(/\s+/g, '-')
+                        .substring(0, 30);
+                    h2.id = `heading-${sanitizedText}-${index}`;
+                }
+            });
+        }, 100);
     }, [content, contentBlocks]);
 
     // If contentBlocks are provided, render them instead of content
@@ -58,6 +75,24 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                         fontSize: '16px',
                                         lineHeight: '1.8',
                                         textAlign: 'justify'
+                                    }}
+                                    ref={(el) => {
+                                        if (el) {
+                                            // Add IDs to h2 elements for table of contents
+                                            const h2Elements = el.querySelectorAll('h2');
+                                            h2Elements.forEach((h2, index) => {
+                                                if (!h2.id) {
+                                                    // Create a more stable ID based on content
+                                                    const text = h2.textContent || '';
+                                                    const sanitizedText = text
+                                                        .toLowerCase()
+                                                        .replace(/[^a-z0-9\s]/g, '')
+                                                        .replace(/\s+/g, '-')
+                                                        .substring(0, 30);
+                                                    h2.id = `heading-${sanitizedText}-${index}`;
+                                                }
+                                            });
+                                        }
                                     }}
                                 />
                             );
@@ -130,6 +165,24 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                             fontSize: '16px',
                                             lineHeight: '1.8',
                                             textAlign: 'justify'
+                                        }}
+                                        ref={(el) => {
+                                            if (el) {
+                                                // Add IDs to h2 elements for table of contents
+                                                const h2Elements = el.querySelectorAll('h2');
+                                                h2Elements.forEach((h2, index) => {
+                                                    if (!h2.id) {
+                                                        // Create a more stable ID based on content
+                                                        const text = h2.textContent || '';
+                                                        const sanitizedText = text
+                                                            .toLowerCase()
+                                                            .replace(/[^a-z0-9\s]/g, '')
+                                                            .replace(/\s+/g, '-')
+                                                            .substring(0, 30);
+                                                        h2.id = `heading-${sanitizedText}-${index}`;
+                                                    }
+                                                });
+                                            }
                                         }}
                                     />
                                 );

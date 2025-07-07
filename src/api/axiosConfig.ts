@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use(
     if (token) {
       //   config.headers.Authorization = `Bearer ${token}`
     }
-    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJjNmVkNDUwYy1mNWNmLTQ1YjAtNDBlNy0wOGRkYWRhZThhZTYiLCJlbWFpbCI6ImdpYW5nQGV4YW1wbGUuY29tIiwiZ2l2ZW5fbmFtZSI6ImdpYW5nYWRtaW4iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NTAyNjMwMjMsImV4cCI6MTc1MDg2NzgyMywiaWF0IjoxNzUwMjYzMDIzLCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3Mjg5IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.mIu41tDXxBRDFOgUT_Umm3Z3Jq7uwHl3xuqPg2Nzn7c`
+    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMTgyZjllNy1mY2IwLTQyNmEtNTIyYy0wOGRkYjk3NTZmNjkiLCJlbWFpbCI6ImdpYW5nQGV4YW1wbGUuY29tIiwiZ2l2ZW5fbmFtZSI6ImdpYW5nYWRtaW4iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NTE0NjkxMzcsImV4cCI6MTc1MjA3MzkzNywiaWF0IjoxNzUxNDY5MTM3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3Mjg5IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.PeD2kJy4m_pU0WoJsaMA2VYXGSEuhr9wdMrjV3eW2CY`
     return config
   },
   (error) => {
