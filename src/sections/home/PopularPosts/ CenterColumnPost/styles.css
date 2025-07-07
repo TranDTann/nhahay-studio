@@ -1,0 +1,45 @@
+.center-post-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.center-post-image-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.center-post-image {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.center-post-info {
+  display: flex !important;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.center-post-title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+}
+
+.center-post-description {
+  font-size: 14px;
+  font-weight: 20px;
+  color: #565655;
+}
+
+.center-post-footer {
+  font-size: 14px;
+  font-weight: 20px;
+}
+
+.center-post_time {
+  color: #b9b9b6;
+}

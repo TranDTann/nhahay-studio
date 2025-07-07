@@ -1,7 +1,7 @@
-import type { NextConfig } from 'next'
+/** @type {import('next').NextConfig} */
+const withLinaria = require('next-with-linaria')
 import path from 'path'
-
-const nextConfig: NextConfig = {
+const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')],
     prependData: `@import "@/styles/variables.scss";`
@@ -25,7 +25,44 @@ const nextConfig: NextConfig = {
       ]
     })
     return config
+  },
+  reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*'
+      },
+      {
+        protocol: 'http',
+        hostname: '*'
+      }
+    ]
+  },
+  headers: async () => {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Referrer-Policy',
+            value: 'no-referrer'
+          }
+        ]
+      }
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/umami/script.js',
+        destination: 'https://umami.autodity.dev/script.js'
+      }
+    ]
+  },
+  compiler: {
+    styledComponents: true
   }
 }
 
-export default nextConfig
+module.exports = withLinaria(nextConfig)

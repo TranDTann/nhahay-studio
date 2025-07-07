@@ -1,0 +1,13 @@
+.navigation-bar-container {
+  box-shadow: 0 2px 2px -2px rgba(139, 139, 139, 0.2);
+  padding: 12px 0;
+  width: 100%;
+}
+
+.navigation-bar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
+}

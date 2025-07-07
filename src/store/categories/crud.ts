@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/api/axiosConfig'
 import { handleApiError } from '@/api/error'
 

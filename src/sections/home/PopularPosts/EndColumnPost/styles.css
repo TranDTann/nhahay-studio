@@ -1,0 +1,39 @@
+.end-post-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.end-post-image-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.end-post-image {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.end-post-info {
+  display: flex !important;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.end-post-title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+}
+
+.end-post-footer {
+  font-size: 14px;
+  font-weight: 20px;
+}
+
+.end-post_time {
+  color: #b9b9b6;
+}

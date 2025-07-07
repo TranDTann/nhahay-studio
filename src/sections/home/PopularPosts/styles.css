@@ -1,0 +1,17 @@
+.first-post-wrapper {
+  height: fit-content;
+}
+
+.center-post-wrapper {
+  height: fit-content;
+  display: flex !important;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.end-post-wrapper {
+  height: fit-content;
+  display: flex !important;
+  flex-direction: column;
+  gap: 24px;
+}

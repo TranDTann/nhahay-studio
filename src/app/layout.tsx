@@ -1,5 +1,4 @@
-'use client';
-
+'use client'
 import { Suspense } from 'react';
 import Head from 'next/head';
 import { Inter } from 'next/font/google';
@@ -12,20 +11,26 @@ import '@/styles/global.scss';
 import '@/styles/components.scss';
 import '@/styles/content-blocks.scss';
 import '@/styles/article-renderer.scss';
+import { Be_Vietnam_Pro } from 'next/font/google'
+import './global.css'
 
-const inter = Inter({ subsets: ['latin'] });
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ['vietnamese'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  display: 'swap'
+})
 
 export default function RootLayout({
-  children,
+  children
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
       <Head>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
-      <body className={inter.className} suppressHydrationWarning>
+      <body className={beVietnamPro.className} suppressHydrationWarning>
         <AntdRegistry>
           <ConfigProvider theme={theme}>
             <AntApp>
@@ -37,5 +42,5 @@ export default function RootLayout({
         </AntdRegistry>
       </body>
     </html>
-  );
+  )
 }
