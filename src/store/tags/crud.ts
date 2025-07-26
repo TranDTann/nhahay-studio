@@ -38,18 +38,22 @@ export const tagCrud = {
     }
   },
 
-  createTag: async (title: string) => {
+  createTag: async (data: { name: string; description?: string }) => {
     try {
-      const response = await axiosInstance.post<Tag>('/api/tag', title)
+      const response = await axiosInstance.post<Tag>('/api/tag', data)
       return response.data
     } catch (error) {
       handleApiError(error)
     }
   },
 
-  updateTag: async (data: { id: string; name: string }) => {
+  updateTag: async (data: {
+    id: string
+    name: string
+    description?: string
+  }) => {
     try {
-      const response = await axiosInstance.put<Tag>(`/api/tag/${data.id}`, data)
+      const response = await axiosInstance.put<Tag>(`/api/tag`, data)
       return response.data
     } catch (error) {
       handleApiError(error)

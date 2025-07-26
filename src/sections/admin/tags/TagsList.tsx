@@ -86,17 +86,18 @@ export default function TagsList() {
         });
     };
 
-    const handleFormSubmit = async (name: string) => {
+    const handleFormSubmit = async (data: { name: string; description?: string }) => {
         setFormLoading(true);
         try {
             if (selectedTag) {
                 const params = {
-                    name,
+                    name: data.name,
+                    description: data.description,
                     id: selectedTag.id
                 }
                 await updateTag(params);
             } else {
-                await createTag(name);
+                await createTag({ name: data.name, description: data.description });
             }
             setEditModalVisible(false);
             setSelectedTag(null);

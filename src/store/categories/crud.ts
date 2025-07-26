@@ -48,12 +48,9 @@ export const categoryCrud = {
     }
   },
 
-  createCategory: async (title: string) => {
+  createCategory: async (data: { name: string; description?: string }) => {
     try {
-      const response = await axiosInstance.post<Category>(
-        '/api/category',
-        title
-      )
+      const response = await axiosInstance.post<Category>('/api/category', data)
       return response.data
     } catch (error: any) {
       throw new ApiError(
@@ -63,12 +60,15 @@ export const categoryCrud = {
     }
   },
 
-  updateCategory: async (id: string, title: string) => {
+  updateCategory: async (
+    id: string,
+    data: { name: string; description?: string }
+  ) => {
     try {
-      const response = await axiosInstance.put<Category>(
-        `/api/category/${id}`,
-        { name: title, id }
-      )
+      const response = await axiosInstance.put<Category>(`/api/category`, {
+        ...data,
+        id
+      })
       return response.data
     } catch (error: any) {
       throw new ApiError(

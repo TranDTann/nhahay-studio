@@ -86,13 +86,13 @@ export default function CategoriesList() {
         });
     };
 
-    const handleFormSubmit = async (name: string) => {
+    const handleFormSubmit = async (data: { name: string; description?: string }) => {
         setFormLoading(true);
         try {
             if (selectedCategory) {
-                await updateCategory(selectedCategory.id, name);
+                await updateCategory(selectedCategory.id, { name: data.name, description: data.description });
             } else {
-                await createCategory(name);
+                await createCategory({ name: data.name, description: data.description });
             }
             setEditModalVisible(false);
             setSelectedCategory(null);

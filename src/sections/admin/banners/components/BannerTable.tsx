@@ -1,14 +1,14 @@
-import { Table, Button, Space } from 'antd';
+import { Table, Button, Space, Image, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { Tag } from '@/store/tags/crud';
+import { Banner } from '@/store/banner/crud';
 import { useEffect, useState } from 'react';
 
-interface TagTableProps {
-    tags: Tag[];
+interface BannerTableProps {
+    banners: Banner[];
     loading: boolean;
-    onEdit: (record: Tag) => void;
-    onDelete: (record: Tag) => void;
+    onEdit: (record: Banner) => void;
+    onDelete: (record: Banner) => void;
     onSort: (field: string) => void;
     sortField: string;
     sortDirection: number;
@@ -18,8 +18,8 @@ interface TagTableProps {
     onPageChange?: (page: number, pageSize: number) => void;
 }
 
-export default function TagTable({
-    tags,
+export default function BannerTable({
+    banners,
     loading,
     onEdit,
     onDelete,
@@ -30,7 +30,7 @@ export default function TagTable({
     currentPage = 1,
     pageSize = 10,
     onPageChange
-}: TagTableProps) {
+}: BannerTableProps) {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -44,28 +44,62 @@ export default function TagTable({
         return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
-    const columns: ColumnsType<Tag> = [
+    const columns: ColumnsType<Banner> = [
         {
             title: (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span>Name</span>
+                    <span>Title</span>
                     <Button
                         type="text"
                         size="small"
-                        icon={sortField === 'name' ? (sortDirection === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
-                        onClick={() => onSort('name')}
+                        icon={sortField === 'title' ? (sortDirection === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
+                        onClick={() => onSort('title')}
                         style={{ marginLeft: 8 }}
                     />
                 </div>
             ),
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'title',
+            key: 'title',
         },
         {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
-            render: (description) => description || '-',
+            title: 'Position',
+            dataIndex: 'position',
+            key: 'position',
+            render: (position) => position || '-',
+        },
+        {
+            title: 'Image',
+            dataIndex: 'imageUrl',
+            key: 'imageUrl',
+            render: (imageUrl) => imageUrl ? (
+                <Image
+                    src={imageUrl}
+                    alt="Banner"
+                    width={80}
+                    height={50}
+                    style={{ objectFit: 'cover', borderRadius: 4 }}
+                />
+            ) : '-',
+        },
+        {
+            title: 'Link',
+            dataIndex: 'link',
+            key: 'link',
+            render: (link) => link ? (
+                <a href={link} target="_blank" rel="noopener noreferrer">
+                    {link.length > 30 ? `${link.substring(0, 30)}...` : link}
+                </a>
+            ) : '-',
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (status) => (
+                <Tag color={status ? 'green' : 'red'}>
+                    {status ? 'Active' : 'Inactive'}
+                </Tag>
+            ),
         },
         {
             title: (
@@ -82,7 +116,7 @@ export default function TagTable({
             ),
             dataIndex: 'createdAt',
             key: 'createdAt',
-            render: (date) => date ? new Date(date).toLocaleDateString() : '-',
+            render: (date) => date ? new Date(date).toLocaleDateString('vi-VN') : '-',
         },
         {
             title: 'Actions',
@@ -111,7 +145,7 @@ export default function TagTable({
     return (
         <Table
             columns={columns}
-            dataSource={tags}
+            dataSource={banners}
             rowKey="id"
             loading={loading}
             pagination={{
@@ -125,4 +159,4 @@ export default function TagTable({
             }}
         />
     );
-}
+} 

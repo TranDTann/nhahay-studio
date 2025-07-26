@@ -62,24 +62,18 @@ export default function AdvertisementTable({
             key: 'title',
         },
         {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
-            render: (description) => description || '-',
-        },
-        {
-            title: 'Category',
-            dataIndex: 'category',
-            key: 'category',
-            render: (category) => category?.name || '-',
+            title: 'Position',
+            dataIndex: 'positionType',
+            key: 'positionType',
+            render: (positionType) => positionType || '-',
         },
         {
             title: 'Image',
-            dataIndex: 'image',
-            key: 'image',
-            render: (image) => image ? (
+            dataIndex: 'imageUrl',
+            key: 'imageUrl',
+            render: (imageUrl) => imageUrl ? (
                 <Image
-                    src={image}
+                    src={imageUrl}
                     alt="Advertisement"
                     width={60}
                     height={40}
@@ -146,13 +140,12 @@ export default function AdvertisementTable({
             loading={loading}
             pagination={{
                 current: currentPage,
-                pageSize: pageSize,
+                pageSize: 10,
                 total: total,
-                showSizeChanger: true,
+                showSizeChanger: false,
                 showQuickJumper: true,
                 showTotal: (total, range) => `${range[0]}-${range[1]} của ${total} mục`,
                 onChange: onPageChange,
-                onShowSizeChange: onPageChange,
             }}
         />
     );

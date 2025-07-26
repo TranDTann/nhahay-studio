@@ -116,13 +116,12 @@ export default function CategoryTable({
             loading={loading}
             pagination={{
                 current: currentPage,
-                pageSize: pageSize,
+                pageSize: 10,
                 total: total,
-                showSizeChanger: true,
+                showSizeChanger: false,
                 showQuickJumper: true,
                 showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
                 onChange: onPageChange,
-                onShowSizeChange: onPageChange,
             }}
         />
     );

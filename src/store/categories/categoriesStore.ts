@@ -12,9 +12,15 @@ interface CategoriesState {
   pageSize: number
   getCategories: (filters?: CategoryFilters) => Promise<void>
   setFilters: (filters: CategoryFilters) => void
-  setPage: (page: number, pageSize: number) => void
-  createCategory: (title: string) => Promise<void>
-  updateCategory: (id: string, title: string) => Promise<void>
+  setPage: (page: number) => void
+  createCategory: (data: {
+    name: string
+    description?: string
+  }) => Promise<void>
+  updateCategory: (
+    id: string,
+    data: { name: string; description?: string }
+  ) => Promise<void>
   deleteCategory: (id: string) => Promise<void>
 }
 
@@ -47,26 +53,26 @@ export const useCategoriesStore = create<CategoriesState>((set, get) => ({
     const currentState = get()
     const newFilters = {
       ...filters,
-      take: currentState.pageSize,
-      skip: (currentState.currentPage - 1) * currentState.pageSize
+      take: 10,
+      skip: (currentState.currentPage - 1) * 10
     }
     set({ filters: newFilters })
     get().getCategories(newFilters)
   },
 
-  setPage: (page: number, pageSize: number) => {
-    set({ currentPage: page, pageSize })
+  setPage: (page: number) => {
+    set({ currentPage: page })
     get().getCategories({
       ...get().filters,
-      skip: (page - 1) * pageSize,
-      take: pageSize
+      skip: (page - 1) * 10,
+      take: 10
     })
   },
 
-  createCategory: async (title: string) => {
+  createCategory: async (data: { name: string; description?: string }) => {
     set({ loading: true, error: null })
     try {
-      await categoryCrud.createCategory(title)
+      await categoryCrud.createCategory(data)
       message.success('Category created successfully')
       // Fetch updated list after creating with current pagination
       const currentState = get()
@@ -86,10 +92,13 @@ export const useCategoriesStore = create<CategoriesState>((set, get) => ({
     }
   },
 
-  updateCategory: async (id: string, title: string) => {
+  updateCategory: async (
+    id: string,
+    data: { name: string; description?: string }
+  ) => {
     set({ loading: true, error: null })
     try {
-      await categoryCrud.updateCategory(id, title)
+      await categoryCrud.updateCategory(id, data)
       message.success('Category updated successfully')
       // Fetch updated list after updating with current pagination
       const currentState = get()

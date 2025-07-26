@@ -11,9 +11,27 @@ interface Article {
   updatedAt: string
 }
 export const articleCrud = {
-  getArticles: async () => {
+  getArticles: async (params?: {
+    search?: string
+    tags?: string[]
+    categoryId?: string
+    page?: number
+    pageSize?: number
+  }) => {
     try {
-      const response = await axiosInstance.get<any>('/api/post')
+      const query = new URLSearchParams()
+      if (params?.search) query.append('search', params.search)
+      if (params?.categoryId) query.append('categoryId', params.categoryId)
+      if (params?.tags && params.tags.length > 0)
+        query.append('tags', params.tags.join(','))
+      // Chuyển page/pageSize thành take/skip
+      const take = params?.pageSize || 10
+      const skip =
+        params?.page && params.page > 1 ? (params.page - 1) * take : 0
+      query.append('take', take.toString())
+      query.append('skip', skip.toString())
+      const url = `/api/post${query.toString() ? `?${query.toString()}` : ''}`
+      const response = await axiosInstance.get<any>(url)
       return response.data
     } catch (error) {
       handleApiError(error)

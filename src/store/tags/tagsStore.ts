@@ -12,9 +12,13 @@ interface TagsState {
   pageSize: number
   getTags: (filters?: TagFilters) => Promise<void>
   setFilters: (filters: TagFilters) => void
-  setPage: (page: number, pageSize: number) => void
-  createTag: (name: string) => Promise<void>
-  updateTag: (data: { id: string; name: string }) => Promise<void>
+  setPage: (page: number) => void
+  createTag: (data: { name: string; description?: string }) => Promise<void>
+  updateTag: (data: {
+    id: string
+    name: string
+    description?: string
+  }) => Promise<void>
   deleteTag: (id: string) => Promise<void>
 }
 
@@ -47,26 +51,26 @@ export const useTagsStore = create<TagsState>((set, get) => ({
     const currentState = get()
     const newFilters = {
       ...filters,
-      take: currentState.pageSize,
-      skip: (currentState.currentPage - 1) * currentState.pageSize
+      take: 10,
+      skip: (currentState.currentPage - 1) * 10
     }
     set({ filters: newFilters })
     get().getTags(newFilters)
   },
 
-  setPage: (page: number, pageSize: number) => {
-    set({ currentPage: page, pageSize })
+  setPage: (page: number) => {
+    set({ currentPage: page })
     get().getTags({
       ...get().filters,
-      skip: (page - 1) * pageSize,
-      take: pageSize
+      skip: (page - 1) * 10,
+      take: 10
     })
   },
 
-  createTag: async (name: string) => {
+  createTag: async (data: { name: string; description?: string }) => {
     set({ loading: true, error: null })
     try {
-      await tagCrud.createTag(name)
+      await tagCrud.createTag(data)
       message.success('Tag created successfully')
       // Fetch updated list after creating with current pagination
       const currentState = get()
@@ -86,7 +90,11 @@ export const useTagsStore = create<TagsState>((set, get) => ({
     }
   },
 
-  updateTag: async (data: { id: string; name: string }) => {
+  updateTag: async (data: {
+    id: string
+    name: string
+    description?: string
+  }) => {
     set({ loading: true, error: null })
     try {
       await tagCrud.updateTag(data)

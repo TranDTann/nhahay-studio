@@ -3,13 +3,13 @@ import Cookies from 'js-cookie'
 
 // Create axios instance with custom config
 const axiosInstance = axios.create({
-  baseURL: 'https://lemur-gentle-cricket.ngrok-free.app',
+  baseURL: 'https://rrp-signals-codes-holds.trycloudflare.com/',
   timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json'
-  },
-  withCredentials: true
+  }
+  // withCredentials: true
 })
 
 // Request interceptor
@@ -17,9 +17,8 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const token = Cookies.get('token')
     if (token) {
-      //   config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Bearer ${token}`
     }
-    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMTgyZjllNy1mY2IwLTQyNmEtNTIyYy0wOGRkYjk3NTZmNjkiLCJlbWFpbCI6ImdpYW5nQGV4YW1wbGUuY29tIiwiZ2l2ZW5fbmFtZSI6ImdpYW5nYWRtaW4iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NTE0NjkxMzcsImV4cCI6MTc1MjA3MzkzNywiaWF0IjoxNzUxNDY5MTM3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3Mjg5IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.PeD2kJy4m_pU0WoJsaMA2VYXGSEuhr9wdMrjV3eW2CY`
     return config
   },
   (error) => {
