@@ -12,14 +12,11 @@ interface AdvertisementState {
   pageSize: number
   getAdvertisements: (filters?: AdvertisementFilters) => Promise<void>
   setFilters: (filters: AdvertisementFilters) => void
-  setPage: (page: number, pageSize: number) => void
+  setPage: (page: number) => void
   createAdvertisement: (
     data: Omit<Advertisement, 'id' | 'createdAt'>
   ) => Promise<void>
-  updateAdvertisement: (
-    id: string,
-    data: Partial<Advertisement>
-  ) => Promise<void>
+  updateAdvertisement: (data: Partial<Advertisement>) => Promise<void>
   deleteAdvertisement: (id: string) => Promise<void>
 }
 
@@ -52,19 +49,19 @@ export const useAdvertisementStore = create<AdvertisementState>((set, get) => ({
     const currentState = get()
     const newFilters = {
       ...filters,
-      take: currentState.pageSize,
-      skip: (currentState.currentPage - 1) * currentState.pageSize
+      take: 10,
+      skip: (currentState.currentPage - 1) * 10
     }
     set({ filters: newFilters })
     get().getAdvertisements(newFilters)
   },
 
-  setPage: (page: number, pageSize: number) => {
-    set({ currentPage: page, pageSize })
+  setPage: (page: number) => {
+    set({ currentPage: page })
     get().getAdvertisements({
       ...get().filters,
-      skip: (page - 1) * pageSize,
-      take: pageSize
+      skip: (page - 1) * 10,
+      take: 10
     })
   },
 
@@ -93,10 +90,10 @@ export const useAdvertisementStore = create<AdvertisementState>((set, get) => ({
     }
   },
 
-  updateAdvertisement: async (id: string, data: Partial<Advertisement>) => {
+  updateAdvertisement: async (data: Partial<Advertisement>) => {
     set({ loading: true, error: null })
     try {
-      await advertisementCrud.updateAdvertisement(id, data)
+      await advertisementCrud.updateAdvertisement(data)
       message.success('Cập nhật quảng cáo thành công')
       // Fetch updated list after updating with current pagination
       const currentState = get()

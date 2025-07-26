@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 interface CategoryFormProps {
     visible: boolean;
     onCancel: () => void;
-    onSubmit: (name: string) => Promise<void>;
+    onSubmit: (data: { name: string; description?: string }) => Promise<void>;
     initialValues?: Category | null;
     title: string;
     loading?: boolean;
@@ -23,7 +23,7 @@ export default function CategoryForm({ visible, onCancel, onSubmit, initialValue
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
-            await onSubmit(values.name);
+            await onSubmit({ name: values.name, description: values.description });
         } catch (error) {
             console.error('Validation failed:', error);
         }

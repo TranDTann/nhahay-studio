@@ -3,45 +3,44 @@
 import { useState, useEffect } from 'react';
 import { Input, Button, Space, Modal, Spin, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { useAdvertisementStore } from '@/store/advertisement/advertisementStore';
-import { Advertisement } from '@/store/advertisement/crud';
-import { categoryCrud, Category } from '@/store/categories/crud';
-import AdvertisementTable from './components/AdvertisementTable';
-import AdvertisementForm from './components/AdvertisementForm';
+import { useBannerStore } from '@/store/banner/bannerStore';
+import { Banner } from '@/store/banner/crud';
+import BannerTable from './components/BannerTable';
+import BannerForm from './components/BannerForm';
 
-export default function AdvertisementsList() {
+export default function BannersList() {
     const {
-        advertisements,
+        banners,
         loading,
         error,
         total,
         currentPage,
         pageSize,
-        getAdvertisements,
+        getBanners,
         setFilters,
         setPage,
-        createAdvertisement,
-        updateAdvertisement,
-        deleteAdvertisement
-    } = useAdvertisementStore();
+        createBanner,
+        updateBanner,
+        deleteBanner
+    } = useBannerStore();
 
     const [searchText, setSearchText] = useState('');
     const [sortField, setSortField] = useState<string>('');
     const [sortDirection, setSortDirection] = useState<number>(0);
     const [editModalVisible, setEditModalVisible] = useState(false);
-    const [selectedAdvertisement, setSelectedAdvertisement] = useState<Advertisement | null>(null);
+    const [selectedBanner, setSelectedBanner] = useState<Banner | null>(null);
     const [formLoading, setFormLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                await getAdvertisements();
+                await getBanners();
             } catch (error) {
                 // Error is already handled in the store
             }
         };
         fetchData();
-    }, [getAdvertisements]);
+    }, [getBanners]);
 
     const handleSearch = (value: string) => {
         setSearchText(value);
@@ -66,21 +65,21 @@ export default function AdvertisementsList() {
         setFilters(filters);
     };
 
-    const handleEdit = (record: Advertisement) => {
-        setSelectedAdvertisement(record);
+    const handleEdit = (record: Banner) => {
+        setSelectedBanner(record);
         setEditModalVisible(true);
     };
 
-    const handleDelete = (record: Advertisement) => {
+    const handleDelete = (record: Banner) => {
         Modal.confirm({
-            title: 'Are you sure you want to delete this advertisement?',
+            title: 'Are you sure you want to delete this banner?',
             content: 'This action cannot be undone.',
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
             async onOk() {
                 try {
-                    await deleteAdvertisement(record.id!);
+                    await deleteBanner(record.id!);
                 } catch (error) {
                     // Error is already handled in the store
                 }
@@ -88,16 +87,16 @@ export default function AdvertisementsList() {
         });
     };
 
-    const handleFormSubmit = async (data: Advertisement) => {
+    const handleFormSubmit = async (data: Banner) => {
         setFormLoading(true);
         try {
-            if (selectedAdvertisement) {
-                await updateAdvertisement({ ...data, id: selectedAdvertisement.id });
+            if (selectedBanner) {
+                await updateBanner({ ...data, id: selectedBanner.id });
             } else {
-                await createAdvertisement(data);
+                await createBanner(data);
             }
             setEditModalVisible(false);
-            setSelectedAdvertisement(null);
+            setSelectedBanner(null);
         } catch (error) {
             // Error is already handled in the store
         } finally {
@@ -106,10 +105,10 @@ export default function AdvertisementsList() {
     };
 
     const handlePageChange = (page: number, pageSize: number) => {
-        setPage(page, pageSize);
+        setPage(page);
     };
 
-    if (loading && advertisements.length === 0) {
+    if (loading && banners.length === 0) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <Spin size="large" />
@@ -118,15 +117,15 @@ export default function AdvertisementsList() {
     }
 
     return (
-        <div className="advertisements-container" style={{ padding: '24px' }}>
+        <div className="banners-container" style={{ padding: '24px' }}>
             <div style={{ marginBottom: '24px' }}>
-                <h1 style={{ marginBottom: '24px' }}>Advertisement Management</h1>
+                <h1 style={{ marginBottom: '24px' }}>Banner Management</h1>
 
                 <Space direction="vertical" style={{ width: '100%' }} size="middle">
                     <Row gutter={[16, 16]}>
                         <Col lg={16} md={16} span={24}>
                             <Input
-                                placeholder="Search advertisements"
+                                placeholder="Search banners"
                                 prefix={<SearchOutlined />}
                                 onChange={e => handleSearch(e.target.value)}
                                 style={{ width: '100%' }}
@@ -134,18 +133,18 @@ export default function AdvertisementsList() {
                         </Col>
                         <Col lg={8} md={8} span={24}>
                             <Button type="primary" onClick={() => {
-                                setSelectedAdvertisement(null);
+                                setSelectedBanner(null);
                                 setEditModalVisible(true);
                             }}>
-                                Add Advertisement
+                                Add Banner
                             </Button>
                         </Col>
                     </Row>
                 </Space>
             </div>
 
-            <AdvertisementTable
-                advertisements={advertisements}
+            <BannerTable
+                banners={banners}
                 loading={loading}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
@@ -159,15 +158,15 @@ export default function AdvertisementsList() {
             />
 
             {editModalVisible && (
-                <AdvertisementForm
+                <BannerForm
                     visible={editModalVisible}
                     onCancel={() => {
                         setEditModalVisible(false);
-                        setSelectedAdvertisement(null);
+                        setSelectedBanner(null);
                     }}
                     onSubmit={handleFormSubmit}
-                    initialValues={selectedAdvertisement}
-                    title={selectedAdvertisement ? "Edit Advertisement" : "Add Advertisement"}
+                    initialValues={selectedBanner}
+                    title={selectedBanner ? "Edit Banner" : "Add Banner"}
                     loading={formLoading}
                 />
             )}

@@ -14,6 +14,7 @@ import { imageCrud } from '@/store/image/crud';
 import { articleCrud } from '@/store/article/crud';
 import { tagCrud } from '@/store/tags/crud';
 import { categoryCrud } from '@/store/categories/crud';
+import { advertisementCrud, Advertisement } from '@/store/advertisement/crud';
 import { styleArticle } from '@/utils/styleArticle';
 import { mergeContentBlocksToString, convertContentStringToBlocks, generateTextContent } from '@/utils/contentBlocksUtils';
 import type { ContentBlock as ContentBlockType } from '@/utils/contentBlocksUtils';
@@ -41,6 +42,7 @@ interface Article {
     coverImagePreview: string;
     categoryId?: string;
     tagIds?: string[];
+    advertisementIds?: string[]; // Thêm trường advertisementIds
 }
 
 interface Category {
@@ -74,6 +76,7 @@ export default function FormBlog({ id }: FormBlogProps) {
     const [showPreviewModal, setShowPreviewModal] = useState(false);
     const [editingTextBlock, setEditingTextBlock] = useState<string | null>(null);
     const [insertionIndex, setInsertionIndex] = useState<number | null>(null);
+    const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
 
     const [article, setArticle] = useState<Article>({
         title: '',
@@ -82,20 +85,23 @@ export default function FormBlog({ id }: FormBlogProps) {
         coverImage: null,
         coverImagePreview: '',
         categoryId: undefined,
-        tagIds: []
+        tagIds: [],
+        advertisementIds: [] // Thêm trường advertisementIds
     });
 
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                // Fetch tags, category
+                // Fetch tags, category, advertisements
                 const res = await Promise.all([
                     tagCrud.getTags(),
-                    categoryCrud.getCategory()
+                    categoryCrud.getCategory(),
+                    advertisementCrud.getAdvertisements({ take: 100 })
                 ])
                 setTags(res[0].result?.map(tag => ({ ...tag, id: tag.id! })) || []);
                 setCategories(res[1].result?.map(category => ({ ...category, id: category.id! })) || []);
+                setAdvertisements(res[2].result || []);
 
                 if (id && id !== 'new') {
                     // Fetch article detail
@@ -107,8 +113,9 @@ export default function FormBlog({ id }: FormBlogProps) {
                         content: detail.content || '',
                         coverImage: detail.image || '',
                         coverImagePreview: detail.image || '',
-                        categoryId: detail.categoryId || undefined,
-                        tagIds: detail.tags || [],
+                        categoryId: detail.category ? detail.category.id : undefined,
+                        tagIds: Array.isArray(detail.tags) ? detail.tags.map(tag => tag.id) : [],
+                        advertisementIds: detail.advertisements ? detail.advertisements.map((ad: any) => ad.id) : []
                     });
 
                     // Parse content blocks if they exist, otherwise convert from content
@@ -301,7 +308,8 @@ export default function FormBlog({ id }: FormBlogProps) {
                 textContent: textContent, // Keep text-only content for backward compatibility
                 image: imageUrl,
                 tags: article.tagIds,
-                contentBlocks: contentBlocks // Keep blocks for future use
+                contentBlocks: contentBlocks, // Keep blocks for future use
+                advertisementIds: article.advertisementIds // Thêm advertisementIds vào payload
             }
 
             if (id && id !== 'new') {
@@ -369,6 +377,15 @@ export default function FormBlog({ id }: FormBlogProps) {
 
     return (
         <div className="article-form">
+            {id && id !== 'new' && (
+                <Button
+                    type="default"
+                    onClick={() => router.push(paths.admin.articleView(id))}
+                    style={{ marginBottom: 16 }}
+                >
+                    ← Back
+                </Button>
+            )}
             <h1>{id === 'new' ? 'Create Article' : 'Edit Article'}</h1>
 
             <div className="form-group">
@@ -461,6 +478,23 @@ export default function FormBlog({ id }: FormBlogProps) {
                     {tags.map(tag => (
                         <Select.Option key={tag.id} value={tag.id}>
                             {tag.name}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </div>
+
+            <div className="form-group">
+                <label className="form-label">Advertisements</label>
+                <Select
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    value={article.advertisementIds}
+                    onChange={(values: string[]) => setArticle(prev => ({ ...prev, advertisementIds: values }))}
+                    placeholder="Select advertisements to insert into the article"
+                >
+                    {advertisements.map(ad => (
+                        <Select.Option key={ad.id} value={ad.id!}>
+                            {ad.title}
                         </Select.Option>
                     ))}
                 </Select>

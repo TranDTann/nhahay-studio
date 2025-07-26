@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Input, Card, Button, Space, Select, Row, Col, App, Spin } from 'antd';
+import { Input, Card, Button, Space, Select, Row, Col, App, Spin, Pagination } from 'antd';
 import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
@@ -16,8 +16,8 @@ interface Article {
     description: string;
     content: string;
     image: string;
-    tags: string[];
-    categoryId?: string;
+    tags: { id: string; name: string; description?: string }[];
+    category: { id: string; name: string; description?: string };
     createdAt: string;
     updatedAt: string;
 }
@@ -34,18 +34,34 @@ export default function ArticlesList() {
     const [loading, setLoading] = useState(true);
     const [filterLoading, setFilterLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [total, setTotal] = useState(0);
+    const [pendingSearch, setPendingSearch] = useState('');
+
+    useEffect(() => {
+        fetchTags();
+        fetchCategories();
+        // eslint-disable-next-line
+    }, []);
 
     useEffect(() => {
         fetchArticles();
-        fetchTags();
-        fetchCategories();
-    }, []);
+        // eslint-disable-next-line
+    }, [page, pageSize]);
 
-    const fetchArticles = async () => {
+    const fetchArticles = async (customFilter?: { search?: string; tags?: string[]; categoryId?: string }) => {
         try {
             setLoading(true);
-            const response = await articleCrud.getArticles();
+            const response = await articleCrud.getArticles({
+                search: customFilter?.search ?? searchText,
+                tags: customFilter?.tags ?? selectedTags,
+                categoryId: customFilter?.categoryId ?? selectedCategory,
+                page,
+                pageSize
+            });
             setArticles(response.result || []);
+            setTotal(response.count || 0);
         } catch (error: any) {
             messageApi.error(error.response?.data?.message || 'Failed to fetch articles');
         } finally {
@@ -71,22 +87,26 @@ export default function ArticlesList() {
         }
     };
 
-    const handleSearch = (value: string) => {
-        setFilterLoading(true);
-        setSearchText(value);
-        setTimeout(() => setFilterLoading(false), 500); // Simulate API delay
+    const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPendingSearch(e.target.value);
     };
-
+    const handleSearchClick = () => {
+        setSearchText(pendingSearch);
+        setPage(1);
+        fetchArticles({ search: pendingSearch, tags: selectedTags, categoryId: selectedCategory });
+    };
     const handleTagsChange = (values: string[]) => {
-        setFilterLoading(true);
         setSelectedTags(values);
-        setTimeout(() => setFilterLoading(false), 500); // Simulate API delay
+        setPage(1);
+        // Không fetchArticles ở đây, chỉ fetch khi bấm Search
     };
-
     const handleCategoryChange = (value: string) => {
-        setFilterLoading(true);
         setSelectedCategory(value);
-        setTimeout(() => setFilterLoading(false), 500); // Simulate API delay
+        setPage(1);
+        // Không fetchArticles ở đây, chỉ fetch khi bấm Search
+    };
+    const handlePageChange = (newPage: number) => {
+        setPage(newPage);
     };
 
     const handleEdit = (id: string) => {
@@ -114,8 +134,8 @@ export default function ArticlesList() {
     const filteredArticles = articles.filter(article => {
         const matchesSearch = article.title.toLowerCase().includes(searchText.toLowerCase()) ||
             article.description.toLowerCase().includes(searchText.toLowerCase());
-        const matchesTags = selectedTags.length === 0 || selectedTags.every(tag => article.tags.includes(tag));
-        const matchesCategory = !selectedCategory || article.categoryId === selectedCategory;
+        const matchesTags = selectedTags.length === 0 || selectedTags.every(tag => article.tags.some(t => t.id === tag));
+        const matchesCategory = !selectedCategory || (article.category && article.category.id === selectedCategory);
         return matchesSearch && matchesTags && matchesCategory;
     });
 
@@ -137,8 +157,10 @@ export default function ArticlesList() {
                             <Input
                                 placeholder="Search articles"
                                 prefix={<SearchOutlined />}
-                                onChange={e => handleSearch(e.target.value)}
+                                value={pendingSearch}
+                                onChange={handleSearchInput}
                                 style={{ width: '100%' }}
+                                onPressEnter={handleSearchClick}
                             />
                         </Col>
                         <Col lg={6} md={12} span={24}>
@@ -156,7 +178,7 @@ export default function ArticlesList() {
                                 ))}
                             </Select>
                         </Col>
-                        <Col lg={6} md={12} span={24}>
+                        {/* <Col lg={4} md={12} span={24}>
                             <Select
                                 mode="multiple"
                                 style={{ width: '100%' }}
@@ -171,9 +193,14 @@ export default function ArticlesList() {
                                     </Select.Option>
                                 ))}
                             </Select>
+                        </Col> */}
+                        <Col lg={4} md={12} span={24} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Button type="primary" icon={<SearchOutlined />} onClick={handleSearchClick} style={{ width: '100%' }}>
+                                Search
+                            </Button>
                         </Col>
                         <Col lg={4} md={12} span={24}>
-                            <Button type="primary" onClick={() => router.push(paths.admin.article('new'))}>
+                            <Button type="primary" onClick={() => router.push(paths.admin.article('new'))} style={{ width: '100%' }}>
                                 Add Article
                             </Button>
                         </Col>
@@ -181,10 +208,10 @@ export default function ArticlesList() {
                 </Space>
             </div>
 
-            <Spin spinning={filterLoading}>
+            <Spin spinning={filterLoading || loading}>
                 <Row gutter={[16, 16]}>
                     {filteredArticles.map(article => (
-                        <Col xs={24} sm={12} md={8} lg={6} key={article.id}>
+                        <Col xs={24} sm={12} md={8} xxl={6} key={article.id}>
                             <Card
                                 hoverable
                                 cover={
@@ -229,28 +256,25 @@ export default function ArticlesList() {
                                         <div>
                                             <p>{article.description}</p>
                                             <Space direction="vertical" size="small" style={{ width: '100%' }}>
-                                                {article.categoryId && (
+                                                {article.category && (
                                                     <div>
                                                         <strong>Category:</strong>{' '}
-                                                        {categories.find(cat => cat.id === article.categoryId)?.name || 'Unknown'}
+                                                        {article.category.name}
                                                     </div>
                                                 )}
                                                 <div>
                                                     <strong>Tags:</strong>
                                                     <Space wrap>
-                                                        {article.tags.map(tagId => {
-                                                            const tag = tags.find(t => t.id === tagId);
-                                                            return tag ? (
-                                                                <span key={tag.id} style={{
-                                                                    background: '#f0f0f0',
-                                                                    padding: '2px 8px',
-                                                                    borderRadius: '4px',
-                                                                    fontSize: '12px'
-                                                                }}>
-                                                                    {tag.name}
-                                                                </span>
-                                                            ) : null;
-                                                        })}
+                                                        {article.tags && article.tags.length > 0 && article.tags.map((tag, idx) => (
+                                                            <span key={tag.id || idx} style={{
+                                                                background: '#f0f0f0',
+                                                                padding: '2px 8px',
+                                                                borderRadius: '4px',
+                                                                fontSize: '12px'
+                                                            }}>
+                                                                {tag.name}
+                                                            </span>
+                                                        ))}
                                                     </Space>
                                                 </div>
                                             </Space>
@@ -261,6 +285,15 @@ export default function ArticlesList() {
                         </Col>
                     ))}
                 </Row>
+                <div style={{ marginTop: 24, textAlign: 'center' }}>
+                    <Pagination
+                        current={page}
+                        pageSize={10}
+                        total={total}
+                        onChange={handlePageChange}
+                        showSizeChanger={false}
+                    />
+                </div>
             </Spin>
         </div>
     );
