@@ -13,7 +13,8 @@ const paths = {
   },
   dashboard: {
     root: () => '/home',
-    home: () => '/home'
+    home: () => '/home',
+    category: (categoryName: string) => `/category/${categoryName}`
   },
   admin: {
     root: () => `${roots.admin}`,

@@ -1,3 +1,4 @@
+import paths from '@/routes/paths'
 import Link from 'next/link'
 
 export const MENU_ITEMS = [
@@ -16,7 +17,10 @@ export const MENU_ITEMS = [
       {
         key: '1',
         label: (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Link
+            style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+            href={paths.dashboard.category('Thiết bị nhà bếp')}
+          >
             <img
               src="https://hangnhatchuan365.com/wp-content/uploads/2020/09/thiet-bi-bep-108x108-1-36x36.png"
               alt="Thiết bị nhà bếp"
@@ -24,7 +28,7 @@ export const MENU_ITEMS = [
               height={20}
             />
             <span>Thiết bị nhà bếp</span>
-          </div>
+          </Link>
         )
       },
       {
