@@ -1,0 +1,9 @@
+.categories-skeleton_header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.categories-skeleton_header .ant-skeleton-input {
+  width: 240px !important;
+}

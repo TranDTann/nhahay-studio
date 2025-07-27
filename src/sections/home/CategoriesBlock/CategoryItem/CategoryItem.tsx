@@ -1,9 +1,9 @@
+import { Category } from '@/store/categories/crud'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
-import { TCategory } from '../types'
 import './styles.css'
 
 type TCategoryItemProps = {
-  categoryData: TCategory
+  categoryData: Category
 }
 
 const CategoryItem = ({ categoryData }: TCategoryItemProps) => {
@@ -11,7 +11,10 @@ const CategoryItem = ({ categoryData }: TCategoryItemProps) => {
     <div className="category-container">
       <div className="category-thumbnail-container">
         <img
-          src={categoryData.thumbnail}
+          src={
+            categoryData?.['thumbnail'] ??
+            'https://hangnhatchuan365.com/wp-content/uploads/2020/09/thiet-bi-bep-108x108-1-36x36.png'
+          }
           alt="category-thumbnail"
           className="category-thumbnail image-hover-zoom"
         />

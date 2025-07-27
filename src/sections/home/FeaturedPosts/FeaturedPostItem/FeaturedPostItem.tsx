@@ -1,12 +1,12 @@
 'use client'
 
+import { Article } from '@/store/article/crud'
 import { MdOutlineDateRange } from 'react-icons/md'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
-import { TPost } from '../types'
 import './styles.css'
 
 type TFeaturedPostItemProps = {
-  postData: TPost
+  postData: Article
 }
 
 const FeaturedPostItem = ({ postData }: TFeaturedPostItemProps) => {
@@ -14,18 +14,18 @@ const FeaturedPostItem = ({ postData }: TFeaturedPostItemProps) => {
     <div className="featured-post-item-container">
       <div className="featured-post-item-image-container">
         <img
-          src={postData.photo}
+          src={postData.image}
           alt="image-product"
           className=" featured-post-item-image image-hover-zoom"
         />
       </div>
       <div className="featured-post-item-content">
-        <CategoryTag tagName={postData.category} />
+        <CategoryTag tagName={postData.category?.name} />
         <h3 className="featured-post-item-title display-max-2-lines">
           {postData.title}
         </h3>
         <div className="featured-post-item-date">
-          <MdOutlineDateRange color="#bacce1" /> <p>{postData.date}</p>
+          <MdOutlineDateRange color="#bacce1" /> <p>{postData.publishAt}</p>
         </div>
       </div>
     </div>
