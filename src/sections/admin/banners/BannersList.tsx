@@ -12,6 +12,7 @@ export default function BannersList() {
     const {
         banners,
         loading,
+        listLoading,
         error,
         total,
         currentPage,
@@ -25,8 +26,9 @@ export default function BannersList() {
     } = useBannerStore();
 
     const [searchText, setSearchText] = useState('');
+    const [pendingSearch, setPendingSearch] = useState('');
     const [sortField, setSortField] = useState<string>('');
-    const [sortDirection, setSortDirection] = useState<number>(0);
+    const [SortDir, setSortDirection] = useState<number>(0);
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [selectedBanner, setSelectedBanner] = useState<Banner | null>(null);
     const [formLoading, setFormLoading] = useState(false);
@@ -42,25 +44,33 @@ export default function BannersList() {
         fetchData();
     }, [getBanners]);
 
-    const handleSearch = (value: string) => {
-        setSearchText(value);
+    const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPendingSearch(e.target.value);
+    };
+
+    const handleSearch = () => {
+        setSearchText(pendingSearch);
         const filters = {
-            search: value,
+            search: pendingSearch,
             sort: sortField,
-            sortDis: sortDirection
+            SortDir: SortDir
         };
-        setFilters(filters);
+        setFilters(filters, true);
+    };
+
+    const handleSearchIconClick = () => {
+        handleSearch();
     };
 
     const handleSort = (field: string) => {
-        const newSortDirection = field === sortField ? (sortDirection === 0 ? 1 : 0) : 0;
+        const newSortDirection = field === sortField ? (SortDir === 0 ? 1 : 0) : 0;
         setSortField(field);
         setSortDirection(newSortDirection);
 
         const filters = {
             search: searchText,
             sort: field,
-            sortDis: newSortDirection
+            SortDir: newSortDirection
         };
         setFilters(filters);
     };
@@ -104,7 +114,7 @@ export default function BannersList() {
         }
     };
 
-    const handlePageChange = (page: number, pageSize: number) => {
+    const handlePageChange = (page: number) => {
         setPage(page);
     };
 
@@ -126,9 +136,11 @@ export default function BannersList() {
                         <Col lg={16} md={16} span={24}>
                             <Input
                                 placeholder="Search banners"
-                                prefix={<SearchOutlined />}
-                                onChange={e => handleSearch(e.target.value)}
+                                prefix={<SearchOutlined style={{ cursor: 'pointer' }} onClick={handleSearchIconClick} />}
+                                value={pendingSearch}
+                                onChange={handleSearchInput}
                                 style={{ width: '100%' }}
+                                onPressEnter={handleSearch}
                             />
                         </Col>
                         <Col lg={8} md={8} span={24}>
@@ -145,12 +157,12 @@ export default function BannersList() {
 
             <BannerTable
                 banners={banners}
-                loading={loading}
+                loading={listLoading || loading}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onSort={handleSort}
                 sortField={sortField}
-                sortDirection={sortDirection}
+                SortDir={SortDir}
                 total={total}
                 currentPage={currentPage}
                 pageSize={pageSize}

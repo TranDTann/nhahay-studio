@@ -13,6 +13,7 @@ export default function AdvertisementsList() {
     const {
         advertisements,
         loading,
+        listLoading,
         error,
         total,
         currentPage,
@@ -26,8 +27,9 @@ export default function AdvertisementsList() {
     } = useAdvertisementStore();
 
     const [searchText, setSearchText] = useState('');
+    const [pendingSearch, setPendingSearch] = useState('');
     const [sortField, setSortField] = useState<string>('');
-    const [sortDirection, setSortDirection] = useState<number>(0);
+    const [SortDir, setSortDirection] = useState<number>(0);
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [selectedAdvertisement, setSelectedAdvertisement] = useState<Advertisement | null>(null);
     const [formLoading, setFormLoading] = useState(false);
@@ -43,25 +45,33 @@ export default function AdvertisementsList() {
         fetchData();
     }, [getAdvertisements]);
 
-    const handleSearch = (value: string) => {
-        setSearchText(value);
+    const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPendingSearch(e.target.value);
+    };
+
+    const handleSearch = () => {
+        setSearchText(pendingSearch);
         const filters = {
-            search: value,
+            search: pendingSearch,
             sort: sortField,
-            sortDis: sortDirection
+            SortDir: SortDir
         };
-        setFilters(filters);
+        setFilters(filters, true);
+    };
+
+    const handleSearchIconClick = () => {
+        handleSearch();
     };
 
     const handleSort = (field: string) => {
-        const newSortDirection = field === sortField ? (sortDirection === 0 ? 1 : 0) : 0;
+        const newSortDirection = field === sortField ? (SortDir === 0 ? 1 : 0) : 0;
         setSortField(field);
         setSortDirection(newSortDirection);
 
         const filters = {
             search: searchText,
             sort: field,
-            sortDis: newSortDirection
+            SortDir: newSortDirection
         };
         setFilters(filters);
     };
@@ -105,8 +115,8 @@ export default function AdvertisementsList() {
         }
     };
 
-    const handlePageChange = (page: number, pageSize: number) => {
-        setPage(page, pageSize);
+    const handlePageChange = (page: number) => {
+        setPage(page);
     };
 
     if (loading && advertisements.length === 0) {
@@ -127,9 +137,11 @@ export default function AdvertisementsList() {
                         <Col lg={16} md={16} span={24}>
                             <Input
                                 placeholder="Search advertisements"
-                                prefix={<SearchOutlined />}
-                                onChange={e => handleSearch(e.target.value)}
+                                prefix={<SearchOutlined style={{ cursor: 'pointer' }} onClick={handleSearchIconClick} />}
+                                value={pendingSearch}
+                                onChange={handleSearchInput}
                                 style={{ width: '100%' }}
+                                onPressEnter={handleSearch}
                             />
                         </Col>
                         <Col lg={8} md={8} span={24}>
@@ -146,12 +158,12 @@ export default function AdvertisementsList() {
 
             <AdvertisementTable
                 advertisements={advertisements}
-                loading={loading}
+                loading={listLoading || loading}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onSort={handleSort}
                 sortField={sortField}
-                sortDirection={sortDirection}
+                SortDir={SortDir}
                 total={total}
                 currentPage={currentPage}
                 pageSize={pageSize}

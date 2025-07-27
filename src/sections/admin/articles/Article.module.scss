@@ -1,0 +1,19 @@
+.addArticleBtn {
+  transition: all 0.3s ease;
+}
+@media (max-width: 768px) {
+  .btnText {
+    display: none;
+  }
+  .addArticleBtn {
+    width: 40px !important;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .addArticleBtn .anticon {
+    margin-right: 0;
+  }
+}

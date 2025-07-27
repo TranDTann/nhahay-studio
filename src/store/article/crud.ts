@@ -17,6 +17,8 @@ export const articleCrud = {
     categoryId?: string
     page?: number
     pageSize?: number
+    sort?: string
+    SortDir?: number
   }) => {
     try {
       const query = new URLSearchParams()
@@ -24,6 +26,9 @@ export const articleCrud = {
       if (params?.categoryId) query.append('categoryId', params.categoryId)
       if (params?.tags && params.tags.length > 0)
         query.append('tags', params.tags.join(','))
+      if (params?.sort) query.append('sort', params.sort)
+      if (params?.SortDir !== undefined)
+        query.append('SortDir', params.SortDir.toString())
       // Chuyển page/pageSize thành take/skip
       const take = params?.pageSize || 10
       const skip =

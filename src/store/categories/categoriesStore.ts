@@ -5,13 +5,17 @@ import { message } from 'antd'
 interface CategoriesState {
   categories: Category[]
   loading: boolean
+  listLoading: boolean
   error: string | null
   filters: CategoryFilters
   total: number
   currentPage: number
   pageSize: number
-  getCategories: (filters?: CategoryFilters) => Promise<void>
-  setFilters: (filters: CategoryFilters) => void
+  getCategories: (
+    filters?: CategoryFilters,
+    isSearch?: boolean
+  ) => Promise<void>
+  setFilters: (filters: CategoryFilters, isSearch?: boolean) => void
   setPage: (page: number) => void
   createCategory: (data: {
     name: string
@@ -27,29 +31,39 @@ interface CategoriesState {
 export const useCategoriesStore = create<CategoriesState>((set, get) => ({
   categories: [],
   loading: false,
+  listLoading: false,
   error: null,
   filters: {},
   total: 0,
   currentPage: 1,
   pageSize: 10,
 
-  getCategories: async (filters?: CategoryFilters) => {
+  getCategories: async (filters?: CategoryFilters, isSearch = false) => {
     const currentFilters = filters || get().filters
-    set({ loading: true, error: null })
+    if (isSearch) {
+      set({ listLoading: true, error: null })
+    } else {
+      set({ loading: true, error: null })
+    }
     try {
       const response = await categoryCrud.getCategory(currentFilters)
       set({
         categories: response.result,
         total: response.count,
-        loading: false
+        loading: false,
+        listLoading: false
       })
     } catch (error) {
-      set({ error: 'Failed to fetch categories', loading: false })
+      set({
+        error: 'Failed to fetch categories',
+        loading: false,
+        listLoading: false
+      })
       message.error('Failed to fetch categories')
     }
   },
 
-  setFilters: (filters: CategoryFilters) => {
+  setFilters: (filters: CategoryFilters, isSearch = false) => {
     const currentState = get()
     const newFilters = {
       ...filters,
@@ -57,7 +71,7 @@ export const useCategoriesStore = create<CategoriesState>((set, get) => ({
       skip: (currentState.currentPage - 1) * 10
     }
     set({ filters: newFilters })
-    get().getCategories(newFilters)
+    get().getCategories(newFilters, isSearch)
   },
 
   setPage: (page: number) => {

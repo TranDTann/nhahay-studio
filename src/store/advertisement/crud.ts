@@ -12,7 +12,7 @@ export interface Advertisement {
 export interface AdvertisementFilters {
   search?: string
   sort?: string
-  sortDis?: number
+  SortDir?: number
   take?: number
   skip?: number
 }
@@ -30,8 +30,8 @@ export const advertisementCrud = {
       const params = new URLSearchParams()
       if (filters?.search) params.append('search', filters.search)
       if (filters?.sort) params.append('sort', filters.sort)
-      if (filters?.sortDis !== undefined)
-        params.append('sortDis', filters.sortDis.toString())
+      if (filters?.SortDir !== undefined)
+        params.append('SortDir', filters.SortDir.toString())
       if (filters?.take) params.append('take', filters.take.toString())
       if (filters?.skip) params.append('skip', filters.skip.toString())
 
