@@ -11,7 +11,7 @@ interface BannerTableProps {
     onDelete: (record: Banner) => void;
     onSort: (field: string) => void;
     sortField: string;
-    sortDirection: number;
+    SortDir: number;
     total?: number;
     currentPage?: number;
     pageSize?: number;
@@ -25,7 +25,7 @@ export default function BannerTable({
     onDelete,
     onSort,
     sortField,
-    sortDirection,
+    SortDir,
     total = 0,
     currentPage = 1,
     pageSize = 10,
@@ -52,7 +52,7 @@ export default function BannerTable({
                     <Button
                         type="text"
                         size="small"
-                        icon={sortField === 'title' ? (sortDirection === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
+                        icon={sortField === 'title' ? (SortDir === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
                         onClick={() => onSort('title')}
                         style={{ marginLeft: 8 }}
                     />
@@ -108,7 +108,7 @@ export default function BannerTable({
                     <Button
                         type="text"
                         size="small"
-                        icon={sortField === 'createdAt' ? (sortDirection === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
+                        icon={sortField === 'createdAt' ? (SortDir === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
                         onClick={() => onSort('createdAt')}
                         style={{ marginLeft: 8 }}
                     />
@@ -143,20 +143,28 @@ export default function BannerTable({
     ];
 
     return (
-        <Table
-            columns={columns}
-            dataSource={banners}
-            rowKey="id"
-            loading={loading}
-            pagination={{
-                current: currentPage,
-                pageSize: 10,
-                total: total,
-                showSizeChanger: false,
-                showQuickJumper: true,
-                showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
-                onChange: onPageChange,
-            }}
-        />
+        <div style={{
+            overflowX: 'auto',
+            width: '100%',
+            borderRadius: '8px',
+            border: '1px solid #f0f0f0'
+        }}>
+            <Table
+                columns={columns}
+                dataSource={banners}
+                rowKey="id"
+                loading={loading}
+                scroll={{ x: 'max-content' }}
+                pagination={{
+                    current: currentPage,
+                    pageSize: 10,
+                    total: total,
+                    showSizeChanger: false,
+                    showQuickJumper: true,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                    onChange: onPageChange,
+                }}
+            />
+        </div>
     );
 } 

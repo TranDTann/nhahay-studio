@@ -5,13 +5,14 @@ import { message } from 'antd'
 interface BannerState {
   banners: Banner[]
   loading: boolean
+  listLoading: boolean
   error: string | null
   filters: BannerFilters
   total: number
   currentPage: number
   pageSize: number
-  getBanners: (filters?: BannerFilters) => Promise<void>
-  setFilters: (filters: BannerFilters) => void
+  getBanners: (filters?: BannerFilters, isSearch?: boolean) => Promise<void>
+  setFilters: (filters: BannerFilters, isSearch?: boolean) => void
   setPage: (page: number) => void
   createBanner: (data: Omit<Banner, 'id' | 'createdAt'>) => Promise<void>
   updateBanner: (data: Partial<Banner>) => Promise<void>
@@ -21,29 +22,39 @@ interface BannerState {
 export const useBannerStore = create<BannerState>((set, get) => ({
   banners: [],
   loading: false,
+  listLoading: false,
   error: null,
   filters: {},
   total: 0,
   currentPage: 1,
   pageSize: 10,
 
-  getBanners: async (filters?: BannerFilters) => {
+  getBanners: async (filters?: BannerFilters, isSearch = false) => {
     const currentFilters = filters || get().filters
-    set({ loading: true, error: null })
+    if (isSearch) {
+      set({ listLoading: true, error: null })
+    } else {
+      set({ loading: true, error: null })
+    }
     try {
       const response = await bannerCrud.getBanners(currentFilters)
       set({
         banners: response.result,
         total: response.count,
-        loading: false
+        loading: false,
+        listLoading: false
       })
     } catch (error) {
-      set({ error: 'Failed to fetch banners', loading: false })
+      set({
+        error: 'Failed to fetch banners',
+        loading: false,
+        listLoading: false
+      })
       message.error('Failed to fetch banners')
     }
   },
 
-  setFilters: (filters: BannerFilters) => {
+  setFilters: (filters: BannerFilters, isSearch = false) => {
     const currentState = get()
     const newFilters = {
       ...filters,
@@ -51,7 +62,7 @@ export const useBannerStore = create<BannerState>((set, get) => ({
       skip: (currentState.currentPage - 1) * 10
     }
     set({ filters: newFilters })
-    get().getBanners(newFilters)
+    get().getBanners(newFilters, isSearch)
   },
 
   setPage: (page: number) => {

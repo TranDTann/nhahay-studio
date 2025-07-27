@@ -5,13 +5,14 @@ import { message } from 'antd'
 interface TagsState {
   tags: Tag[]
   loading: boolean
+  listLoading: boolean
   error: string | null
   filters: TagFilters
   total: number
   currentPage: number
   pageSize: number
-  getTags: (filters?: TagFilters) => Promise<void>
-  setFilters: (filters: TagFilters) => void
+  getTags: (filters?: TagFilters, isSearch?: boolean) => Promise<void>
+  setFilters: (filters: TagFilters, isSearch?: boolean) => void
   setPage: (page: number) => void
   createTag: (data: { name: string; description?: string }) => Promise<void>
   updateTag: (data: {
@@ -25,29 +26,35 @@ interface TagsState {
 export const useTagsStore = create<TagsState>((set, get) => ({
   tags: [],
   loading: false,
+  listLoading: false,
   error: null,
   filters: {},
   total: 0,
   currentPage: 1,
   pageSize: 10,
 
-  getTags: async (filters?: TagFilters) => {
+  getTags: async (filters?: TagFilters, isSearch = false) => {
     const currentFilters = filters || get().filters
-    set({ loading: true, error: null })
+    if (isSearch) {
+      set({ listLoading: true, error: null })
+    } else {
+      set({ loading: true, error: null })
+    }
     try {
       const response = await tagCrud.getTags(currentFilters)
       set({
         tags: response.result,
         total: response.count,
-        loading: false
+        loading: false,
+        listLoading: false
       })
     } catch (error) {
-      set({ error: 'Failed to fetch tags', loading: false })
+      set({ error: 'Failed to fetch tags', loading: false, listLoading: false })
       message.error('Failed to fetch tags')
     }
   },
 
-  setFilters: (filters: TagFilters) => {
+  setFilters: (filters: TagFilters, isSearch = false) => {
     const currentState = get()
     const newFilters = {
       ...filters,
@@ -55,7 +62,7 @@ export const useTagsStore = create<TagsState>((set, get) => ({
       skip: (currentState.currentPage - 1) * 10
     }
     set({ filters: newFilters })
-    get().getTags(newFilters)
+    get().getTags(newFilters, isSearch)
   },
 
   setPage: (page: number) => {

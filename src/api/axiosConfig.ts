@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 // Create axios instance with custom config
 const axiosInstance = axios.create({
-  baseURL: 'https://rrp-signals-codes-holds.trycloudflare.com/',
+  baseURL: 'https://high-tag-substantial-posing.trycloudflare.com/',
   timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',
