@@ -1,16 +1,47 @@
 'use client'
 
-import { Col, Row } from 'antd'
-import RecentPostItem from './RecentPostItem/RecentPostItem'
-import { MOCK_RECENT_POSTS } from './data'
-import MainRecentPost from './MainRecentPost/MainRecentPost'
-import { RecentPostsAdvertising } from './RecentPostsAdvertising'
+import { Article, articleCrud } from '@/store/article/crud'
+import { App, Col, Row } from 'antd'
+import { useEffect, useState } from 'react'
 import BlockHeader from '../components/BlockHeader/BlockHeader'
+import MainRecentPost from './MainRecentPost/MainRecentPost'
+import RecentPostItem from './RecentPostItem/RecentPostItem'
+import { RecentPostsAdvertising } from './RecentPostsAdvertising'
+import RecentPostsSkeleton from './RecentPostsSkeleton/RecentPostsSkeleton'
 import './styles.css'
 
 const RecentPosts = () => {
-  const mainPost = MOCK_RECENT_POSTS[0]
-  const rightColumnPosts = MOCK_RECENT_POSTS.slice(1)
+  const { message: messageApi } = App.useApp()
+
+  const [recentPosts, setRecentPosts] = useState<Article[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        setIsLoading(true)
+        const response = await articleCrud.getArticles({ listType: 1 })
+        setRecentPosts(response.result || [])
+      } catch (error: any) {
+        messageApi.error(
+          error.response?.data?.message || 'Failed to fetch articles'
+        )
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchArticles()
+  }, [])
+
+  if (isLoading) {
+    return <RecentPostsSkeleton />
+  }
+
+  if (!recentPosts.length) return null
+
+  const mainPost = recentPosts[0]
+  const rightColumnPosts = recentPosts.slice(1, 4)
 
   const recentPostsContent = (
     <Row gutter={24} className="recent-posts-container">

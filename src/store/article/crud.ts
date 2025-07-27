@@ -1,6 +1,6 @@
 import axiosInstance from '@/api/axiosConfig'
 import { handleApiError } from '@/api/error'
-interface Article {
+export interface Article {
   id: string
   title: string
   content: string
@@ -9,11 +9,22 @@ interface Article {
   description: string
   createdAt: string
   updatedAt: string
+  category: {
+    id: string
+    name: string
+    description: string
+  }
+  createdBy: string
+  ratingAvg: string
+  publishAt: string
 }
+
 export const articleCrud = {
-  getArticles: async () => {
+  getArticles: async (params?: any) => {
     try {
-      const response = await axiosInstance.get<any>('/api/post')
+      const response = await axiosInstance.get<any>('/api/post', {
+        params
+      })
       return response.data
     } catch (error) {
       handleApiError(error)

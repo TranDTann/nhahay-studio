@@ -1,1 +1,1 @@
-export { default as TrendingPosts } from './TrendingPosts'
+export { default } from './TrendingPosts'
