@@ -307,7 +307,8 @@ export default function FormBlog({ id }: FormBlogProps) {
                 content: mergedContent, // Use merged content as main content
                 textContent: textContent, // Keep text-only content for backward compatibility
                 image: imageUrl,
-                tags: article.tagIds,
+                tagIds: article.tagIds,
+                categoryId: article.categoryId,
                 contentBlocks: contentBlocks, // Keep blocks for future use
                 advertisementIds: article.advertisementIds // Thêm advertisementIds vào payload
             }

@@ -4,7 +4,9 @@ interface Article {
   id: string
   title: string
   content: string
-  tags: string[]
+  tagIds: string[]
+  categoryId: string
+  advertisementIds: string[]
   image: string
   description: string
   createdAt: string
