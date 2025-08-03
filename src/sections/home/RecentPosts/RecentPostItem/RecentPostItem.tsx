@@ -15,7 +15,7 @@ const RecentPostItem = ({ postData }: TRecentPostItemProps) => {
       <div className="post-item-image-container">
         <img
           src={postData.image}
-          alt="image-product"
+          alt="RecentPost-image"
           className="post-item-image image-hover-zoom"
         />
       </div>

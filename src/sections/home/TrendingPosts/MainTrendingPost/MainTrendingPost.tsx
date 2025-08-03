@@ -2,6 +2,7 @@
 
 import { Article } from '@/store/article/crud'
 import { Col, Row } from 'antd'
+import parse from 'html-react-parser'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { IoIosTimer } from 'react-icons/io'
 import { MdOutlineDateRange } from 'react-icons/md'
@@ -20,7 +21,7 @@ const MainTrendingPost = ({ postData }: TMainTrendingPostProps) => {
           <div className="trending-post-image-container">
             <img
               src={postData.image}
-              alt="image-product"
+              alt="MainTrendingPost-image"
               className="trending-post-image image-hover-zoom"
             />
           </div>
@@ -45,7 +46,9 @@ const MainTrendingPost = ({ postData }: TMainTrendingPostProps) => {
                 <p>{postData.publishAt}</p>
               </div>
             </div>
-            <div className="trending-post-description">{postData.content}</div>
+            <div className="trending-post-description">
+              {parse(postData.content ?? '')}
+            </div>
           </div>
         </Col>
       </Row>

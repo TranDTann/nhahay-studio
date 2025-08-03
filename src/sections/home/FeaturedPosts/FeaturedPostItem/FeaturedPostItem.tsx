@@ -15,7 +15,7 @@ const FeaturedPostItem = ({ postData }: TFeaturedPostItemProps) => {
       <div className="featured-post-item-image-container">
         <img
           src={postData.image}
-          alt="image-product"
+          alt="FeaturedPost-image"
           className=" featured-post-item-image image-hover-zoom"
         />
       </div>

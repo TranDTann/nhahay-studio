@@ -17,7 +17,7 @@ const MainRecentPost = ({ postData }: TMainRecentPostProps) => {
       <div className="post-image-container">
         <img
           src={postData.image}
-          alt="image-product"
+          alt="MainRecentPost-image"
           className="post-image image-hover-zoom"
         />
       </div>

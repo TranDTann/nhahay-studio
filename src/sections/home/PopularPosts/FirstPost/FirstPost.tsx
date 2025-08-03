@@ -1,4 +1,5 @@
 import { Article } from '@/store/article/crud'
+import parse from 'html-react-parser'
 import './styles.css'
 
 type TFirstPostProps = {
@@ -17,7 +18,7 @@ const FirstPost = ({ post }: TFirstPostProps) => {
       </div>
       <h2 className="first-post-title display-max-3-lines">{post.title}</h2>
       <p className="first-post-description display-max-3-lines">
-        {post.content}
+        {parse(post.content ?? '')}
       </p>
       <div className="first-post-footer">
         <p>{post.createdBy}</p>

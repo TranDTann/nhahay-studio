@@ -1,5 +1,6 @@
 import { Article } from '@/store/article/crud'
 import { Col, Row } from 'antd'
+import parse from 'html-react-parser'
 import './styles.css'
 
 type TCenterColumnPostProps = {
@@ -21,7 +22,7 @@ const CenterColumnPost = ({ post }: TCenterColumnPostProps) => {
       <Col span={12} className="center-post-info">
         <h2 className="display-max-2-lines center-post-title">{post.title}</h2>
         <p className="display-max-3-lines center-post-description">
-          {post.content}
+          {parse(post.content ?? '')}
         </p>
         <div className="center-post-footer">
           <p>{post.createdBy}</p>

@@ -16,7 +16,7 @@ const TrendingPostItem = ({ postData }: TTrendingPostItemProps) => {
       <div className="trending-post-item-image-container">
         <img
           src={postData.image}
-          alt="image-product"
+          alt="TrendingPost-image"
           className="trending-post-item-image image-hover-zoom"
         />
         <div className="trending-category-tag">

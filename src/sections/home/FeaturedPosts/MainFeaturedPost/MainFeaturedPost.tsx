@@ -17,7 +17,7 @@ const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
       <div className="featured-post-image-container">
         <img
           src={postData.image}
-          alt="image-product"
+          alt="MainFeatured-image"
           className="featured-post-image image-hover-zoom"
         />
       </div>
