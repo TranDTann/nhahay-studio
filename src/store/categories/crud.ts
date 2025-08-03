@@ -1,11 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/api/axiosConfig'
+import { handleApiError } from '@/api/error'
 
 export interface Category {
   id?: string
   name: string
   description?: string
   createdAt?: string
+}
+
+export interface CategoryFilters {
+  search?: string
+  sort?: string
+  SortDir?: number
+  take?: number
+  skip?: number
 }
 
 export class ApiError extends Error {
@@ -16,24 +25,32 @@ export class ApiError extends Error {
 }
 
 export const categoryCrud = {
-  getCategories: async () => {
+  getCategory: async (filters?: CategoryFilters) => {
     try {
-      const response = await axiosInstance.get<Category[]>('/api/categories')
+      const params = new URLSearchParams()
+      if (filters?.search) params.append('search', filters.search)
+      if (filters?.sort) params.append('sort', filters.sort)
+      if (filters?.SortDir !== undefined)
+        params.append('SortDir', filters.SortDir.toString())
+      if (filters?.take) params.append('take', filters.take.toString())
+      if (filters?.skip) params.append('skip', filters.skip.toString())
+
+      const url = `/api/category${
+        params.toString() ? `?${params.toString()}` : ''
+      }`
+      const response = await axiosInstance.get<{
+        result: Category[]
+        count: number
+      }>(url)
       return response.data
     } catch (error: any) {
-      throw new ApiError(
-        error.response?.data?.message || 'Failed to fetch categories',
-        error.response?.status
-      )
+      handleApiError(error)
     }
   },
 
-  createCategory: async (categoryData: Omit<Category, 'id' | 'createdAt'>) => {
+  createCategory: async (data: { name: string; description?: string }) => {
     try {
-      const response = await axiosInstance.post<Category>(
-        '/api/categories',
-        categoryData
-      )
+      const response = await axiosInstance.post<Category>('/api/category', data)
       return response.data
     } catch (error: any) {
       throw new ApiError(
@@ -45,13 +62,13 @@ export const categoryCrud = {
 
   updateCategory: async (
     id: string,
-    categoryData: Partial<Omit<Category, 'id' | 'createdAt'>>
+    data: { name: string; description?: string }
   ) => {
     try {
-      const response = await axiosInstance.put<Category>(
-        `/api/categories/${id}`,
-        categoryData
-      )
+      const response = await axiosInstance.put<Category>(`/api/category`, {
+        ...data,
+        id
+      })
       return response.data
     } catch (error: any) {
       throw new ApiError(
@@ -63,7 +80,7 @@ export const categoryCrud = {
 
   deleteCategory: async (id: string) => {
     try {
-      await axiosInstance.delete(`/api/categories/${id}`)
+      await axiosInstance.delete(`/api/category/${id}`)
     } catch (error: any) {
       throw new ApiError(
         error.response?.data?.message || 'Failed to delete category',

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Input, Button, Space, Modal, Spin } from 'antd';
+import { Input, Button, Space, Modal, Spin, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { useTagsStore } from '@/store/tags/tagsStore';
 import { Tag } from '@/store/tags/crud';
@@ -9,8 +9,25 @@ import TagTable from './components/TagTable';
 import TagForm from './components/TagForm';
 
 export default function TagsList() {
-    const { tags, loading, error, getTags, createTag, updateTag, deleteTag } = useTagsStore();
+    const {
+        tags,
+        loading,
+        listLoading,
+        error,
+        total,
+        currentPage,
+        pageSize,
+        getTags,
+        setFilters,
+        setPage,
+        createTag,
+        updateTag,
+        deleteTag
+    } = useTagsStore();
     const [searchText, setSearchText] = useState('');
+    const [pendingSearch, setPendingSearch] = useState('');
+    const [sortField, setSortField] = useState<string>('');
+    const [SortDir, setSortDirection] = useState<number>(0);
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
     const [formLoading, setFormLoading] = useState(false);
@@ -24,10 +41,37 @@ export default function TagsList() {
             }
         };
         fetchTags();
-    }, [getTags]);
+    }, []);
 
-    const handleSearch = (value: string) => {
-        setSearchText(value);
+    const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPendingSearch(e.target.value);
+    };
+
+    const handleSearch = () => {
+        setSearchText(pendingSearch);
+        const filters = {
+            search: pendingSearch,
+            sort: sortField,
+            SortDir: SortDir
+        };
+        setFilters(filters, true);
+    };
+
+    const handleSearchIconClick = () => {
+        handleSearch();
+    };
+
+    const handleSort = (field: string) => {
+        const newSortDirection = field === sortField ? (SortDir === 0 ? 1 : 0) : 0;
+        setSortField(field);
+        setSortDirection(newSortDirection);
+
+        const filters = {
+            search: searchText,
+            sort: field,
+            SortDir: newSortDirection
+        };
+        setFilters(filters);
     };
 
     const handleEdit = (record: Tag) => {
@@ -52,18 +96,18 @@ export default function TagsList() {
         });
     };
 
-    const handleFormSubmit = async (name: string) => {
+    const handleFormSubmit = async (data: { name: string; description?: string }) => {
         setFormLoading(true);
         try {
             if (selectedTag) {
                 const params = {
-                    name,
+                    name: data.name,
+                    description: data.description,
                     id: selectedTag.id
                 }
-                console.log(params)
                 await updateTag(params);
             } else {
-                await createTag(name);
+                await createTag({ name: data.name, description: data.description });
             }
             setEditModalVisible(false);
             setSelectedTag(null);
@@ -74,10 +118,9 @@ export default function TagsList() {
         }
     };
 
-    const filteredTags = tags.filter(tag =>
-        tag.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        (tag.description?.toLowerCase() || '').includes(searchText.toLowerCase())
-    );
+    const handlePageChange = (page: number) => {
+        setPage(page);
+    };
 
     if (loading && tags.length === 0) {
         return (
@@ -89,29 +132,45 @@ export default function TagsList() {
 
     return (
         <div className="tags-container" style={{ padding: '24px' }}>
-            <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h1 style={{ margin: 0 }}>Tags</h1>
-                <Space>
-                    <Input
-                        placeholder="Search tags"
-                        prefix={<SearchOutlined />}
-                        onChange={e => handleSearch(e.target.value)}
-                        style={{ width: 300 }}
-                    />
-                    <Button type="primary" onClick={() => {
-                        setSelectedTag(null);
-                        setEditModalVisible(true);
-                    }}>
-                        Add Tag
-                    </Button>
+            <div style={{ marginBottom: '24px' }}>
+                <h1 style={{ marginBottom: '24px' }}>Tags</h1>
+
+                <Space direction="vertical" style={{ width: '100%' }} size="middle">
+                    <Row gutter={[16, 16]}>
+                        <Col lg={16} md={16} span={24}>
+                            <Input
+                                placeholder="Search tags"
+                                prefix={<SearchOutlined style={{ cursor: 'pointer' }} onClick={handleSearchIconClick} />}
+                                value={pendingSearch}
+                                onChange={handleSearchInput}
+                                style={{ width: '100%' }}
+                                onPressEnter={handleSearch}
+                            />
+                        </Col>
+                        <Col lg={8} md={8} span={24}>
+                            <Button type="primary" onClick={() => {
+                                setSelectedTag(null);
+                                setEditModalVisible(true);
+                            }}>
+                                Add Tag
+                            </Button>
+                        </Col>
+                    </Row>
                 </Space>
             </div>
 
             <TagTable
-                tags={filteredTags}
-                loading={loading}
+                tags={tags}
+                loading={listLoading || loading}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onSort={handleSort}
+                sortField={sortField}
+                SortDir={SortDir}
+                total={total}
+                currentPage={currentPage}
+                pageSize={pageSize}
+                onPageChange={handlePageChange}
             />
             {
                 editModalVisible && (
@@ -127,6 +186,6 @@ export default function TagsList() {
                         loading={formLoading}
                     />
                 )}
-        </div >
+        </div>
     );
 } 

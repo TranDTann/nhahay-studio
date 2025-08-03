@@ -7,36 +7,42 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
-import { Select, Form, App } from 'antd';
+import { Select, Form, App, Space, Button, Divider, Dropdown, Modal } from 'antd';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
 import { imageCrud } from '@/store/image/crud';
+import { articleCrud } from '@/store/article/crud';
+import { tagCrud } from '@/store/tags/crud';
+import { categoryCrud } from '@/store/categories/crud';
+import { advertisementCrud, Advertisement } from '@/store/advertisement/crud';
+import { styleArticle } from '@/utils/styleArticle';
+import { mergeContentBlocksToString, convertContentStringToBlocks, generateTextContent } from '@/utils/contentBlocksUtils';
+import type { ContentBlock as ContentBlockType } from '@/utils/contentBlocksUtils';
+import ImageBlock from '@/components/ImageBlock';
+import CompareImageBlock from '@/components/CompareImageBlock';
+import ContentBlock from '@/components/ContentBlock';
+import ArticleRenderer from '@/components/ArticleRenderer';
+import { PlusOutlined, PictureOutlined, SwapOutlined, FileTextOutlined } from '@ant-design/icons';
 
 // Register highlight.js languages
 hljs.registerLanguage('javascript', javascript);
-hljs.registerLanguage('java', java);
 hljs.registerLanguage('css', css);
+hljs.registerLanguage('java', java);
 
-// Dynamic import for ReactQuill
-const ReactQuill = dynamic(
-    async () => {
-        const { default: RQ } = await import('react-quill-new');
-        return RQ;
-    },
-    {
-        ssr: false,
-        loading: () => <p>Loading...</p>
-    }
-);
+const ReactQuill = dynamic(() => import('react-quill-new'), {
+    ssr: false,
+    loading: () => <p>Loading editor...</p>
+});
 
 interface Article {
     title: string;
     description: string;
     content: string;
-    coverImage: File | null;
+    coverImage: string | null;
     coverImagePreview: string;
     categoryId?: string;
     tagIds?: string[];
+    advertisementIds?: string[]; // Thêm trường advertisementIds
 }
 
 interface Category {
@@ -49,26 +55,28 @@ interface Tag {
     name: string;
 }
 
-interface QuillModules {
-    [key: string]: unknown;
-    toolbar: Array<any>;
-    imageResize?: any;
-}
-
 interface FormBlogProps {
     id?: string;
 }
+
+type ContentBlock = ContentBlockType;
 
 export default function FormBlog({ id }: FormBlogProps) {
     const router = useRouter();
     const { message: messageApi } = App.useApp();
     const [isLoading, setIsLoading] = useState(true);
-    const [text, setText] = useState('');
-    const [quillInstance, setQuillInstance] = useState<any>(null);
-    const [editorHtml, setEditorHtml] = useState('');
+    const [isSaving, setIsSaving] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [categories, setCategories] = useState<Category[]>([]);
     const [tags, setTags] = useState<Tag[]>([]);
+    const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>([]);
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [showCompareModal, setShowCompareModal] = useState(false);
+    const [showPreviewModal, setShowPreviewModal] = useState(false);
+    const [editingTextBlock, setEditingTextBlock] = useState<string | null>(null);
+    const [insertionIndex, setInsertionIndex] = useState<number | null>(null);
+    const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
 
     const [article, setArticle] = useState<Article>({
         title: '',
@@ -77,319 +85,285 @@ export default function FormBlog({ id }: FormBlogProps) {
         coverImage: null,
         coverImagePreview: '',
         categoryId: undefined,
-        tagIds: []
-    });
-
-    const [modules, setModules] = useState<QuillModules>({
-        toolbar: [
-            [{ header: [1, 2, 3, false] }],
-            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{ align: ['', 'center', 'right', 'justify'] }],
-            [{ color: [] }, { background: [] }],
-            [
-                { list: 'ordered' },
-                { list: 'bullet' },
-                { indent: '-1' },
-                { indent: '+1' }
-            ],
-            ['link', 'image', 'code-block'],
-            ['clean']
-        ]
+        tagIds: [],
+        advertisementIds: [] // Thêm trường advertisementIds
     });
 
     useEffect(() => {
-        // Mock data - Replace with actual API calls
-        const mockCategories: Category[] = [
-            { id: '1', name: 'Frontend' },
-            { id: '2', name: 'Backend' },
-        ];
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                // Fetch tags, category, advertisements
+                const res = await Promise.all([
+                    tagCrud.getTags(),
+                    categoryCrud.getCategory(),
+                    advertisementCrud.getAdvertisements({ take: 100 })
+                ])
+                setTags(res[0].result?.map(tag => ({ ...tag, id: tag.id! })) || []);
+                setCategories(res[1].result?.map(category => ({ ...category, id: category.id! })) || []);
+                setAdvertisements(res[2].result || []);
 
-        const mockTags: Tag[] = [
-            { id: '1', name: 'React' },
-            { id: '2', name: 'JavaScript' },
-            { id: '3', name: 'Next.js' },
-        ];
+                if (id && id !== 'new') {
+                    // Fetch article detail
+                    const articleRes = await articleCrud.getArticleById(id);
+                    const detail = articleRes;
+                    setArticle({
+                        title: detail.title || '',
+                        description: detail.description || '',
+                        content: detail.content || '',
+                        coverImage: detail.image || '',
+                        coverImagePreview: detail.image || '',
+                        categoryId: detail.category ? detail.category.id : undefined,
+                        tagIds: Array.isArray(detail.tags) ? detail.tags.map(tag => tag.id) : [],
+                        advertisementIds: detail.advertisements ? detail.advertisements.map((ad: any) => ad.id) : []
+                    });
 
-        if (id && id !== 'new') {
-            // Mock article data - Replace with actual API call
-            const mockArticle: Article = {
-                title: 'Sample Article',
-                description: 'This is a sample article',
-                content: '<p>Article content here...</p>',
-                coverImage: null,
-                coverImagePreview: '/placeholder-image.jpg',
-                categoryId: '1',
-                tagIds: ['1', '2']
-            };
-
-            setArticle(mockArticle);
-            setText(mockArticle.content);
-            setEditorHtml(mockArticle.content);
-        }
-
-        setCategories(mockCategories);
-        setTags(mockTags);
-        setIsLoading(false);
-    }, [id]);
-
-    useEffect(() => {
-        // Register the image resize module after component mounts
-        const registerImageResize = async () => {
-            if (typeof window !== 'undefined') {
-                const Quill = (await import('react-quill-new')).default.Quill;
-                const ImageResize = (await import('quill-resize-image')).default;
-                Quill.register('modules/imageResize', ImageResize);
-
-                // Update modules after registration
-                setModules(prev => ({
-                    ...prev,
-                    imageResize: {
-                        modules: ['Resize', 'DisplaySize'],
-                        displayStyles: {
-                            backgroundColor: 'black',
-                            border: 'none',
-                            color: 'white'
-                        },
-                        handleStyles: {
-                            backgroundColor: 'black',
-                            border: 'none',
-                            color: 'white'
-                        }
+                    // Parse content blocks if they exist, otherwise convert from content
+                    if (detail.contentBlocks && detail.contentBlocks.length > 0) {
+                        setContentBlocks(detail.contentBlocks);
+                    } else if (detail.content) {
+                        // Convert content string back to content blocks
+                        const blocks = convertContentStringToBlocks(detail.content);
+                        setContentBlocks(blocks);
+                    } else {
+                        // Create initial text block
+                        setContentBlocks([{
+                            id: '1',
+                            type: 'text',
+                            content: ''
+                        }]);
                     }
-                }));
-
-                // Set loading to false after module registration
+                } else {
+                    // Create initial text block for new article
+                    setContentBlocks([{
+                        id: '1',
+                        type: 'text',
+                        content: ''
+                    }]);
+                    setEditingTextBlock('1');
+                }
+            } catch (error: any) {
+                messageApi.error(error.response?.data?.message || 'Failed to fetch article detail');
+            } finally {
                 setIsLoading(false);
             }
         };
+        fetchData();
+    }, [id]);
 
-        registerImageResize();
-
-        // Add required styles for preview
-        const style = document.createElement('style');
-        style.innerHTML = `
-            .preview {
-                padding: 20px;
-                background: #fff;
-                min-height: 200px;
-                margin-top: 20px;
-                border: 1px solid #ccc;
-            }
-            .preview p[data-align="center"] {
-                text-align: center;
-            }
-            .preview p[data-align="right"] {
-                text-align: right;
-            }
-            .preview p[data-align="justify"] {
-                text-align: justify;
-            }
-            .preview img {
-                max-width: 100%;
-                height: auto;
-            }
-            .preview blockquote {
-                border-left: 4px solid #ccc;
-                margin: 0;
-                padding-left: 16px;
-            }
-            .preview pre {
-                background: #f4f4f4;
-                padding: 10px;
-                border-radius: 4px;
-            }
-            .preview-button-container {
-                margin: 20px 0;
-                display: flex;
-                justify-content: flex-end;
-            }
-            .preview-button {
-                background-color: #06c;
-                color: white;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 4px;
-                font-size: 14px;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-            .preview-button:hover {
-                background-color: #004c99;
-            }
-            .preview-button:active {
-                background-color: #003366;
-            }
-            .preview-button:focus {
-                outline: none;
-                box-shadow: 0 0 0 2px rgba(0,102,204,0.3);
-            }
-            .blog-form {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-            .form-group {
-                margin-bottom: 20px;
-            }
-            .form-label {
-                display: block;
-                margin-bottom: 8px;
-                font-weight: 500;
-                color: #333;
-            }
-            .form-input {
-                width: 100%;
-                padding: 8px 12px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 16px;
-                transition: border-color 0.2s ease;
-            }
-            .form-input:focus {
-                outline: none;
-                border-color: #06c;
-                box-shadow: 0 0 0 2px rgba(0,102,204,0.1);
-            }
-            .form-textarea {
-                min-height: 100px;
-                resize: vertical;
-            }
-            .image-upload {
-                display: flex;
-                align-items: center;
-                gap: 20px;
-            }
-            .image-preview {
-                width: 200px;
-                height: 120px;
-                border-radius: 4px;
-                border: 1px solid #ccc;
-                object-fit: cover;
-                display: none;
-            }
-            .image-preview.has-image {
-                display: block;
-            }
-            .upload-button {
-                padding: 8px 16px;
-                background-color: #f4f4f4;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-            .upload-button:hover {
-                background-color: #e7e7e7;
-            }
-            .upload-button svg {
-                width: 20px;
-                height: 20px;
-            }
-            .loading-container {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(255, 255, 255, 0.9);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            }
-            .loading-spinner {
-                width: 50px;
-                height: 50px;
-                border: 3px solid #f3f3f3;
-                border-top: 3px solid #06c;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-            }
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-            .loading-text {
-                margin-top: 16px;
-                color: #333;
-                font-size: 16px;
-                text-align: center;
-            }
-        `;
-        document.head.appendChild(style);
-
-        return () => {
-            document.head.removeChild(style);
-        };
-    }, []);
-
-    const handleQuillChange = (content: string) => {
-        setText(content);
-        setEditorHtml(content);
-        setArticle(prev => ({ ...prev, content }));
-    };
-
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setArticle(prev => ({
-                    ...prev,
-                    coverImage: file,
-                    coverImagePreview: reader.result as string
-                }));
-            };
-            reader.readAsDataURL(file);
+        if (!file) return;
+
+        try {
+            setIsUploading(true);
+            const response = await imageCrud.createImage(file);
+            setArticle(prev => ({
+                ...prev,
+                coverImage: response.url,
+                coverImagePreview: response.url
+            }));
+            messageApi.success('Cover image uploaded successfully');
+        } catch (error: any) {
+            messageApi.error('Failed to upload cover image');
+        } finally {
+            setIsUploading(false);
         }
     };
 
+    const handleAddTextBlock = (index?: number) => {
+        const newBlock: ContentBlock = {
+            id: Date.now().toString(),
+            type: 'text',
+            content: ''
+        };
+        const targetIndex = index !== undefined ? index + 1 : contentBlocks.length;
+
+        setContentBlocks(prev => {
+            const newBlocks = [...prev];
+            newBlocks.splice(targetIndex, 0, newBlock);
+            return newBlocks;
+        });
+        setEditingTextBlock(newBlock.id);
+        messageApi.success('Text block added successfully');
+    };
+
+    const handleAddImage = (imageUrl: string, caption?: string) => {
+        const newBlock: ContentBlock = {
+            id: Date.now().toString(),
+            type: 'image',
+            content: '',
+            imageUrl,
+            caption
+        };
+        const targetIndex = insertionIndex !== null ? insertionIndex : contentBlocks.length;
+        setContentBlocks(prev => {
+            const newBlocks = [...prev];
+            newBlocks.splice(targetIndex, 0, newBlock);
+            return newBlocks;
+        });
+        setInsertionIndex(null);
+        messageApi.success('Image added successfully');
+    };
+
+    const handleAddCompareImage = (leftImageUrl: string, rightImageUrl: string, leftLabel?: string, rightLabel?: string) => {
+        console.log(leftImageUrl, rightImageUrl, leftLabel, rightLabel);
+        const newBlock: ContentBlock = {
+            id: Date.now().toString(),
+            type: 'compare',
+            content: '',
+            leftImageUrl,
+            rightImageUrl,
+            leftLabel,
+            rightLabel
+        };
+        const targetIndex = insertionIndex !== null ? insertionIndex : contentBlocks.length;
+        setContentBlocks(prev => {
+            const newBlocks = [...prev];
+            newBlocks.splice(targetIndex, 0, newBlock);
+            return newBlocks;
+        });
+        setInsertionIndex(null);
+        messageApi.success('Compare images added successfully');
+    };
+
+    const handleDeleteBlock = (blockId: string) => {
+        setContentBlocks(prev => prev.filter(block => block.id !== blockId));
+        messageApi.success('Block deleted successfully');
+        setShowPreviewModal(true);
+    };
+
+    const handleEditBlock = (blockId: string) => {
+        const block = contentBlocks.find(b => b.id === blockId);
+        if (block?.type === 'text') {
+            setEditingTextBlock(blockId);
+        }
+    };
+
+    const handleTextBlockChange = (blockId: string, content: string) => {
+        setContentBlocks(prev =>
+            prev.map(block =>
+                block.id === blockId
+                    ? { ...block, content }
+                    : block
+            )
+        );
+    };
+
+    const handleTextBlockSave = (blockId: string) => {
+        setEditingTextBlock(null);
+        messageApi.success('Text block saved');
+    };
+
     const handleSave = async () => {
+        if (!article.title.trim()) {
+            messageApi.error('Please enter article title');
+            return;
+        }
+        if (!article.description.trim()) {
+            messageApi.error('Please enter article description');
+            return;
+        }
+        if (!article.coverImagePreview) {
+            messageApi.error('Please upload a cover image');
+            return;
+        }
+
         try {
-            const imageUrl = await imageCrud.createImage(article.coverImage)
+            setIsSaving(true);
+            let imageUrl = article.coverImagePreview;
+
+            // Only process new image if coverImage is base64 (new upload)
+            if (article.coverImage && article.coverImage.startsWith('data:image')) {
+                // Convert base64 to File
+                const base64Data = article.coverImage.split(',')[1];
+                const byteCharacters = atob(base64Data);
+                const byteArrays = [];
+                for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                    const slice = byteCharacters.slice(offset, offset + 512);
+                    const byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    byteArrays.push(byteArray);
+                }
+                const blob = new Blob(byteArrays, { type: 'image/jpeg' });
+                const file = new File([blob], 'cover-image.jpg', { type: 'image/jpeg' });
+
+                const imageResponse = await imageCrud.createImage(file);
+                imageUrl = imageResponse.url;
+            }
+
+            // Merge content blocks into a single content string
+            const mergedContent = mergeContentBlocksToString(contentBlocks);
+
+            // Generate text-only content for backward compatibility
+            const textContent = generateTextContent(contentBlocks);
+
             const articleData = {
                 title: article.title,
                 description: article.description,
-                content: article.content,
-                coverImage: imageUrl,
+                content: mergedContent, // Use merged content as main content
+                textContent: textContent, // Keep text-only content for backward compatibility
+                image: imageUrl,
+                tagIds: article.tagIds,
                 categoryId: article.categoryId,
-                tagIds: article.tagIds
+                contentBlocks: contentBlocks, // Keep blocks for future use
+                advertisementIds: article.advertisementIds // Thêm advertisementIds vào payload
             }
-            // Mock save - Replace with actual API call
-            messageApi.success('Article saved successfully');
+
+            if (id && id !== 'new') {
+                // Update existing article
+                await articleCrud.updateArticle(id, articleData);
+                messageApi.success('Article updated successfully');
+            } else {
+                // Create new article
+                await articleCrud.createArticle(articleData);
+                messageApi.success('Article created successfully');
+            }
+
             router.push(paths.admin.articles());
-        } catch (error) {
-            messageApi.error('Failed to save article');
+        } catch (error: any) {
+            console.error('Error saving article:', error);
+            messageApi.error(error.response?.data?.message || 'Failed to save article');
+        } finally {
+            setIsSaving(false);
         }
     };
 
     const previewHtml = () => {
-        const preview = document.querySelector('.preview');
-        if (preview) {
-            preview.innerHTML = editorHtml;
-
-            preview.querySelectorAll('pre').forEach((p) => {
-                hljs.highlightBlock(p);
-            });
-
-            preview.querySelectorAll('p').forEach((p) => {
-                const style = p.getAttribute('style') || '';
-                if (style.includes('text-align: center')) {
-                    p.setAttribute('data-align', 'center');
-                } else if (style.includes('text-align: right')) {
-                    p.setAttribute('data-align', 'right');
-                } else if (style.includes('text-align: justify')) {
-                    p.setAttribute('data-align', 'justify');
-                }
-            });
-        }
+        setShowPreviewModal(true);
     };
+
+    const getDropdownItems = (index?: number) => [
+        {
+            key: 'text',
+            label: 'Add Text Block',
+            icon: <FileTextOutlined />,
+            onClick: () => handleAddTextBlock(index)
+        },
+        {
+            key: 'image',
+            label: 'Add Image',
+            icon: <PictureOutlined />,
+            onClick: () => {
+                const targetIndex = index !== undefined ? index + 1 : contentBlocks.length;
+                setInsertionIndex(targetIndex);
+                setShowImageModal(true);
+            }
+        },
+        {
+            key: 'compare',
+            label: 'Add Compare Images',
+            icon: <SwapOutlined />,
+            onClick: () => {
+                const targetIndex = index !== undefined ? index + 1 : contentBlocks.length;
+                setInsertionIndex(targetIndex);
+                setShowCompareModal(true);
+            }
+        }
+    ];
 
     if (isLoading) {
         return (
@@ -403,7 +377,16 @@ export default function FormBlog({ id }: FormBlogProps) {
     }
 
     return (
-        <div className="article-form" style={{ padding: '24px' }}>
+        <div className="article-form">
+            {id && id !== 'new' && (
+                <Button
+                    type="default"
+                    onClick={() => router.push(paths.admin.articleView(id))}
+                    style={{ marginBottom: 16 }}
+                >
+                    ← Back
+                </Button>
+            )}
             <h1>{id === 'new' ? 'Create Article' : 'Edit Article'}</h1>
 
             <div className="form-group">
@@ -421,24 +404,38 @@ export default function FormBlog({ id }: FormBlogProps) {
             <div className="form-group">
                 <label className="form-label">Cover Image</label>
                 <div className="image-upload">
-                    <img
-                        src={article.coverImagePreview || '/placeholder-image.jpg'}
-                        alt="Cover preview"
-                        className={`image-preview ${article.coverImagePreview ? 'has-image' : ''}`}
-                    />
-                    <label className="upload-button" htmlFor="cover-image">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 5V19M5 12H19" stroke="#666" strokeWidth="2" strokeLinecap="round" />
-                        </svg>
-                        Upload Cover Image
-                    </label>
+                    <div
+                        className={`image-preview ${article.coverImage ? 'has-image' : ''}`}
+                        onClick={() => fileInputRef.current?.click()}
+                    >
+                        {article.coverImage ? (
+                            <img
+                                src={article.coverImage}
+                                alt="Cover preview"
+                            />
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 5V19M5 12H19" stroke="#666" strokeWidth="2" strokeLinecap="round" />
+                            </svg>
+                        )}
+                        <label className="upload-button" htmlFor="cover-image">
+                            {isUploading ? (
+                                <div className="loading-spinner small"></div>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 5V19M5 12H19" stroke="#666" strokeWidth="2" strokeLinecap="round" />
+                                </svg>
+                            )}
+                            {isUploading ? 'Uploading...' : 'Upload Cover Image'}
+                        </label>
+                    </div>
                     <input
                         id="cover-image"
                         type="file"
                         ref={fileInputRef}
                         onChange={handleImageChange}
                         accept="image/*"
-                        style={{ display: 'none' }}
+                        disabled={isUploading}
                     />
                 </div>
             </div>
@@ -488,34 +485,197 @@ export default function FormBlog({ id }: FormBlogProps) {
             </div>
 
             <div className="form-group">
-                <label className="form-label">Content</label>
-                <ReactQuill
-                    theme="snow"
-                    modules={modules}
-                    value={text}
-                    onChange={handleQuillChange}
-                />
+                <label className="form-label">Advertisements</label>
+                <Select
+                    mode="multiple"
+                    style={{ width: '100%' }}
+                    value={article.advertisementIds}
+                    onChange={(values: string[]) => setArticle(prev => ({ ...prev, advertisementIds: values }))}
+                    placeholder="Select advertisements to insert into the article"
+                >
+                    {advertisements.map(ad => (
+                        <Select.Option key={ad.id} value={ad.id!}>
+                            {ad.title}
+                        </Select.Option>
+                    ))}
+                </Select>
             </div>
 
-            <div style={{ marginTop: '24px', display: 'flex', gap: '12px' }}>
-                <button className="preview-button" onClick={previewHtml}>
+            <div className="form-group">
+                <label className="form-label">Content</label>
+                <div className="content-preview">
+                    {contentBlocks.map((block, index) => (
+                        <div key={block.id}>
+                            <ContentBlock
+                                block={block}
+                                onDelete={handleDeleteBlock}
+                                onEdit={handleEditBlock}
+                                isEditing={editingTextBlock === block.id}
+                                onTextChange={(content) => handleTextBlockChange(block.id, content)}
+                                onTextSave={() => handleTextBlockSave(block.id)}
+                            />
+                            <div style={{ textAlign: 'center', margin: '16px 0' }}>
+                                <Dropdown
+                                    menu={{
+                                        items: getDropdownItems(index).map(item => ({
+                                            key: item.key,
+                                            label: (
+                                                <div onClick={item.onClick} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                    {item.icon}
+                                                    {item.label}
+                                                </div>
+                                            )
+                                        }))
+                                    }}
+                                    trigger={['click']}
+                                >
+                                    <Button
+                                        type="dashed"
+                                        icon={<PlusOutlined />}
+                                    >
+                                        Add block here
+                                    </Button>
+                                </Dropdown>
+                            </div>
+                        </div>
+                    ))}
+                    {contentBlocks.length === 0 && (
+                        <div className="preview-placeholder" style={{
+                            textAlign: 'center',
+                            padding: '60px 20px',
+                            border: '2px dashed #d9d9d9',
+                            borderRadius: '8px',
+                            backgroundColor: '#fafafa'
+                        }}>
+                            <div style={{ marginBottom: '24px' }}>
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: '#bfbfbf', marginBottom: '16px' }}>
+                                    <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                                <h3 style={{ color: '#8c8c8c', margin: '0 0 8px 0', fontSize: '18px' }}>No content yet</h3>
+                                <p style={{ color: '#bfbfbf', margin: 0, fontSize: '14px' }}>Start building your article by adding content blocks</p>
+                            </div>
+                            <Dropdown
+                                menu={{
+                                    items: getDropdownItems().map(item => ({
+                                        key: item.key,
+                                        label: (
+                                            <div onClick={item.onClick} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                {item.icon}
+                                                {item.label}
+                                            </div>
+                                        )
+                                    }))
+                                }}
+                                trigger={['click']}
+                            >
+                                <Button
+                                    type="primary"
+                                    icon={<PlusOutlined />}
+                                    size="large"
+                                    style={{
+                                        height: '48px',
+                                        padding: '0 32px',
+                                        fontSize: '16px',
+                                        fontWeight: '500',
+                                        borderRadius: '8px',
+                                        boxShadow: '0 2px 8px rgba(24, 144, 255, 0.3)'
+                                    }}
+                                >
+                                    Add Content Block
+                                </Button>
+                            </Dropdown>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+
+
+            <div className="button-container">
+                <button
+                    className="preview-button"
+                    onClick={previewHtml}
+                    disabled={isSaving}
+                >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor" />
                     </svg>
                     Preview
                 </button>
                 <button
-                    className="preview-button"
+                    className="preview-button save-button"
                     onClick={handleSave}
-                    style={{ backgroundColor: '#52c41a' }}
+                    disabled={isSaving}
                 >
-                    Save Article
+                    {isSaving ? (
+                        <>
+                            <div className="loading-spinner small"></div>
+                            Saving...
+                        </>
+                    ) : (
+                        'Save Article'
+                    )}
                 </button>
             </div>
 
-            <div className="ql-editor">
-                <div className="preview"></div>
-            </div>
+            {/* Preview Modal */}
+            <Modal
+                title="Article Preview"
+                open={showPreviewModal}
+                onCancel={() => setShowPreviewModal(false)}
+                footer={null}
+                width="80%"
+                style={{ top: 20 }}
+            >
+                <div className="modal-content">
+                    <h1>{article.title}</h1>
+                    <p className="modal-description">
+                        {article.description}
+                    </p>
+                    <ArticleRenderer
+                        content=""
+                        contentBlocks={contentBlocks}
+                    />
+                </div>
+            </Modal>
+
+            {/* Image Modal */}
+            <Modal
+                title="Add Image"
+                open={showImageModal}
+                onCancel={() => {
+                    setShowImageModal(false);
+                    setInsertionIndex(null);
+                }}
+                footer={null}
+                width={600}
+            >
+                <ImageBlock
+                    onImageAdd={(imageUrl, caption) => {
+                        handleAddImage(imageUrl, caption);
+                        setShowImageModal(false);
+                    }}
+                />
+            </Modal>
+
+            {/* Compare Image Modal */}
+            <Modal
+                title="Add Compare Images"
+                open={showCompareModal}
+                onCancel={() => {
+                    setShowCompareModal(false);
+                    setInsertionIndex(null);
+                }}
+                footer={null}
+                width={800}
+            >
+                <CompareImageBlock
+                    onCompareImageAdd={(leftImageUrl, rightImageUrl, leftLabel, rightLabel) => {
+                        handleAddCompareImage(leftImageUrl, rightImageUrl, leftLabel, rightLabel);
+                        setShowCompareModal(false);
+                    }}
+                />
+            </Modal>
         </div>
     );
 }

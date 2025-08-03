@@ -1,0 +1,93 @@
+.admin-sidebar {
+  &__container {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    width: 250px;
+    background: #fff !important;
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+
+    @media (max-width: 1024px) {
+      position: fixed !important;
+      transform: translateX(-100%);
+
+      &.open {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  &__header {
+    height: 64px;
+    padding: 16px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__menu {
+    height: calc(100% - 64px);
+    border-right: 0;
+  }
+
+  &__toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    background: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    z-index: 9;
+
+    &:hover {
+      background: #f0f0f0;
+    }
+
+    @media (max-width: 1024px) {
+      display: block;
+    }
+  }
+
+  &__overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    visibility: hidden;
+
+    &.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @media (max-width: 1024px) {
+      display: block;
+    }
+  }
+}
+
+// Adjust main content margin for responsive layout
+.admin-content {
+  transition: margin-left 0.3s ease-in-out;
+  width: calc(100% - 250px);
+
+  @media (max-width: 1024px) {
+    margin-left: 0;
+    width: 100%;
+  }
+}

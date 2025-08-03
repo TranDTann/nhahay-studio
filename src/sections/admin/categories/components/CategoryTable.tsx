@@ -1,34 +1,88 @@
 import { Table, Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { Category } from '@/store/categories/crud';
+import { useEffect, useState } from 'react';
 
 interface CategoryTableProps {
     categories: Category[];
     loading: boolean;
     onEdit: (record: Category) => void;
     onDelete: (record: Category) => void;
+    onSort: (field: string) => void;
+    sortField: string;
+    SortDir: number;
+    total?: number;
+    currentPage?: number;
+    pageSize?: number;
+    onPageChange?: (page: number, pageSize: number) => void;
 }
 
-export default function CategoryTable({ categories, loading, onEdit, onDelete }: CategoryTableProps) {
+export default function CategoryTable({
+    categories,
+    loading,
+    onEdit,
+    onDelete,
+    onSort,
+    sortField,
+    SortDir,
+    total = 0,
+    currentPage = 1,
+    pageSize = 10,
+    onPageChange
+}: CategoryTableProps) {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+
+        return () => window.removeEventListener('resize', checkScreenSize);
+    }, []);
+
     const columns: ColumnsType<Category> = [
         {
-            title: 'Name',
+            title: (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span>Name</span>
+                    <Button
+                        type="text"
+                        size="small"
+                        icon={sortField === 'name' ? (SortDir === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
+                        onClick={() => onSort('name')}
+                        style={{ marginLeft: 8 }}
+                    />
+                </div>
+            ),
             dataIndex: 'name',
             key: 'name',
-            sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
-            ellipsis: true,
+            render: (description) => description || '-',
         },
         {
-            title: 'Created At',
+            title: (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span>Created Date</span>
+                    <Button
+                        type="text"
+                        size="small"
+                        icon={sortField === 'createdAt' ? (SortDir === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
+                        onClick={() => onSort('createdAt')}
+                        style={{ marginLeft: 8 }}
+                    />
+                </div>
+            ),
             dataIndex: 'createdAt',
             key: 'createdAt',
-            sorter: (a, b) => new Date(a.createdAt || '').getTime() - new Date(b.createdAt || '').getTime(),
+            render: (date) => date ? new Date(date).toLocaleDateString() : '-',
         },
         {
             title: 'Actions',
@@ -40,14 +94,14 @@ export default function CategoryTable({ categories, loading, onEdit, onDelete }:
                         icon={<EditOutlined />}
                         onClick={() => onEdit(record)}
                     >
-                        Edit
+                        {!isMobile && 'Edit'}
                     </Button>
                     <Button
                         danger
                         icon={<DeleteOutlined />}
                         onClick={() => onDelete(record)}
                     >
-                        Delete
+                        {!isMobile && 'Delete'}
                     </Button>
                 </Space>
             ),
@@ -55,16 +109,28 @@ export default function CategoryTable({ categories, loading, onEdit, onDelete }:
     ];
 
     return (
-        <Table
-            columns={columns}
-            dataSource={categories}
-            rowKey="id"
-            loading={loading}
-            pagination={{
-                pageSize: 10,
-                showSizeChanger: true,
-                showTotal: (total) => `Total ${total} items`,
-            }}
-        />
+        <div style={{
+            overflowX: 'auto',
+            width: '100%',
+            borderRadius: '8px',
+            border: '1px solid #f0f0f0'
+        }}>
+            <Table
+                columns={columns}
+                dataSource={categories}
+                rowKey="id"
+                loading={loading}
+                scroll={{ x: 'max-content' }}
+                pagination={{
+                    current: currentPage,
+                    pageSize: 10,
+                    total: total,
+                    showSizeChanger: false,
+                    showQuickJumper: true,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+                    onChange: onPageChange,
+                }}
+            />
+        </div>
     );
 } 

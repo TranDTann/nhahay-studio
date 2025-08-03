@@ -8,31 +8,52 @@ export interface Tag {
   createdAt?: string
 }
 
+export interface TagFilters {
+  search?: string
+  sort?: string
+  SortDir?: number
+  take?: number
+  skip?: number
+}
+
 export const tagCrud = {
-  getTags: async () => {
+  getTags: async (filters?: TagFilters) => {
     try {
+      const params = new URLSearchParams()
+      if (filters?.search) params.append('search', filters.search)
+      if (filters?.sort) params.append('sort', filters.sort)
+      if (filters?.SortDir !== undefined)
+        params.append('SortDir', filters.SortDir.toString())
+      if (filters?.take) params.append('take', filters.take.toString())
+      if (filters?.skip) params.append('skip', filters.skip.toString())
+
+      const url = `/api/tag${params.toString() ? `?${params.toString()}` : ''}`
       const response = await axiosInstance.get<{
         result: Tag[]
         count: number
-      }>('/api/tag')
+      }>(url)
       return response.data
     } catch (error) {
       handleApiError(error)
     }
   },
 
-  createTag: async (title: string) => {
+  createTag: async (data: { name: string; description?: string }) => {
     try {
-      const response = await axiosInstance.post<Tag>('/api/tag', title)
+      const response = await axiosInstance.post<Tag>('/api/tag', data)
       return response.data
     } catch (error) {
       handleApiError(error)
     }
   },
 
-  updateTag: async (data: { id: string; name: string }) => {
+  updateTag: async (data: {
+    id: string
+    name: string
+    description?: string
+  }) => {
     try {
-      const response = await axiosInstance.put<Tag>(`/api/tag/${data.id}`, data)
+      const response = await axiosInstance.put<Tag>(`/api/tag`, data)
       return response.data
     } catch (error) {
       handleApiError(error)

@@ -5,9 +5,11 @@ import {
     FileTextOutlined,
     TagsOutlined,
     NotificationOutlined,
+    FolderOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import '@/assets/style/AdminSidebar.scss';
 
 const { Sider } = Layout;
 
@@ -29,7 +31,7 @@ const menuItems = [
     },
     {
         key: '/admin/categories',
-        icon: <TagsOutlined />,
+        icon: <FolderOutlined />,
         label: <Link href="/admin/categories">Categories</Link>,
     },
     {
@@ -37,39 +39,32 @@ const menuItems = [
         icon: <NotificationOutlined />,
         label: <Link href="/admin/advertisement">Advertisement</Link>,
     },
+    {
+        key: '/admin/banners',
+        icon: <NotificationOutlined />,
+        label: <Link href="/admin/banners">Banners</Link>,
+    },
 ];
 
-const AdminSidebar: React.FC = () => {
+interface AdminSidebarProps {
+    isOpen: boolean;
+}
+
+const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen }) => {
     const pathname = usePathname();
 
     return (
         <Sider
             width={250}
-            style={{
-                background: '#fff',
-                height: '100vh',
-                position: 'fixed',
-                left: 0,
-                top: 0,
-                bottom: 0,
-            }}
+            className={`admin-sidebar__container ${isOpen ? 'open' : ''}`}
         >
-            <div
-                style={{
-                    height: '64px',
-                    padding: '16px',
-                    textAlign: 'center',
-                    fontSize: '20px',
-                    fontWeight: 'bold',
-                    borderBottom: '1px solid #f0f0f0',
-                }}
-            >
+            <div className="admin-sidebar__header">
                 Admin Panel
             </div>
             <Menu
                 mode="inline"
                 selectedKeys={[pathname]}
-                style={{ height: 'calc(100% - 64px)', borderRight: 0 }}
+                className="admin-sidebar__menu"
                 items={menuItems}
             />
         </Sider>

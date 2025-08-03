@@ -3,16 +3,13 @@ import Cookies from 'js-cookie'
 
 // Create axios instance with custom config
 const axiosInstance = axios.create({
-  baseURL: 'https://lemur-gentle-cricket.ngrok-free.app',
+  baseURL: 'https://european-globe-climate-landscapes.trycloudflare.com/',
   timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',
-    Accept: 'application/json',
-    // 'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-  },
-  withCredentials: true
+    Accept: 'application/json'
+  }
+  // withCredentials: true
 })
 
 // Request interceptor

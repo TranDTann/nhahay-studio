@@ -1,0 +1,290 @@
+@import './variables.scss';
+
+// Content Blocks Container
+.content-blocks-container {
+  @include flex-column;
+  gap: $spacing-lg;
+}
+
+// Content Block
+.content-block {
+  position: relative;
+  margin-bottom: $spacing-md;
+  padding: $spacing-md;
+  border: 1px solid $border-color-light;
+  border-radius: $border-radius-lg;
+  background-color: $background-color-light;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: $shadow-base;
+  }
+
+  .block-actions {
+    position: absolute;
+    top: $spacing-xs;
+    right: $spacing-xs;
+    display: flex;
+    gap: $spacing-xs;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    .edit-button {
+      color: $primary-color;
+    }
+
+    .delete-button {
+      color: $error-color;
+    }
+  }
+
+  &:hover .block-actions {
+    opacity: 1;
+  }
+
+  .block-type-badge {
+    position: absolute;
+    top: $spacing-xs;
+    left: $spacing-xs;
+    padding: 2px $spacing-xs;
+    border-radius: $border-radius-xs;
+    font-size: $font-size-xs;
+    font-weight: 500;
+    color: $text-color-inverse;
+  }
+
+  .block-content {
+    margin-top: $spacing-xl;
+  }
+}
+
+// Text Block
+.content-text {
+  font-size: $font-size-base;
+  line-height: $line-height-relaxed;
+  text-align: justify;
+  color: $text-color;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-md;
+    font-weight: 600;
+    color: $text-color;
+  }
+
+  p {
+    margin-bottom: $spacing-md;
+    color: $text-color-secondary;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: $border-radius-lg;
+    margin: $spacing-md 0;
+    box-shadow: $shadow-base;
+  }
+
+  blockquote {
+    border-left: 4px solid $primary-color;
+    padding: $spacing-md 20px;
+    margin: $spacing-md 0;
+    font-style: italic;
+    background-color: $code-background;
+    border-radius: $border-radius-sm;
+    color: $text-color-secondary;
+  }
+
+  pre {
+    background-color: $code-background;
+    padding: $spacing-md;
+    border-radius: $border-radius-base;
+    overflow-x: auto;
+    margin: $spacing-md 0;
+    border: 1px solid #e1e4e8;
+  }
+
+  code {
+    background-color: $code-background;
+    padding: 2px 6px;
+    border-radius: $border-radius-xs;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+    font-size: 0.9em;
+    color: $code-color;
+  }
+
+  ul,
+  ol {
+    margin: $spacing-md 0;
+    padding-left: $spacing-lg;
+    color: $text-color-secondary;
+  }
+
+  li {
+    margin-bottom: $spacing-xs;
+  }
+}
+
+// Text Editor
+.content-text-editor {
+  .text-editor-actions {
+    margin-top: $spacing-sm;
+    text-align: right;
+  }
+}
+
+// Image Block
+.content-image {
+  text-align: center;
+  margin: $spacing-lg 0;
+
+  .content-image-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-base;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  .image-caption {
+    text-align: center;
+    color: $text-color-secondary;
+    font-size: $font-size-sm;
+    margin-top: $spacing-xs;
+    font-style: italic;
+  }
+}
+
+// Compare Image Block
+.content-compare {
+  margin: $spacing-lg 0;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-base;
+
+  .react-compare-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .react-compare-image__slider {
+    background-color: $primary-color;
+    border: 2px solid $text-color-inverse;
+    border-radius: 50%;
+    box-shadow: $shadow-base;
+  }
+
+  .react-compare-image__label {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: $text-color-inverse;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-xs;
+    font-size: $font-size-sm;
+    font-weight: 500;
+  }
+}
+
+// Block Type Colors
+.content-block {
+  .block-type-badge {
+    &.text-badge {
+      background-color: $success-color;
+    }
+
+    &.image-badge {
+      background-color: $primary-color;
+    }
+
+    &.compare-badge {
+      background-color: $warning-color;
+    }
+  }
+}
+
+// Form Controls
+.content-blocks-form {
+  margin: $spacing-lg 0;
+
+  .form-controls {
+    @include flex-column;
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+  }
+
+  .block-buttons {
+    display: flex;
+    gap: $spacing-sm;
+    flex-wrap: wrap;
+  }
+
+  .block-button {
+    @include button-style;
+    min-width: 120px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-xs;
+  }
+}
+
+// Preview Container
+.content-preview {
+  border: 1px solid $border-color;
+  border-radius: $border-radius-base;
+  padding: $spacing-md;
+  min-height: 200px;
+  background-color: $background-color-light;
+  margin-top: $spacing-md;
+
+  .preview-placeholder {
+    @include flex-center;
+    height: 200px;
+    color: $text-color-secondary;
+    font-style: italic;
+  }
+}
+
+// Responsive Design
+@include responsive($breakpoint-md) {
+  .content-block {
+    padding: $spacing-sm;
+
+    .block-actions {
+      opacity: 1;
+    }
+  }
+
+  .content-text {
+    font-size: $font-size-sm;
+    line-height: $line-height-base;
+  }
+
+  .content-image {
+    margin: $spacing-md 0;
+  }
+
+  .content-compare {
+    margin: $spacing-md 0;
+  }
+
+  .content-blocks-form {
+    .block-buttons {
+      flex-direction: column;
+    }
+
+    .block-button {
+      width: 100%;
+    }
+  }
+}

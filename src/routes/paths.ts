@@ -21,8 +21,11 @@ const paths = {
     home: () => `${roots.admin}/home`,
     articles: () => `${roots.admin}/articles`,
     article: (id: string) => `${roots.admin}/articles/${id}`,
+    articleView: (id: string) => `${roots.admin}/articles/view/${id}`,
     categories: () => `${roots.admin}/categories`,
-    tags: () => `${roots.admin}/tags`
+    tags: () => `${roots.admin}/tags`,
+    advertisements: () => `${roots.admin}/advertisements`,
+    banners: () => `${roots.admin}/banners`
   }
 }
 
