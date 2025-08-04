@@ -1,17 +1,48 @@
 'use client'
 
-import { Col, Row } from 'antd'
-import { FirstPost } from './FirstPost'
-import { POPULAR_POSTS } from './data'
+import { Article, articleCrud } from '@/store/article/crud'
+import { App, Col, Row } from 'antd'
+import { useEffect, useState } from 'react'
+import BlockHeader from '../components/BlockHeader/BlockHeader'
 import { CenterColumnPost } from './ CenterColumnPost'
 import { EndColumnPost } from './EndColumnPost'
-import BlockHeader from '../components/BlockHeader/BlockHeader'
+import { FirstPost } from './FirstPost'
+import PopularPostsSkeleton from './PopularPostsSkeleton/PopularPostsSkeleton'
 import './styles.css'
 
 const PopularPosts = () => {
-  const firstPost = POPULAR_POSTS[0]
-  const centerColumnPosts = POPULAR_POSTS.slice(1, 3) ?? []
-  const endColumnPosts = POPULAR_POSTS.slice(3) ?? []
+  const { message: messageApi } = App.useApp()
+
+  const [polularPosts, setPopularPosts] = useState<Article[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        setIsLoading(true)
+        const response = await articleCrud.getArticles({ listType: 2 })
+        setPopularPosts(response.result || [])
+      } catch (error: any) {
+        messageApi.error(
+          error.response?.data?.message || 'Failed to fetch articles'
+        )
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchArticles()
+  }, [])
+
+  if (isLoading) {
+    return <PopularPostsSkeleton />
+  }
+
+  if (!polularPosts.length) return null
+
+  const firstPost = polularPosts[0]
+  const centerColumnPosts = polularPosts.slice(1, 3) ?? []
+  const endColumnPosts = polularPosts.slice(3, 6) ?? []
 
   return (
     <div>

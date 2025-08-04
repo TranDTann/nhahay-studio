@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import useAuth from './useAuth'
-import { useAuthStore } from '@/store/auth/authStore'
 import paths from '@/routes/paths'
 import Cookies from 'js-cookie'
+import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import useAuth from './useAuth'
 
 export default function useAuthRouter() {
   const router = useRouter()
@@ -11,8 +10,6 @@ export default function useAuthRouter() {
   const [authComplete, setAuthComplete] = useState<boolean>(false)
 
   useAuth(setAuthComplete)
-
-  // const { authUser } = useAuthStore((state) => state)
 
   useEffect(() => {
     if (!authComplete) return
@@ -28,15 +25,12 @@ export default function useAuthRouter() {
     }
 
     if (!token && isAuthRequiredPage) {
-      // if (!authUser && isAuthRequiredPage) {
       router.replace(paths.auth.login)
       return
     }
 
     if (token && isLoginPage) {
-      // if (authUser && isLoginPage) {
       router.replace(paths.dashboard.home())
     }
   }, [pathname, authComplete, router])
-  // }, [authUser, pathname, authComplete, router])
 }

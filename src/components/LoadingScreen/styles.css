@@ -1,0 +1,12 @@
+.loading-screen {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-icon {
+  font-size: 72px !important;
+  color: #7754f6 !important;
+}

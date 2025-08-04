@@ -2,11 +2,11 @@ import HomeView from '@/sections/home/view/HomeView'
 import React from 'react'
 
 export const metadata = {
-  title: 'NhaHayStudio Home'
+  title: 'NhaHayStudio Trang chủ'
 }
 
 const HomeIndexPage = () => {
-  return <HomeView />
+  return <></>
 }
 
 export default HomeIndexPage
