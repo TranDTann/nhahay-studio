@@ -13,7 +13,7 @@ type TTrendingPostItemProps = {
 const TrendingPostItem = ({ postData }: TTrendingPostItemProps) => {
   return (
     <div className="trending-post-item-container">
-      <div className="trending-post-item-image-container">
+      <div className="trending-post-item-image-container image-hover-zoom-container">
         <img
           src={postData.image}
           alt="TrendingPost-image"

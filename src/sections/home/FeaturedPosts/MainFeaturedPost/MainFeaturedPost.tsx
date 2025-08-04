@@ -13,7 +13,7 @@ type TMainFeaturedPostProps = {
 
 const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
   return (
-    <div className="featured-post-container">
+    <div className="featured-post-container image-hover-zoom-container">
       <div className="featured-post-image-container">
         <img
           src={postData.image}
@@ -33,7 +33,7 @@ const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
           </div>
           <div className="featured-post-info-item">
             <IoIosTimer color="#bacce1" />
-            <p>{postData.ratingAvg}</p>
+            <p>{postData.readingTimeMinutes} mins</p>
           </div>
           <div className="featured-post-info-item">
             <MdOutlineDateRange color="#bacce1" />

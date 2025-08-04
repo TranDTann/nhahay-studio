@@ -12,7 +12,7 @@ type TRecentPostItemProps = {
 const RecentPostItem = ({ postData }: TRecentPostItemProps) => {
   return (
     <div className="post-item-container">
-      <div className="post-item-image-container">
+      <div className="post-item-image-container image-hover-zoom-container">
         <img
           src={postData.image}
           alt="RecentPost-image"

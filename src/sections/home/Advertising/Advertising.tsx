@@ -2,7 +2,7 @@ import './styles.css'
 
 const Advertising = () => {
   return (
-    <div className="advertising-image-container">
+    <div className="advertising-image-container image-hover-zoom-container">
       <img
         src="https://cdn.bettamax.com/dev/2025-06-30/quang-cao.jpg"
         alt="anh-quang-cao"

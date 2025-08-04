@@ -17,6 +17,7 @@ export interface Article {
   createdBy: string
   ratingAvg: string
   publishAt: string
+  readingTimeMinutes: number
 }
 
 export const articleCrud = {

@@ -8,7 +8,7 @@ type TCategoryItemProps = {
 
 const CategoryItem = ({ categoryData }: TCategoryItemProps) => {
   return (
-    <div className="category-container">
+    <div className="category-container image-hover-zoom-container">
       <div className="category-thumbnail-container">
         <img
           src={

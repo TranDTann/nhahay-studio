@@ -14,7 +14,7 @@ type TMainRecentPostProps = {
 const MainRecentPost = ({ postData }: TMainRecentPostProps) => {
   return (
     <div className="post-container">
-      <div className="post-image-container">
+      <div className="post-image-container image-hover-zoom-container">
         <img
           src={postData.image}
           alt="MainRecentPost-image"
@@ -31,7 +31,7 @@ const MainRecentPost = ({ postData }: TMainRecentPostProps) => {
           </div>
           <div className="post-info-item">
             <IoIosTimer color="#bacce1" />
-            <p>{postData.ratingAvg}</p>
+            <p>{postData.readingTimeMinutes} mins</p>
           </div>
           <div className="post-info-item">
             <MdOutlineDateRange color="#bacce1" />

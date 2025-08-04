@@ -11,12 +11,12 @@ type TFeaturedPostItemProps = {
 
 const FeaturedPostItem = ({ postData }: TFeaturedPostItemProps) => {
   return (
-    <div className="featured-post-item-container">
+    <div className="featured-post-item-container image-hover-zoom-container">
       <div className="featured-post-item-image-container">
         <img
           src={postData.image}
           alt="FeaturedPost-image"
-          className=" featured-post-item-image image-hover-zoom"
+          className="featured-post-item-image image-hover-zoom"
         />
       </div>
       <div className="featured-post-item-content">

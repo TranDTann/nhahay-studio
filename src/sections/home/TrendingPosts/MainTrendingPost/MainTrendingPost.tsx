@@ -18,7 +18,7 @@ const MainTrendingPost = ({ postData }: TMainTrendingPostProps) => {
     <div className="trending-post-container">
       <Row gutter={24}>
         <Col span={12}>
-          <div className="trending-post-image-container">
+          <div className="trending-post-image-container image-hover-zoom-container">
             <img
               src={postData.image}
               alt="MainTrendingPost-image"
@@ -39,7 +39,7 @@ const MainTrendingPost = ({ postData }: TMainTrendingPostProps) => {
               </div>
               <div className="trending-post-info-item">
                 <IoIosTimer color="#bacce1" />
-                <p>{postData.ratingAvg}</p>
+                <p>{postData.readingTimeMinutes} mins</p>
               </div>
               <div className="trending-post-info-item">
                 <MdOutlineDateRange color="#bacce1" />

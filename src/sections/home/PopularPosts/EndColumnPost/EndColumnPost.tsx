@@ -10,7 +10,7 @@ const EndColumnPost = ({ post }: TEndColumnPostProps) => {
   return (
     <Row gutter={24} className="end-post-container">
       <Col span={8}>
-        <div className="end-post-image-container">
+        <div className="end-post-image-container image-hover-zoom-container">
           <img
             src={post.image}
             alt="end-post-image"
@@ -23,7 +23,7 @@ const EndColumnPost = ({ post }: TEndColumnPostProps) => {
         <div className="end-post-footer">
           <p>{post.createdBy}</p>
           <span className="end-post_time">{post.publishAt} | </span>
-          {post.ratingAvg}
+          {post.readingTimeMinutes} mins
         </div>
       </Col>
     </Row>

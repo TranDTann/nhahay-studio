@@ -11,7 +11,7 @@ const CenterColumnPost = ({ post }: TCenterColumnPostProps) => {
   return (
     <Row gutter={24} className="center-post-container">
       <Col span={12}>
-        <div className="center-post-image-container">
+        <div className="center-post-image-container image-hover-zoom-container">
           <img
             src={post.image}
             alt="center-post-image"
@@ -27,7 +27,7 @@ const CenterColumnPost = ({ post }: TCenterColumnPostProps) => {
         <div className="center-post-footer">
           <p>{post.createdBy}</p>
           <span className="center-post_time">{post.publishAt} | </span>
-          {post.ratingAvg}
+          {post.readingTimeMinutes} mins
         </div>
       </Col>
     </Row>

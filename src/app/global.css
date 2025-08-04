@@ -67,7 +67,7 @@
   overflow: hidden;
 }
 
-.image-hover-zoom:hover {
+.image-hover-zoom-container:hover .image-hover-zoom {
   overflow: hidden;
-  transform: scale(1.05);
+  transform: scale(1.035);
 }

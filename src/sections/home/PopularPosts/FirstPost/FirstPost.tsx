@@ -9,7 +9,7 @@ type TFirstPostProps = {
 const FirstPost = ({ post }: TFirstPostProps) => {
   return (
     <div className="first-post-container">
-      <div className="first-post-image-container">
+      <div className="first-post-image-container image-hover-zoom-container">
         <img
           src={post.image}
           alt="first-post-image"
@@ -23,7 +23,7 @@ const FirstPost = ({ post }: TFirstPostProps) => {
       <div className="first-post-footer">
         <p>{post.createdBy}</p>
         <p className="first-post-footer_time">
-          {post.publishAt} - {post.ratingAvg}
+          {post.publishAt} - {post.readingTimeMinutes} mins
         </p>
       </div>
     </div>
