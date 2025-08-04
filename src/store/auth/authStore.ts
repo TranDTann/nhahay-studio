@@ -5,8 +5,14 @@ import { TSignupForm } from '@/sections/auth/sign-up/types'
 import { authCrud } from './crud'
 import { showToast } from '@/utils/toast'
 
+export type TUser = {
+  email: string
+  id: string
+  username: string
+}
+
 interface AuthState {
-  authUser?: { name: string }
+  authUser?: TUser
   isLoggingIn: boolean
   isSigningUp: boolean
   errorMessage: string | null
@@ -16,6 +22,7 @@ interface AuthActions {
   login: (loginData: TLoginForm) => Promise<void>
   signup: (signtPpData: TSignupForm) => Promise<void>
   loginWithGoogle: (loginData: TLoginForm) => Promise<void>
+  getUser: () => Promise<TUser>
 }
 
 export const useAuthStore = create<AuthState & AuthActions>((set) => ({
@@ -43,7 +50,6 @@ export const useAuthStore = create<AuthState & AuthActions>((set) => ({
     set({ isSigningUp: true, errorMessage: null })
     try {
       const status = await authCrud.signup(singUpData)
-      console.log(status)
       set(() => ({
         isSigningUp: false
       }))
@@ -63,6 +69,21 @@ export const useAuthStore = create<AuthState & AuthActions>((set) => ({
     } catch (error) {
       const message = error?.message ? error.message : 'Login failed!'
       set({ errorMessage: message, isLoggingIn: false })
+      showToast.error(message)
+
+      throw error
+    }
+  },
+  getUser: async () => {
+    try {
+      const user = await authCrud.getUser()
+      set(() => ({
+        authUser: user
+      }))
+      return user
+    } catch (error) {
+      const message = error?.message ? error.message : 'Get user failed!'
+      set({ errorMessage: message })
       showToast.error(message)
 
       throw error

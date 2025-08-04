@@ -3,6 +3,7 @@ import axiosInstance from '@/api/axiosConfig'
 import { TLoginForm } from '@/sections/auth/login/types'
 import { TSignupForm } from '@/sections/auth/sign-up/types'
 import Cookies from 'js-cookie'
+import { TUser } from './authStore'
 
 export class ApiError extends Error {
   constructor(message: string, public status?: number) {
@@ -62,6 +63,27 @@ export const authCrud = {
     } catch (error: any) {
       throw new ApiError(
         error.response?.data?.message || 'Login with google failed',
+        error.response?.status
+      )
+    }
+  },
+
+  getUser: async () => {
+    try {
+      const token = Cookies.get('token')
+      const headers: Record<string, string> = {
+        Accept: 'application/json'
+      }
+
+      if (token) {
+        headers.Authorization = `Bearer ${token}`
+      }
+
+      const response = await axiosInstance.get<TUser>('/api/user', { headers })
+      return response.data
+    } catch (error: any) {
+      throw new ApiError(
+        error.response?.data || 'Get user failed',
         error.response?.status
       )
     }

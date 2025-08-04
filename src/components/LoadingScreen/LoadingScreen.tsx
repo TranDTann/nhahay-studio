@@ -1,5 +1,13 @@
-function LoadingScreen() {
-  return <div className="h-full w-full">Loading...</div>;
+import { LoadingOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
+import './styles.css'
+
+const LoadingScreen = () => {
+  return (
+    <div className="loading-screen">
+      <Spin indicator={<LoadingOutlined className="loading-icon" spin />} />
+    </div>
+  )
 }
 
-export default LoadingScreen;
+export default LoadingScreen

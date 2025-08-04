@@ -1,9 +1,9 @@
-import SignUpView from "@/sections/auth/sign-up/view/SignUpView";
+import SignUpView from '@/sections/auth/sign-up/view/SignUpView'
 
 export const metadata = {
-  title: "NhaHayStudio Sign Up",
-};
+  title: 'NhaHayStudio Đăng ký'
+}
 
 export default function SignUpPage() {
-  return <SignUpView />;
+  return <SignUpView />
 }
