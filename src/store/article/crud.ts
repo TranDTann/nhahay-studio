@@ -1,6 +1,6 @@
 import axiosInstance from '@/api/axiosConfig'
 import { handleApiError } from '@/api/error'
-interface Article {
+export interface Article {
   id: string
   title: string
   content: string
@@ -11,7 +11,17 @@ interface Article {
   description: string
   createdAt: string
   updatedAt: string
+  category: {
+    id: string
+    name: string
+    description: string
+  }
+  createdBy: string
+  ratingAvg: string
+  publishAt: string
+  readingTimeMinutes: number
 }
+
 export const articleCrud = {
   getArticles: async (params?: {
     search?: string
@@ -21,16 +31,22 @@ export const articleCrud = {
     pageSize?: number
     sort?: string
     SortDir?: number
+    listType?: number
   }) => {
     try {
       const query = new URLSearchParams()
-      if (params?.search) query.append('search', params.search)
-      if (params?.categoryId) query.append('categoryId', params.categoryId)
-      if (params?.tags && params.tags.length > 0)
-        query.append('tags', params.tags.join(','))
-      if (params?.sort) query.append('sort', params.sort)
-      if (params?.SortDir !== undefined)
-        query.append('SortDir', params.SortDir.toString())
+
+      Object.entries({
+        search: params?.search,
+        categoryId: params?.categoryId,
+        sort: params?.sort,
+        SortDir: params?.SortDir?.toString(),
+        listType: params?.listType?.toString(),
+        tags: params?.tags?.length ? params.tags.join(',') : undefined
+      }).forEach(([key, value]) => {
+        if (value !== undefined) query.append(key, value)
+      })
+
       // Chuyển page/pageSize thành take/skip
       const take = params?.pageSize || 10
       const skip =

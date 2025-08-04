@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 type TLogoProps = { size?: 'sm' | 'md' | 'lg' }
 
 const LOGO_SIZES = {
@@ -12,12 +14,14 @@ const Logo = ({ size = 'md' }: TLogoProps) => {
   const logoSize = LOGO_SIZES[size]
 
   return (
-    <img
-      src="https://cdn.bettamax.com/dev/2025-06-26/logo_nhahaystudio.jpg"
-      alt="logo"
-      width={logoSize?.width}
-      height={logoSize?.height}
-    />
+    <Link href="/">
+      <img
+        src="https://cdn.bettamax.com/dev/2025-06-26/logo_nhahaystudio.jpg"
+        alt="logo"
+        width={logoSize?.width}
+        height={logoSize?.height}
+      />
+    </Link>
   )
 }
 

@@ -1,14 +1,14 @@
 'use client'
 
+import paths from '@/routes/paths'
 import { useAuthStore } from '@/store/auth/authStore'
-import { Button, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
+import { Button, Dropdown, Tooltip } from 'antd'
+import Cookies from 'js-cookie'
+import { useRouter } from 'next/navigation'
+import { FaUser } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import { TbLogout } from 'react-icons/tb'
-import { FaUser } from 'react-icons/fa'
-import { useRouter } from 'next/navigation'
-import paths from '@/routes/paths'
-import Cookies from 'js-cookie'
 import './styles.css'
 
 const LoginInformation = () => {
@@ -59,7 +59,9 @@ const LoginInformation = () => {
   return (
     <div className="user-container">
       <FaUser />
-      <p className="user-name">{authUser?.name}</p>
+      <Tooltip placement="bottomLeft" title={authUser?.username}>
+        <p className="user-name">{authUser?.username}</p>
+      </Tooltip>
       <Dropdown menu={{ items: logoutItems }} trigger={['click']}>
         <Button type="text" size="large">
           <TbLogout />

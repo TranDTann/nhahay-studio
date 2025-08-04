@@ -15,7 +15,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
   let content: React.ReactNode = null
 
-  if ((isLoggingIn || isSigningUp) && !pathname.includes(paths.auth.root)) {
+  const isLoadingPage =
+    ((isLoggingIn || isSigningUp) && !pathname.includes(paths.auth.root)) ||
+    pathname === '/'
+
+  if (isLoadingPage) {
     content = <LoadingScreen />
   } else {
     content = children

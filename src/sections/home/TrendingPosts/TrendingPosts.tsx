@@ -1,14 +1,46 @@
 'use client'
 
-import { MOCK_TRENDING_POSTS } from './data'
-import MainTrendingPost from './MainTrendingPost/MainTrendingPost'
-import TrendingPostItem from './TrendingPostItem/TrendingPostItem'
+import { Article, articleCrud } from '@/store/article/crud'
+import { App } from 'antd'
+import { useEffect, useState } from 'react'
 import BlockHeader from '../components/BlockHeader/BlockHeader'
+import MainTrendingPost from './MainTrendingPost/MainTrendingPost'
 import './styles.css'
+import TrendingPostItem from './TrendingPostItem/TrendingPostItem'
+import TrendingPostsSkeleton from './TrendingPostsSkeleton/TrendingPostsSkeleton'
 
 const TrendingPosts = () => {
-  const mainPost = MOCK_TRENDING_POSTS[0]
-  const belowPosts = MOCK_TRENDING_POSTS.slice(1)
+  const { message: messageApi } = App.useApp()
+
+  const [trendingPosts, setTrendingPosts] = useState<Article[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        setIsLoading(true)
+        const response = await articleCrud.getArticles()
+        setTrendingPosts(response.result || [])
+      } catch (error: any) {
+        messageApi.error(
+          error.response?.data?.message || 'Failed to fetch articles'
+        )
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchArticles()
+  }, [])
+
+  if (isLoading) {
+    return <TrendingPostsSkeleton />
+  }
+
+  if (!trendingPosts.length) return null
+
+  const mainPost = trendingPosts[0]
+  const belowPosts = trendingPosts.slice(1, 4)
 
   return (
     <div>

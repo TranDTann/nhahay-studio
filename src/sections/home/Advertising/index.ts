@@ -1,1 +1,1 @@
-export { default as Advertising } from './Advertising'
+export { default } from './Advertising'

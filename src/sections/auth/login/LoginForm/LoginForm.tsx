@@ -1,12 +1,12 @@
 'use client'
 
-import { Button, Checkbox, Flex, Form, FormProps, Input } from 'antd'
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import './styles.css'
-import { TLoginForm } from '../types'
-import { useRouter } from 'next/navigation'
 import paths from '@/routes/paths'
 import { useAuthStore } from '@/store/auth/authStore'
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
+import { Button, Checkbox, Flex, Form, FormProps, Input } from 'antd'
+import { useRouter } from 'next/navigation'
+import { TLoginForm } from '../types'
+import './styles.css'
 
 const LoginForm = () => {
   const router = useRouter()
@@ -16,6 +16,7 @@ const LoginForm = () => {
     try {
       await login(values)
       router.push(paths.dashboard.home())
+      useAuthStore.setState({ isLoggingIn: false })
     } catch (error) {}
   }
 
