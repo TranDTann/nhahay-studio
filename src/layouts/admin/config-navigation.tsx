@@ -2,7 +2,7 @@
 import paths from '@/routes/paths';
 
 // components
-import { DashboardOutlined, FileTextOutlined, TagsOutlined } from '@ant-design/icons';
+import { DashboardOutlined, FileTextOutlined, TagsOutlined, PictureOutlined } from '@ant-design/icons';
 
 // ----------------------------------------------------------------------
 
@@ -26,5 +26,15 @@ export const navConfig = [
         title: 'Tags',
         path: paths.admin.tags(),
         icon: <TagsOutlined />,
+    },
+    {
+        title: 'Advertisements',
+        path: paths.admin.advertisements(),
+        icon: <PictureOutlined />,
+    },
+    {
+        title: 'Banners',
+        path: paths.admin.banners(),
+        icon: <PictureOutlined />,
     }
 ]; 

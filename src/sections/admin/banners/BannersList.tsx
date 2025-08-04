@@ -3,45 +3,46 @@
 import { useState, useEffect } from 'react';
 import { Input, Button, Space, Modal, Spin, Row, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { useTagsStore } from '@/store/tags/tagsStore';
-import { Tag } from '@/store/tags/crud';
-import TagTable from './components/TagTable';
-import TagForm from './components/TagForm';
+import { useBannerStore } from '@/store/banner/bannerStore';
+import { Banner } from '@/store/banner/crud';
+import BannerTable from './components/BannerTable';
+import BannerForm from './components/BannerForm';
 
-export default function TagsList() {
+export default function BannersList() {
     const {
-        tags,
+        banners,
         loading,
         listLoading,
         error,
         total,
         currentPage,
         pageSize,
-        getTags,
+        getBanners,
         setFilters,
         setPage,
-        createTag,
-        updateTag,
-        deleteTag
-    } = useTagsStore();
+        createBanner,
+        updateBanner,
+        deleteBanner
+    } = useBannerStore();
+
     const [searchText, setSearchText] = useState('');
     const [pendingSearch, setPendingSearch] = useState('');
     const [sortField, setSortField] = useState<string>('');
     const [SortDir, setSortDirection] = useState<number>(0);
     const [editModalVisible, setEditModalVisible] = useState(false);
-    const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
+    const [selectedBanner, setSelectedBanner] = useState<Banner | null>(null);
     const [formLoading, setFormLoading] = useState(false);
 
     useEffect(() => {
-        const fetchTags = async () => {
+        const fetchData = async () => {
             try {
-                await getTags();
+                await getBanners();
             } catch (error) {
                 // Error is already handled in the store
             }
         };
-        fetchTags();
-    }, []);
+        fetchData();
+    }, [getBanners]);
 
     const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPendingSearch(e.target.value);
@@ -74,21 +75,21 @@ export default function TagsList() {
         setFilters(filters);
     };
 
-    const handleEdit = (record: Tag) => {
-        setSelectedTag(record);
+    const handleEdit = (record: Banner) => {
+        setSelectedBanner(record);
         setEditModalVisible(true);
     };
 
-    const handleDelete = (record: Tag) => {
+    const handleDelete = (record: Banner) => {
         Modal.confirm({
-            title: 'Are you sure you want to delete this tag?',
+            title: 'Are you sure you want to delete this banner?',
             content: 'This action cannot be undone.',
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
             async onOk() {
                 try {
-                    await deleteTag(record.id);
+                    await deleteBanner(record.id!);
                 } catch (error) {
                     // Error is already handled in the store
                 }
@@ -96,21 +97,16 @@ export default function TagsList() {
         });
     };
 
-    const handleFormSubmit = async (data: { name: string; description?: string }) => {
+    const handleFormSubmit = async (data: Banner) => {
         setFormLoading(true);
         try {
-            if (selectedTag) {
-                const params = {
-                    name: data.name,
-                    description: data.description,
-                    id: selectedTag.id
-                }
-                await updateTag(params);
+            if (selectedBanner) {
+                await updateBanner({ ...data, id: selectedBanner.id });
             } else {
-                await createTag({ name: data.name, description: data.description });
+                await createBanner(data);
             }
             setEditModalVisible(false);
-            setSelectedTag(null);
+            setSelectedBanner(null);
         } catch (error) {
             // Error is already handled in the store
         } finally {
@@ -122,7 +118,7 @@ export default function TagsList() {
         setPage(page);
     };
 
-    if (loading && tags.length === 0) {
+    if (loading && banners.length === 0) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <Spin size="large" />
@@ -131,15 +127,15 @@ export default function TagsList() {
     }
 
     return (
-        <div className="tags-container" style={{ padding: '24px' }}>
+        <div className="banners-container" style={{ padding: '24px' }}>
             <div style={{ marginBottom: '24px' }}>
-                <h1 style={{ marginBottom: '24px' }}>Tags</h1>
+                <h1 style={{ marginBottom: '24px' }}>Banner Management</h1>
 
                 <Space direction="vertical" style={{ width: '100%' }} size="middle">
                     <Row gutter={[16, 16]}>
                         <Col lg={16} md={16} span={24}>
                             <Input
-                                placeholder="Search tags"
+                                placeholder="Search banners"
                                 prefix={<SearchOutlined style={{ cursor: 'pointer' }} onClick={handleSearchIconClick} />}
                                 value={pendingSearch}
                                 onChange={handleSearchInput}
@@ -149,18 +145,18 @@ export default function TagsList() {
                         </Col>
                         <Col lg={8} md={8} span={24}>
                             <Button type="primary" onClick={() => {
-                                setSelectedTag(null);
+                                setSelectedBanner(null);
                                 setEditModalVisible(true);
                             }}>
-                                Add Tag
+                                Add Banner
                             </Button>
                         </Col>
                     </Row>
                 </Space>
             </div>
 
-            <TagTable
-                tags={tags}
+            <BannerTable
+                banners={banners}
                 loading={listLoading || loading}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
@@ -172,20 +168,20 @@ export default function TagsList() {
                 pageSize={pageSize}
                 onPageChange={handlePageChange}
             />
-            {
-                editModalVisible && (
-                    <TagForm
-                        visible={editModalVisible}
-                        onCancel={() => {
-                            setEditModalVisible(false);
-                            setSelectedTag(null);
-                        }}
-                        onSubmit={handleFormSubmit}
-                        initialValues={selectedTag}
-                        title={selectedTag ? "Edit Tag" : "Add Tag"}
-                        loading={formLoading}
-                    />
-                )}
+
+            {editModalVisible && (
+                <BannerForm
+                    visible={editModalVisible}
+                    onCancel={() => {
+                        setEditModalVisible(false);
+                        setSelectedBanner(null);
+                    }}
+                    onSubmit={handleFormSubmit}
+                    initialValues={selectedBanner}
+                    title={selectedBanner ? "Edit Banner" : "Add Banner"}
+                    loading={formLoading}
+                />
+            )}
         </div>
     );
 } 

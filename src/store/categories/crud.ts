@@ -12,7 +12,7 @@ export interface Category {
 export interface CategoryFilters {
   search?: string
   sort?: string
-  sortDis?: number
+  SortDir?: number
   take?: number
   skip?: number
 }
@@ -30,8 +30,8 @@ export const categoryCrud = {
       const params = new URLSearchParams()
       if (filters?.search) params.append('search', filters.search)
       if (filters?.sort) params.append('sort', filters.sort)
-      if (filters?.sortDis !== undefined)
-        params.append('sortDis', filters.sortDis.toString())
+      if (filters?.SortDir !== undefined)
+        params.append('SortDir', filters.SortDir.toString())
       if (filters?.take) params.append('take', filters.take.toString())
       if (filters?.skip) params.append('skip', filters.skip.toString())
 
@@ -48,12 +48,9 @@ export const categoryCrud = {
     }
   },
 
-  createCategory: async (title: string) => {
+  createCategory: async (data: { name: string; description?: string }) => {
     try {
-      const response = await axiosInstance.post<Category>(
-        '/api/category',
-        title
-      )
+      const response = await axiosInstance.post<Category>('/api/category', data)
       return response.data
     } catch (error: any) {
       throw new ApiError(
@@ -63,12 +60,15 @@ export const categoryCrud = {
     }
   },
 
-  updateCategory: async (id: string, title: string) => {
+  updateCategory: async (
+    id: string,
+    data: { name: string; description?: string }
+  ) => {
     try {
-      const response = await axiosInstance.put<Category>(
-        `/api/category/${id}`,
-        { name: title, id }
-      )
+      const response = await axiosInstance.put<Category>(`/api/category`, {
+        ...data,
+        id
+      })
       return response.data
     } catch (error: any) {
       throw new ApiError(

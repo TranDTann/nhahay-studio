@@ -39,6 +39,11 @@ const menuItems = [
         icon: <NotificationOutlined />,
         label: <Link href="/admin/advertisement">Advertisement</Link>,
     },
+    {
+        key: '/admin/banners',
+        icon: <NotificationOutlined />,
+        label: <Link href="/admin/banners">Banners</Link>,
+    },
 ];
 
 interface AdminSidebarProps {

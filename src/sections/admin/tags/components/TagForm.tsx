@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 interface TagFormProps {
     visible: boolean;
     onCancel: () => void;
-    onSubmit: (title: string) => Promise<void>;
+    onSubmit: (data: { name: string; description?: string }) => Promise<void>;
     initialValues?: Tag | null;
     title: string;
     loading?: boolean;
@@ -23,7 +23,7 @@ export default function TagForm({ visible, onCancel, onSubmit, initialValues, ti
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
-            await onSubmit(values.name);
+            await onSubmit({ name: values.name, description: values.description });
             form.resetFields();
         } catch (error) {
             console.error('Validation failed:', error);
@@ -53,12 +53,12 @@ export default function TagForm({ visible, onCancel, onSubmit, initialValues, ti
                 >
                     <Input />
                 </Form.Item>
-                {/* <Form.Item
+                <Form.Item
                     name="description"
                     label="Description"
                 >
                     <Input.TextArea rows={4} />
-                </Form.Item> */}
+                </Form.Item>
             </Form>
         </Modal>
     );

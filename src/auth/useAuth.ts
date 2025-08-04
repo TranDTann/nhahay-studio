@@ -43,7 +43,7 @@ const useAuth = (onAuthComplete?: Dispatch<SetStateAction<boolean>>) => {
       return
     }
 
-    if (!authUser) {
+    if (!authUser && auth_token) {
       getUserInfo()
     }
 

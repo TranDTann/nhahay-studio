@@ -1,29 +1,26 @@
-import { Form, Input, Modal, Select, Upload, Button } from 'antd';
+import { Form, Input, Modal, Upload, Button, Switch } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { Advertisement } from '@/store/advertisement/crud';
-import { Category } from '@/store/categories/crud';
+import { Banner } from '@/store/banner/crud';
 import { useEffect, useState } from 'react';
 import { imageCrud } from '@/store/image/crud';
 
-interface AdvertisementFormProps {
+interface BannerFormProps {
     visible: boolean;
     onCancel: () => void;
-    onSubmit: (data: Omit<Advertisement, 'id' | 'createdAt'>) => Promise<void>;
-    initialValues?: Advertisement | null;
+    onSubmit: (data: Omit<Banner, 'id' | 'createdAt'>) => Promise<void>;
+    initialValues?: Banner | null;
     title: string;
     loading?: boolean;
-    // categories: Category[];
 }
 
-export default function AdvertisementForm({
+export default function BannerForm({
     visible,
     onCancel,
     onSubmit,
     initialValues,
     title,
     loading = false,
-    // categories
-}: AdvertisementFormProps) {
+}: BannerFormProps) {
     const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState<string>('');
     const [uploading, setUploading] = useState(false);
@@ -45,10 +42,10 @@ export default function AdvertisementForm({
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
-            // Custom validation: require at least một trong imageUrl hoặc link
-            if (!values.imageUrl && !values.link) {
+            // Custom validation: require imageUrl
+            if (!values.imageUrl) {
                 form.setFields([
-                    { name: 'link', errors: ['Phải nhập link hoặc upload ảnh!'] }
+                    { name: 'imageUrl', errors: ['Please upload an image!'] }
                 ]);
                 return;
             }
@@ -95,14 +92,14 @@ export default function AdvertisementForm({
             <Form
                 form={form}
                 layout="vertical"
-                initialValues={initialValues || {}}
+                initialValues={initialValues || { status: true }}
             >
                 <Form.Item
                     name="title"
                     label="Title"
-                    rules={[{ required: true, message: 'Please enter advertisement title!' }]}
+                    rules={[{ required: true, message: 'Please enter banner title!' }]}
                 >
-                    <Input placeholder="Enter advertisement title" />
+                    <Input placeholder="Enter banner title" />
                 </Form.Item>
 
                 {/* Trường ẩn để đồng bộ imageUrl với form */}
@@ -111,10 +108,10 @@ export default function AdvertisementForm({
                 </Form.Item>
 
                 <Form.Item
-                    name="positionType"
+                    name="position"
                     label="Position"
                 >
-                    <Input placeholder="Enter advertisement position (optional)" />
+                    <Input placeholder="Enter banner position (e.g., header, sidebar, footer)" />
                 </Form.Item>
 
                 <Form.Item
@@ -128,7 +125,16 @@ export default function AdvertisementForm({
                 </Form.Item>
 
                 <Form.Item
+                    name="status"
+                    label="Status"
+                    valuePropName="checked"
+                >
+                    <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
+                </Form.Item>
+
+                <Form.Item
                     label="Image"
+                    required
                 >
                     <Upload {...uploadProps}>
                         <Button

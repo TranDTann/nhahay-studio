@@ -1,14 +1,14 @@
-import { Table, Button, Space, Image } from 'antd';
+import { Table, Button, Space, Image, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { Advertisement } from '@/store/advertisement/crud';
+import { Banner } from '@/store/banner/crud';
 import { useEffect, useState } from 'react';
 
-interface AdvertisementTableProps {
-    advertisements: Advertisement[];
+interface BannerTableProps {
+    banners: Banner[];
     loading: boolean;
-    onEdit: (record: Advertisement) => void;
-    onDelete: (record: Advertisement) => void;
+    onEdit: (record: Banner) => void;
+    onDelete: (record: Banner) => void;
     onSort: (field: string) => void;
     sortField: string;
     SortDir: number;
@@ -18,8 +18,8 @@ interface AdvertisementTableProps {
     onPageChange?: (page: number, pageSize: number) => void;
 }
 
-export default function AdvertisementTable({
-    advertisements,
+export default function BannerTable({
+    banners,
     loading,
     onEdit,
     onDelete,
@@ -30,7 +30,7 @@ export default function AdvertisementTable({
     currentPage = 1,
     pageSize = 10,
     onPageChange
-}: AdvertisementTableProps) {
+}: BannerTableProps) {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -44,7 +44,7 @@ export default function AdvertisementTable({
         return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
-    const columns: ColumnsType<Advertisement> = [
+    const columns: ColumnsType<Banner> = [
         {
             title: (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -63,9 +63,9 @@ export default function AdvertisementTable({
         },
         {
             title: 'Position',
-            dataIndex: 'positionType',
-            key: 'positionType',
-            render: (positionType) => positionType || '-',
+            dataIndex: 'position',
+            key: 'position',
+            render: (position) => position || '-',
         },
         {
             title: 'Image',
@@ -74,10 +74,10 @@ export default function AdvertisementTable({
             render: (imageUrl) => imageUrl ? (
                 <Image
                     src={imageUrl}
-                    alt="Advertisement"
-                    width={60}
-                    height={40}
-                    style={{ objectFit: 'cover' }}
+                    alt="Banner"
+                    width={80}
+                    height={50}
+                    style={{ objectFit: 'cover', borderRadius: 4 }}
                 />
             ) : '-',
         },
@@ -90,6 +90,16 @@ export default function AdvertisementTable({
                     {link.length > 30 ? `${link.substring(0, 30)}...` : link}
                 </a>
             ) : '-',
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (status) => (
+                <Tag color={status ? 'green' : 'red'}>
+                    {status ? 'Active' : 'Inactive'}
+                </Tag>
+            ),
         },
         {
             title: (
@@ -141,7 +151,7 @@ export default function AdvertisementTable({
         }}>
             <Table
                 columns={columns}
-                dataSource={advertisements}
+                dataSource={banners}
                 rowKey="id"
                 loading={loading}
                 scroll={{ x: 'max-content' }}
@@ -151,7 +161,7 @@ export default function AdvertisementTable({
                     total: total,
                     showSizeChanger: false,
                     showQuickJumper: true,
-                    showTotal: (total, range) => `${range[0]}-${range[1]} của ${total} mục`,
+                    showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
                     onChange: onPageChange,
                 }}
             />

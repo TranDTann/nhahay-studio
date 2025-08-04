@@ -4,7 +4,9 @@ export interface Article {
   id: string
   title: string
   content: string
-  tags: string[]
+  tagIds: string[]
+  categoryId: string
+  advertisementIds: string[]
   image: string
   description: string
   createdAt: string
@@ -21,11 +23,38 @@ export interface Article {
 }
 
 export const articleCrud = {
-  getArticles: async (params?: any) => {
+  getArticles: async (params?: {
+    search?: string
+    tags?: string[]
+    categoryId?: string
+    page?: number
+    pageSize?: number
+    sort?: string
+    SortDir?: number
+    listType?: number
+  }) => {
     try {
-      const response = await axiosInstance.get<any>('/api/post', {
-        params
+      const query = new URLSearchParams()
+
+      Object.entries({
+        search: params?.search,
+        categoryId: params?.categoryId,
+        sort: params?.sort,
+        SortDir: params?.SortDir?.toString(),
+        listType: params?.listType?.toString(),
+        tags: params?.tags?.length ? params.tags.join(',') : undefined
+      }).forEach(([key, value]) => {
+        if (value !== undefined) query.append(key, value)
       })
+
+      // Chuyển page/pageSize thành take/skip
+      const take = params?.pageSize || 10
+      const skip =
+        params?.page && params.page > 1 ? (params.page - 1) * take : 0
+      query.append('take', take.toString())
+      query.append('skip', skip.toString())
+      const url = `/api/post${query.toString() ? `?${query.toString()}` : ''}`
+      const response = await axiosInstance.get<any>(url)
       return response.data
     } catch (error) {
       handleApiError(error)

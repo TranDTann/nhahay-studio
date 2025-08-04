@@ -1,15 +1,17 @@
 import axiosInstance from '@/api/axiosConfig'
 import { handleApiError } from '@/api/error'
 
-export interface Advertisement {
+export interface Banner {
   id?: string
   title: string
-  imageUrl?: string
+  imageUrl: string
   link?: string
-  positionType?: string
+  position?: string
+  status: boolean
+  createdAt?: string
 }
 
-export interface AdvertisementFilters {
+export interface BannerFilters {
   search?: string
   sort?: string
   SortDir?: number
@@ -24,8 +26,8 @@ export class ApiError extends Error {
   }
 }
 
-export const advertisementCrud = {
-  getAdvertisements: async (filters?: AdvertisementFilters) => {
+export const bannerCrud = {
+  getBanners: async (filters?: BannerFilters) => {
     try {
       const params = new URLSearchParams()
       if (filters?.search) params.append('search', filters.search)
@@ -35,11 +37,11 @@ export const advertisementCrud = {
       if (filters?.take) params.append('take', filters.take.toString())
       if (filters?.skip) params.append('skip', filters.skip.toString())
 
-      const url = `/api/advertisement${
+      const url = `/api/banner${
         params.toString() ? `?${params.toString()}` : ''
       }`
       const response = await axiosInstance.get<{
-        result: Advertisement[]
+        result: Banner[]
         count: number
       }>(url)
       return response.data
@@ -48,44 +50,45 @@ export const advertisementCrud = {
     }
   },
 
-  createAdvertisement: async (
-    data: Omit<Advertisement, 'id' | 'createdAt'>
-  ) => {
+  getBannerById: async (id: string) => {
     try {
-      const response = await axiosInstance.post<Advertisement>(
-        '/api/advertisement',
-        data
-      )
+      const response = await axiosInstance.get<Banner>(`/api/banner/${id}`)
+      return response.data
+    } catch (error: any) {
+      handleApiError(error)
+    }
+  },
+
+  createBanner: async (data: Omit<Banner, 'id' | 'createdAt'>) => {
+    try {
+      const response = await axiosInstance.post<Banner>('/api/banner', data)
       return response.data
     } catch (error: any) {
       throw new ApiError(
-        error.response?.data?.message || 'Failed to create advertisement',
+        error.response?.data?.message || 'Failed to create banner',
         error.response?.status
       )
     }
   },
 
-  updateAdvertisement: async (data: Partial<Advertisement>) => {
+  updateBanner: async (data: Partial<Banner>) => {
     try {
-      const response = await axiosInstance.put<Advertisement>(
-        `/api/advertisement`,
-        data
-      )
+      const response = await axiosInstance.put<Banner>(`/api/banner`, data)
       return response.data
     } catch (error: any) {
       throw new ApiError(
-        error.response?.data?.message || 'Failed to update advertisement',
+        error.response?.data?.message || 'Failed to update banner',
         error.response?.status
       )
     }
   },
 
-  deleteAdvertisement: async (id: string) => {
+  deleteBanner: async (id: string) => {
     try {
-      await axiosInstance.delete(`/api/advertisement/${id}`)
+      await axiosInstance.delete(`/api/banner/${id}`)
     } catch (error: any) {
       throw new ApiError(
-        error.response?.data?.message || 'Failed to delete advertisement',
+        error.response?.data?.message || 'Failed to delete banner',
         error.response?.status
       )
     }
