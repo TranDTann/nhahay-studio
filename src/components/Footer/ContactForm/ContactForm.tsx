@@ -1,18 +1,27 @@
-import { Button, Col, Form, Input, Row } from 'antd'
+import { useContactStore } from '@/store/contact/contactStore'
+import { TContactInfo } from '@/store/contact/crud'
 import {
   HomeOutlined,
   MailOutlined,
   PhoneOutlined,
   UserOutlined
 } from '@ant-design/icons'
+import { Button, Col, Form, FormProps, Input, Row } from 'antd'
 import './styles.css'
 const { TextArea } = Input
 
 const ContactForm = () => {
   const [form] = Form.useForm()
 
-  const onFinish = (values) => {
-    form.resetFields()
+  const { sendContact } = useContactStore((state) => state)
+
+  const onFinish: FormProps<TContactInfo>['onFinish'] = async (values) => {
+    try {
+      await sendContact(values)
+      form.resetFields()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const onFinishFailed = (errorInfo) => {}
@@ -30,7 +39,7 @@ const ContactForm = () => {
         layout="vertical"
       >
         <Row gutter={24}>
-          <Col span={15}>
+          <Col span={15} style={{ padding: '0 4px 0 12px' }}>
             <Form.Item
               name="fullName"
               rules={[
@@ -45,7 +54,7 @@ const ContactForm = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={9}>
+          <Col span={9} style={{ padding: '0 12px 0 4px' }}>
             <Form.Item
               name="phoneNumber"
               rules={[
@@ -65,7 +74,7 @@ const ContactForm = () => {
           </Col>
         </Row>
         <Row gutter={24}>
-          <Col span={12}>
+          <Col span={12} style={{ padding: '0 4px 0 12px' }}>
             <Form.Item
               name="email"
               rules={[
@@ -80,7 +89,7 @@ const ContactForm = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={12} style={{ padding: '0 12px 0 4px' }}>
             <Form.Item
               name="address"
               rules={[
