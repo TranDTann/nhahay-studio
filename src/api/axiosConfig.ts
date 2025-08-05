@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 // Create axios instance with custom config
 const axiosInstance = axios.create({
-  baseURL: 'https://european-globe-climate-landscapes.trycloudflare.com/',
+  baseURL: 'https://algebra-western-amy-browser.trycloudflare.com/',
   timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',
