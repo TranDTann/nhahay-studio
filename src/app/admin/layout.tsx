@@ -4,6 +4,7 @@ import AdminSidebar from '@/components/admin/AdminSidebar';
 import theme from '../../../config/themeConfig';
 import { useState, useEffect } from 'react';
 import { MenuOutlined } from '@ant-design/icons';
+import { ConfigProvider as AppConfigProvider } from '@/contexts/ConfigContext';
 
 const { Content } = Layout;
 
@@ -42,33 +43,35 @@ export default function AdminLayout({
     };
 
     return (
-        <ConfigProvider theme={theme}>
-            <Layout style={{ minHeight: '100vh' }}>
-                <button
-                    className="admin-sidebar__toggle"
-                    onClick={toggleSidebar}
-                    aria-label="Toggle Sidebar"
-                >
-                    <MenuOutlined />
-                </button>
+        <AppConfigProvider>
+            <ConfigProvider theme={theme}>
+                <Layout style={{ minHeight: '100vh' }}>
+                    <button
+                        className="admin-sidebar__toggle"
+                        onClick={toggleSidebar}
+                        aria-label="Toggle Sidebar"
+                    >
+                        <MenuOutlined />
+                    </button>
 
-                <div
-                    className={`admin-sidebar__overlay ${isSidebarOpen ? 'open' : ''}`}
-                    onClick={closeSidebar}
-                />
-                {
-                    isSidebarOpen && (
-                        <AdminSidebar isOpen={isSidebarOpen} />
-                    )
-                }
+                    <div
+                        className={`admin-sidebar__overlay ${isSidebarOpen ? 'open' : ''}`}
+                        onClick={closeSidebar}
+                    />
+                    {
+                        isSidebarOpen && (
+                            <AdminSidebar isOpen={isSidebarOpen} />
+                        )
+                    }
 
 
-                <Layout className="admin-content">
-                    <Content style={{ padding: '24px 8px', background: '#fff' }}>
-                        {children}
-                    </Content>
+                    <Layout className="admin-content">
+                        <Content style={{ padding: '24px 8px', background: '#fff' }}>
+                            {children}
+                        </Content>
+                    </Layout>
                 </Layout>
-            </Layout>
-        </ConfigProvider>
+            </ConfigProvider>
+        </AppConfigProvider>
     );
 }

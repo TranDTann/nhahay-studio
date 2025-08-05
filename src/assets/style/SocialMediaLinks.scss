@@ -1,0 +1,110 @@
+.social-media-links {
+  .social-media-button {
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    &.ant-btn-text {
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+
+  // Facebook
+  .social-media-button[data-platform='facebook'] {
+    color: #1877f2;
+    border-color: #1877f220;
+
+    &:hover {
+      background-color: #1877f210 !important;
+      box-shadow: 0 4px 12px #1877f230 !important;
+    }
+  }
+
+  // Instagram
+  .social-media-button[data-platform='instagram'] {
+    color: #e4405f;
+    border-color: #e4405f20;
+
+    &:hover {
+      background-color: #e4405f10 !important;
+      box-shadow: 0 4px 12px #e4405f30 !important;
+    }
+  }
+
+  // TikTok
+  .social-media-button[data-platform='tiktok'] {
+    color: #000000;
+    border-color: #00000020;
+
+    &:hover {
+      background-color: #00000010 !important;
+      box-shadow: 0 4px 12px #00000030 !important;
+    }
+  }
+
+  // YouTube
+  .social-media-button[data-platform='youtube'] {
+    color: #ff0000;
+    border-color: #ff000020;
+
+    &:hover {
+      background-color: #ff000010 !important;
+      box-shadow: 0 4px 12px #ff000030 !important;
+    }
+  }
+
+  // Twitter
+  .social-media-button[data-platform='twitter'] {
+    color: #1da1f2;
+    border-color: #1da1f220;
+
+    &:hover {
+      background-color: #1da1f210 !important;
+      box-shadow: 0 4px 12px #1da1f230 !important;
+    }
+  }
+
+  // LinkedIn
+  .social-media-button[data-platform='linkedin'] {
+    color: #0077b5;
+    border-color: #0077b520;
+
+    &:hover {
+      background-color: #0077b510 !important;
+      box-shadow: 0 4px 12px #0077b530 !important;
+    }
+  }
+}
+
+// Loading animation
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .social-media-links {
+    .social-media-button {
+      width: 36px !important;
+      height: 36px !important;
+    }
+  }
+}

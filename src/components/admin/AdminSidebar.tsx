@@ -6,6 +6,7 @@ import {
     TagsOutlined,
     NotificationOutlined,
     FolderOutlined,
+    SettingOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -43,6 +44,11 @@ const menuItems = [
         key: '/admin/banners',
         icon: <NotificationOutlined />,
         label: <Link href="/admin/banners">Banners</Link>,
+    },
+    {
+        key: '/admin/config',
+        icon: <SettingOutlined />,
+        label: <Link href="/admin/config">Config</Link>,
     },
 ];
 

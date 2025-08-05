@@ -1,0 +1,168 @@
+.config-page {
+  .config-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .config-title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .config-actions {
+      display: flex;
+      gap: 12px;
+    }
+  }
+
+  .config-table {
+    .ant-table-thead > tr > th {
+      background-color: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background-color: #f3f4f6;
+    }
+
+    .config-key {
+      font-weight: 500;
+      color: #1f2937;
+    }
+
+    .config-value {
+      word-break: break-word;
+      max-width: 300px;
+
+      .truncated-text {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .config-description {
+      word-break: break-word;
+      max-width: 200px;
+      color: #6b7280;
+
+      .truncated-text {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .config-actions {
+      .ant-btn {
+        padding: 4px 8px;
+        height: auto;
+
+        &:hover {
+          background-color: #f3f4f6;
+        }
+      }
+    }
+  }
+
+  .config-modal {
+    .ant-modal-header {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+
+      .ant-modal-title {
+        font-weight: 600;
+        color: #1f2937;
+      }
+    }
+
+    .ant-modal-body {
+      padding: 24px;
+    }
+
+    .ant-form-item-label > label {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .ant-input,
+    .ant-input-textarea {
+      border-color: #d1d5db;
+      border-radius: 6px;
+
+      &:hover {
+        border-color: #9ca3af;
+      }
+
+      &:focus,
+      &.ant-input-focused {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      }
+    }
+
+    .ant-form-item-explain-error {
+      color: #dc2626;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .config-page {
+    .config-header {
+      flex-direction: column;
+      gap: 16px;
+      align-items: stretch;
+
+      .config-actions {
+        justify-content: space-between;
+      }
+    }
+
+    .config-table {
+      .ant-table {
+        font-size: 14px;
+      }
+
+      .config-value,
+      .config-description {
+        max-width: 150px;
+      }
+    }
+  }
+}
+
+// Dark mode support (if needed)
+@media (prefers-color-scheme: dark) {
+  .config-page {
+    .config-header .config-title {
+      color: #f9fafb;
+    }
+
+    .config-table {
+      .ant-table-thead > tr > th {
+        background-color: #374151;
+        color: #f9fafb;
+      }
+
+      .config-key {
+        color: #f9fafb;
+      }
+
+      .config-description {
+        color: #9ca3af;
+      }
+    }
+  }
+}
