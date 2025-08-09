@@ -1,0 +1,18 @@
+.category-info-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 36px;
+  gap: 16px;
+}
+
+.category-name {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+}
+
+.category-thumbnail-image {
+  border-radius: 9999px;
+  width: 60px;
+  height: 60px;
+}

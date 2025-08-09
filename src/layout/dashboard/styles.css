@@ -1,10 +1,13 @@
 .dashboard-container {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-container {
   width: 80%;
   margin: 0 auto;
   padding: 24px 0;
+  flex: 1;
 }

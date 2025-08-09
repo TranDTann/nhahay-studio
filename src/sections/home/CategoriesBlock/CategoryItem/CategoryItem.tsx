@@ -1,14 +1,21 @@
 import { Category } from '@/store/categories/crud'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import './styles.css'
+import { useRouter } from 'next/navigation'
+import paths from '@/routes/paths'
 
 type TCategoryItemProps = {
   categoryData: Category
 }
 
 const CategoryItem = ({ categoryData }: TCategoryItemProps) => {
+  const router = useRouter()
+
   return (
-    <div className="category-container image-hover-zoom-container">
+    <div
+      className="category-container image-hover-zoom-container"
+      onClick={() => router.push(paths.dashboard.category(categoryData.id))}
+    >
       <div className="category-thumbnail-container">
         <img
           src={

@@ -1,4 +1,3 @@
-import CategoryView from '@/sections/category/view/HomeView'
 import React from 'react'
 
 export const metadata = {

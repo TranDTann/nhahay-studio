@@ -1,5 +1,4 @@
-import React from 'react'
-import CategoryView from '@/sections/category/view/HomeView'
+import CategoryView from '@/sections/category/view/CategoryView'
 
 export const metadata = {
   title: 'NhaHayStudio Danh mục'
