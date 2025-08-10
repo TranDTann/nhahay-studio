@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
 import CategoryInfo from '../CategoryInfo/CategoryInfo'
 import CategoryPost from '../CategoryPost/CategoryPost'
+import CategoryPostFilter from '../CategoryPostFilter/CategoryPostFilter'
 import './styles.css'
 
 const CategoryView = () => {
@@ -26,6 +27,7 @@ const CategoryView = () => {
   const [isPostsLoading, setIsPostsLoading] = useState(false)
   const [page, setPage] = useState(1)
   const [totalPost, setTotalPost] = useState(0)
+  const [postType, setPostType] = useState(0)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +40,8 @@ const CategoryView = () => {
 
         const { result = [], count = 0 } = await articleCrud.getArticles({
           categoryId,
-          page
+          page,
+          listType: postType
         })
         setCategoryPosts([...categoryPosts, ...result])
         setTotalPost(count)
@@ -53,6 +56,29 @@ const CategoryView = () => {
 
     fetchData()
   }, [categoryId, page])
+
+  useEffect(() => {
+    const fetchCategoryPostsData = async () => {
+      try {
+        setIsPostsLoading(true)
+
+        const { result = [], count = 0 } = await articleCrud.getArticles({
+          categoryId,
+          listType: postType
+        })
+        setCategoryPosts(result)
+        setTotalPost(count)
+      } catch (error) {
+        messageApi.error(
+          error?.response?.data?.message || 'Lấy danh sách bài viết thất bại!'
+        )
+      } finally {
+        setIsPostsLoading(false)
+      }
+    }
+
+    fetchCategoryPostsData()
+  }, [postType])
 
   const categoryView = categories.find((item) => item.id === categoryId)
 
@@ -76,14 +102,11 @@ const CategoryView = () => {
             Danh mục này hiện tại chưa có bài viết nào.
           </div>
         ) : (
-          <>
-            <div className="list-category-post-header">Bài viết</div>
-            <div className="list-category-post-container">
-              {categoryPosts.map((postItem) => (
-                <CategoryPost key={postItem.id} postData={postItem} />
-              ))}
-            </div>
-          </>
+          <div className="list-category-post-container">
+            {categoryPosts.map((postItem) => (
+              <CategoryPost key={postItem.id} postData={postItem} />
+            ))}
+          </div>
         )}
       </>
     )
@@ -92,6 +115,7 @@ const CategoryView = () => {
   return (
     <div className="category-details-container">
       <CategoryInfo categoryData={categoryView} />
+      <CategoryPostFilter setPostType={setPostType} />
       {postsContent}
       {categoryPosts.length < totalPost && (
         <div className="view-more-button-container">

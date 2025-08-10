@@ -11,15 +11,6 @@
   margin-top: 20px;
 }
 
-.list-category-post-header {
-  font-size: 18px;
-  line-height: 24px;
-  font-weight: 600;
-  color: rgb(52, 52, 52);
-  font-style: italic;
-  margin-bottom: 18px;
-}
-
 .list-category-post-container {
   display: flex;
   flex-direction: column;

@@ -1,0 +1,9 @@
+#CategoryPostFilter .ant-tabs-tab:hover,
+#CategoryPostFilter .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #7754f6 !important;
+  text-shadow: 0 0 0.25px #7754f6 !important;
+}
+
+#CategoryPostFilter .ant-tabs-ink-bar {
+  background-color: #7754f6 !important;
+}
