@@ -1,0 +1,44 @@
+.category-post-container {
+  display: flex;
+  gap: 16px;
+}
+
+.category-post-image {
+  min-height: 80px;
+  max-height: 180px;
+  object-fit: contain;
+}
+
+.category-post-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category-post-title {
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+  color: #233242;
+}
+
+.category-post-content,
+.category-post-read-mins {
+  color: #565655;
+}
+
+.category-post-author,
+.category-post-publish-time,
+.category-post-read-mins,
+.category-post-content {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.category-post-author {
+  color: #233242;
+}
+
+.category-post-publish-time {
+  color: #b9b9b6;
+}

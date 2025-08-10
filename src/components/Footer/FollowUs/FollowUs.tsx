@@ -1,5 +1,5 @@
-import { FaFacebook, FaYoutube, FaTiktok } from 'react-icons/fa'
 import Link from 'next/link'
+import { FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa'
 import './styles.css'
 
 const FollowUs = () => {
@@ -20,7 +20,7 @@ const FollowUs = () => {
             href={socialItem.link}
           >
             <socialItem.icon className="social-item_icon" />
-            {socialItem.name}
+            <p className="social-item_name">{socialItem.name}</p>
           </Link>
         ))}
       </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import { PostTypeEnum } from '@/store/article/articleStore'
 import { Article, articleCrud } from '@/store/article/crud'
 import { App, Col, Row } from 'antd'
 import { useEffect, useState } from 'react'
@@ -18,7 +19,11 @@ const FeaturedPosts = () => {
     const fetchArticles = async () => {
       try {
         setIsLoading(true)
-        const response = await articleCrud.getArticles({ listType: 0 })
+        const response = await articleCrud.getArticles({
+          listType: PostTypeEnum.NONE,
+          // listType: PostTypeEnum.FEATURED_POSTS,
+          pageSize: 4
+        })
         setFeaturedPosts(response.result || [])
       } catch (error: any) {
         messageApi.error(

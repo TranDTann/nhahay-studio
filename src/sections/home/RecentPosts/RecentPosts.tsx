@@ -1,5 +1,6 @@
 'use client'
 
+import { PostTypeEnum } from '@/store/article/articleStore'
 import { Article, articleCrud } from '@/store/article/crud'
 import { App, Col, Row } from 'antd'
 import { useEffect, useState } from 'react'
@@ -20,7 +21,10 @@ const RecentPosts = () => {
     const fetchArticles = async () => {
       try {
         setIsLoading(true)
-        const response = await articleCrud.getArticles({ listType: 1 })
+        const response = await articleCrud.getArticles({
+          listType: PostTypeEnum.LATEST,
+          pageSize: 4
+        })
         setRecentPosts(response.result || [])
       } catch (error: any) {
         messageApi.error(

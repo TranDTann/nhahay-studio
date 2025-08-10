@@ -1,6 +1,24 @@
 import { create } from 'zustand'
 import { articleCrud } from './crud'
 
+export enum PostTypeEnum {
+  NONE = 0,
+  LATEST = 1,
+  MOST_VIEWED = 2,
+  MOST_LIKED = 3,
+  MOST_COMMENTED = 4,
+  FEATURED_POSTS = 5,
+  RELATED_POSTS = 6,
+  TRENDING_POSTS = 7,
+  TOP_RATED = 8
+}
+
+export const postTyes = [
+  { key: PostTypeEnum.NONE, label: 'Nổi bật' },
+  { key: PostTypeEnum.MOST_VIEWED, label: 'Phổ biến' },
+  { key: PostTypeEnum.LATEST, label: 'Gần đây' },
+  { key: PostTypeEnum.TRENDING_POSTS, label: 'Xu hướng' }
+]
 interface Article {
   id: string
   title: string
