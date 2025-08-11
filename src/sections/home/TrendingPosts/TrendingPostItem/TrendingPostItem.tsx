@@ -1,6 +1,8 @@
 'use client'
 
+import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
+import { useRouter } from 'next/navigation'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { MdOutlineDateRange } from 'react-icons/md'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
@@ -11,9 +13,18 @@ type TTrendingPostItemProps = {
 }
 
 const TrendingPostItem = ({ postData }: TTrendingPostItemProps) => {
+  const router = useRouter()
+
+  const navigateToPostDetail = () => {
+    router.push(paths.dashboard.postDetail(postData.id))
+  }
+
   return (
     <div className="trending-post-item-container">
-      <div className="trending-post-item-image-container image-hover-zoom-container">
+      <div
+        className="trending-post-item-image-container image-hover-zoom-container"
+        onClick={navigateToPostDetail}
+      >
         <img
           src={postData.image}
           alt="TrendingPost-image"
@@ -24,7 +35,10 @@ const TrendingPostItem = ({ postData }: TTrendingPostItemProps) => {
         </div>
       </div>
       <div className="trending-post-item-content">
-        <h3 className="trending-post-item-title display-max-2-lines">
+        <h3
+          className="trending-post-item-title display-max-2-lines"
+          onClick={navigateToPostDetail}
+        >
           {postData.title}
         </h3>
         <div className="trending-post-info-container">

@@ -1,6 +1,8 @@
 'use client'
 
+import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
+import { useRouter } from 'next/navigation'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { IoIosTimer } from 'react-icons/io'
 import { MdOutlineDateRange } from 'react-icons/md'
@@ -12,8 +14,13 @@ type TMainRecentPostProps = {
 }
 
 const MainRecentPost = ({ postData }: TMainRecentPostProps) => {
+  const router = useRouter()
+
   return (
-    <div className="post-container">
+    <div
+      onClick={() => router.push(paths.dashboard.postDetail(postData.id))}
+      className="post-container"
+    >
       <div className="post-image-container image-hover-zoom-container">
         <img
           src={postData.image}

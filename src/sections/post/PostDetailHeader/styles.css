@@ -1,0 +1,26 @@
+.post-detail-header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.post-detail-title {
+  color: #233242;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.post-detail-header-info {
+  display: flex;
+  gap: 16px;
+  color: #565655;
+}
+
+.post-detail-header-info_author {
+  font-size: 14px;
+  color: #233242;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

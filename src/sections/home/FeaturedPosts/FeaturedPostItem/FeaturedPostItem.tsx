@@ -1,6 +1,8 @@
 'use client'
 
+import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
+import { useRouter } from 'next/navigation'
 import { MdOutlineDateRange } from 'react-icons/md'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import './styles.css'
@@ -10,8 +12,13 @@ type TFeaturedPostItemProps = {
 }
 
 const FeaturedPostItem = ({ postData }: TFeaturedPostItemProps) => {
+  const router = useRouter()
+
   return (
-    <div className="featured-post-item-container image-hover-zoom-container">
+    <div
+      className="featured-post-item-container image-hover-zoom-container"
+      onClick={() => router.push(paths.dashboard.postDetail(postData.id))}
+    >
       <div className="featured-post-item-image-container">
         <img
           src={postData.image}

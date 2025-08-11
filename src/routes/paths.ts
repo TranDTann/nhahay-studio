@@ -14,7 +14,8 @@ const paths = {
   dashboard: {
     root: () => '/home',
     home: () => '/home',
-    category: (categoryId: string) => `/category/${categoryId}`
+    category: (categoryId: string) => `/category/${categoryId}`,
+    postDetail: (postId: string) => `/post/${postId}`
   },
   admin: {
     root: () => `${roots.admin}`,

@@ -1,0 +1,32 @@
+'use client'
+
+import { Article } from '@/store/article/crud'
+import { Divider } from 'antd'
+import { FaUser } from 'react-icons/fa'
+import './styles.css'
+
+type TPostDetailHeaderProps = {
+  postData: Article
+}
+
+const PostDetailHeader = ({ postData }: TPostDetailHeaderProps) => {
+  return (
+    <div className="post-detail-header-container">
+      <p className="post-detail-title">{postData.title}</p>
+      <div className="post-detail-header-info">
+        <FaUser />
+        <div className="post-detail-header-info_author">
+          <p className="post-detail-header_author-name">{postData.createdBy}</p>
+          <p>{postData.publishAt}</p>
+          <div>
+            <span>{postData.readingTimeMinutes} mins</span>
+            <Divider type="vertical" style={{ borderColor: '#233242' }} />
+            <span>{postData.ratingAvg}*</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default PostDetailHeader

@@ -1,6 +1,8 @@
 'use client'
 
+import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
+import { useRouter } from 'next/navigation'
 import { MdOutlineDateRange } from 'react-icons/md'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import './styles.css'
@@ -10,9 +12,18 @@ type TRecentPostItemProps = {
 }
 
 const RecentPostItem = ({ postData }: TRecentPostItemProps) => {
+  const router = useRouter()
+
+  const navigateToPostDetail = () => {
+    router.push(paths.dashboard.postDetail(postData.id))
+  }
+
   return (
     <div className="post-item-container">
-      <div className="post-item-image-container image-hover-zoom-container">
+      <div
+        className="post-item-image-container image-hover-zoom-container"
+        onClick={navigateToPostDetail}
+      >
         <img
           src={postData.image}
           alt="RecentPost-image"
@@ -21,7 +32,10 @@ const RecentPostItem = ({ postData }: TRecentPostItemProps) => {
       </div>
       <div className="post-item-content">
         <CategoryTag tagName={postData.category?.name} />
-        <h3 className="post-item-title display-max-2-lines">
+        <h3
+          className="post-item-title display-max-2-lines"
+          onClick={navigateToPostDetail}
+        >
           {postData.title}
         </h3>
         <div className="post-item-date">
