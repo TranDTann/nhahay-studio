@@ -1,0 +1,16 @@
+.post-detail-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.post-detail-container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.post-detail-body {
+  display: flex;
+  gap: 64px;
+}

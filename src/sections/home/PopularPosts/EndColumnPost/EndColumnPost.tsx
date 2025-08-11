@@ -1,5 +1,7 @@
+import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
 import { Col, Row } from 'antd'
+import { useRouter } from 'next/navigation'
 import './styles.css'
 
 type TEndColumnPostProps = {
@@ -7,10 +9,19 @@ type TEndColumnPostProps = {
 }
 
 const EndColumnPost = ({ post }: TEndColumnPostProps) => {
+  const router = useRouter()
+
+  const navigateToPostDetail = () => {
+    router.push(paths.dashboard.postDetail(post.id))
+  }
+
   return (
     <Row gutter={24} className="end-post-container">
       <Col span={8}>
-        <div className="end-post-image-container image-hover-zoom-container">
+        <div
+          className="end-post-image-container image-hover-zoom-container"
+          onClick={navigateToPostDetail}
+        >
           <img
             src={post.image}
             alt="end-post-image"
@@ -19,7 +30,12 @@ const EndColumnPost = ({ post }: TEndColumnPostProps) => {
         </div>
       </Col>
       <Col span={16} className="end-post-info">
-        <h2 className="display-max-3-lines end-post-title">{post.title}</h2>
+        <h2
+          className="display-max-3-lines end-post-title"
+          onClick={navigateToPostDetail}
+        >
+          {post.title}
+        </h2>
         <div className="end-post-footer">
           <p>{post.createdBy}</p>
           <span className="end-post_time">{post.publishAt} | </span>

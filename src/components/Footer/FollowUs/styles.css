@@ -4,6 +4,18 @@
   color: #ffffff;
 }
 
+.follow-us-title-light,
+.social-item_icon-light,
+.social-item_name-light {
+  color: #233242 !important;
+}
+
+.follow-us-title {
+  font-size: 20px;
+  line-height: 28px;
+  color: #ffffff;
+}
+
 .social-list {
   display: flex;
   align-items: flex-start;

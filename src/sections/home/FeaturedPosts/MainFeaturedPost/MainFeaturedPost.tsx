@@ -1,6 +1,8 @@
 'use client'
 
+import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
+import { useRouter } from 'next/navigation'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { IoIosTimer } from 'react-icons/io'
 import { MdOutlineDateRange } from 'react-icons/md'
@@ -12,8 +14,13 @@ type TMainFeaturedPostProps = {
 }
 
 const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
+  const router = useRouter()
+
   return (
-    <div className="featured-post-container image-hover-zoom-container">
+    <div
+      className="featured-post-container image-hover-zoom-container"
+      onClick={() => router.push(paths.dashboard.postDetail(postData.id))}
+    >
       <div className="featured-post-image-container">
         <img
           src={postData.image}
