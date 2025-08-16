@@ -1,8 +1,8 @@
+import paths from '@/routes/paths'
 import { Category } from '@/store/categories/crud'
+import { useRouter } from 'next/navigation'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import './styles.css'
-import { useRouter } from 'next/navigation'
-import paths from '@/routes/paths'
 
 type TCategoryItemProps = {
   categoryData: Category

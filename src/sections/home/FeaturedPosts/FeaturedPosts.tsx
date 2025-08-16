@@ -20,8 +20,7 @@ const FeaturedPosts = () => {
       try {
         setIsLoading(true)
         const response = await articleCrud.getArticles({
-          listType: PostTypeEnum.NONE,
-          // listType: PostTypeEnum.FEATURED_POSTS,
+          listType: PostTypeEnum.FEATURED_POSTS,
           pageSize: 4
         })
         setFeaturedPosts(response.result || [])
@@ -41,7 +40,8 @@ const FeaturedPosts = () => {
     return <FeaturedPostsSkeleton />
   }
 
-  if (!featuredPosts.length) return null
+  if (!featuredPosts.length)
+    return <div className="add-post-noti">Thêm các bài viết nổi bật ở đây</div>
 
   const mainPost = featuredPosts[0]
   const rightColumnPosts = featuredPosts.slice(1, 4)

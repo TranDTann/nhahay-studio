@@ -36,7 +36,7 @@ const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
         <div className="featured-post-info-container">
           <div className="featured-post-info-item">
             <FaRegUserCircle color="#bacce1" />
-            <p>{postData.createdBy}</p>
+            <p>{postData.createdByUser.username}</p>
           </div>
           <div className="featured-post-info-item">
             <IoIosTimer color="#bacce1" />

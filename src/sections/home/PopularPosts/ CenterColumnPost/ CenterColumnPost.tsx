@@ -1,9 +1,9 @@
+import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
 import { Col, Row } from 'antd'
 import parse from 'html-react-parser'
-import './styles.css'
 import { useRouter } from 'next/navigation'
-import paths from '@/routes/paths'
+import './styles.css'
 
 type TCenterColumnPostProps = {
   post: Article
@@ -41,7 +41,7 @@ const CenterColumnPost = ({ post }: TCenterColumnPostProps) => {
           {parse(post.content ?? '')}
         </p>
         <div className="center-post-footer">
-          <p>{post.createdBy}</p>
+          <p>{post.createdByUser.username}</p>
           <span className="center-post_time">{post.publishAt} | </span>
           {post.readingTimeMinutes} mins
         </div>

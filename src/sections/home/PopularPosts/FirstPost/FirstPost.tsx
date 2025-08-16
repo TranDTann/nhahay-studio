@@ -37,7 +37,7 @@ const FirstPost = ({ post }: TFirstPostProps) => {
         {parse(post.content ?? '')}
       </p>
       <div className="first-post-footer">
-        <p>{post.createdBy}</p>
+        <p>{post.createdByUser.username}</p>
         <p className="first-post-footer_time">
           {post.publishAt} - {post.readingTimeMinutes} mins
         </p>

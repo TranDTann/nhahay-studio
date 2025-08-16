@@ -17,7 +17,7 @@ const PostDetailView = () => {
   const postId = pathname.substring(pathname.lastIndexOf('/') + 1)
 
   const [isGetPostLoading, setIsGetPostLoading] = useState(false)
-  const [postData, setPostData] = useState<Article[]>([])
+  const [postData, setPostData] = useState<Article>()
 
   useEffect(() => {
     const fetchPostsDetailData = async () => {
@@ -37,7 +37,7 @@ const PostDetailView = () => {
     }
 
     fetchPostsDetailData()
-  }, [postId])
+  }, [])
 
   if (isGetPostLoading) {
     return (
@@ -46,6 +46,8 @@ const PostDetailView = () => {
       </div>
     )
   }
+
+  if (!postData) return null
 
   return (
     <div className="post-detail-container">
