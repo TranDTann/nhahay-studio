@@ -16,7 +16,9 @@ const PostDetailHeader = ({ postData }: TPostDetailHeaderProps) => {
       <div className="post-detail-header-info">
         <FaUser />
         <div className="post-detail-header-info_author">
-          <p className="post-detail-header_author-name">{postData.createdBy}</p>
+          <p className="post-detail-header_author-name">
+            {postData.createdByUser.username}
+          </p>
           <p>{postData.publishAt}</p>
           <div>
             <span>{postData.readingTimeMinutes} mins</span>

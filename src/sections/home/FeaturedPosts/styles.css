@@ -17,3 +17,12 @@
   gap: 24px;
   height: 100%;
 }
+
+.add-post-noti {
+  color: rgb(70, 70, 70);
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
+}

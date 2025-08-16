@@ -36,7 +36,9 @@ const CategoryPost = ({ postData }: TCategoryPostProps) => {
           {parse(postData.content ?? '')}
         </div>
         <div>
-          <p className="category-post-author">{postData.createdBy}</p>
+          <p className="category-post-author">
+            {postData.createdByUser.username}
+          </p>
           <div>
             <span className="category-post-publish-time">
               {postData.publishAt}

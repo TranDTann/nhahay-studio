@@ -34,7 +34,7 @@ const MainRecentPost = ({ postData }: TMainRecentPostProps) => {
         <div className="post-info-container">
           <div className="post-info-item">
             <FaRegUserCircle color="#bacce1" />
-            <p>{postData.createdBy}</p>
+            <p>{postData.createdByUser.username}</p>
           </div>
           <div className="post-info-item">
             <IoIosTimer color="#bacce1" />

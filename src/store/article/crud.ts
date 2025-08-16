@@ -1,24 +1,31 @@
 import axiosInstance from '@/api/axiosConfig'
 import { handleApiError } from '@/api/error'
+
 export interface Article {
   id: string
   title: string
   content: string
-  tagIds: string[]
-  categoryId: string
-  advertisementIds: string[]
-  image: string
-  description: string
   createdAt: string
-  updatedAt: string
+  updatedAt: string | null
+  createdByUser: { email: string; id: string; username: string }
+  updatedByUser: { email: string; id: string; username: string } | null
+  publishAt: string | null
+  status: number
+  viewAmount: number
+  ratingAvg: number
+  commentAmount: number
   category: {
     id: string
     name: string
     description: string
+    urlThumnail: string
   }
-  createdBy: string
-  ratingAvg: string
-  publishAt: string
+  tags: { id: string; name: string; description: string }[]
+  advertisements: []
+  relatedPosts: []
+  image: string
+  description: string
+  isFeatured: boolean
   readingTimeMinutes: number
 }
 

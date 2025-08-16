@@ -44,7 +44,7 @@ const TrendingPostItem = ({ postData }: TTrendingPostItemProps) => {
         <div className="trending-post-info-container">
           <div className="trending-post-info-item">
             <FaRegUserCircle color="#bacce1" />
-            <p>{postData.createdBy}</p>
+            <p>{postData.createdByUser.username}</p>
           </div>
           <div className="trending-post-item">
             <MdOutlineDateRange color="#bacce1" /> <p>{postData.publishAt}</p>

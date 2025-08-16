@@ -37,7 +37,7 @@ const EndColumnPost = ({ post }: TEndColumnPostProps) => {
           {post.title}
         </h2>
         <div className="end-post-footer">
-          <p>{post.createdBy}</p>
+          <p>{post.createdByUser.username}</p>
           <span className="end-post_time">{post.publishAt} | </span>
           {post.readingTimeMinutes} mins
         </div>
