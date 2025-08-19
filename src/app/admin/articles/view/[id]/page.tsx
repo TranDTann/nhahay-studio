@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { Card, Spin, Button, Tag, Space, Typography, Image, App, Collapse } from 'antd';
-import { ArrowLeftOutlined, EditOutlined, DownOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
 import { articleCrud } from '@/store/article/crud';
 import { tagCrud, Tag as ApiTag } from '@/store/tags/crud';
 import { categoryCrud, Category as ApiCategory } from '@/store/categories/crud';
-import { convertContentStringToBlocks } from '@/utils/contentBlocksUtils';
 import ArticleRenderer from '@/components/ArticleRenderer';
 import ArticleMeta from '@/components/ArticleMeta';
 import ArticleBreadcrumb from '@/components/ArticleBreadcrumb';
@@ -34,7 +33,7 @@ interface Article {
     advertisements?: { id: string; title: string; imageUrl: string }[];
 }
 
-export default function ArticleDetailPage({ params }: { params: { id: string } }) {
+export default function ArticleDetailPage({ params }: { params: { id: string, noHeader?: boolean } }) {
     const router = useRouter();
     const { message: messageApi } = App.useApp();
     const [article, setArticle] = useState<Article | null>(null);
@@ -65,27 +64,6 @@ export default function ArticleDetailPage({ params }: { params: { id: string } }
         fetchData();
     }, [params.id]);
 
-    const getTagName = (tagId: string) => {
-        const tag = tags.find(t => t.id === tagId);
-        return tag?.name || tagId;
-    };
-
-    const getCategoryName = (categoryId?: string) => {
-        if (!categoryId) return 'No category';
-        const category = categories.find(c => c.id === categoryId);
-        return category?.name || categoryId;
-    };
-
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('vi-VN', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
-
     if (loading) {
         return (
             <div className={styles.loadingContainer}>
@@ -108,16 +86,17 @@ export default function ArticleDetailPage({ params }: { params: { id: string } }
     return (
         <div className={styles.container}>
             <Space direction="vertical" size="large" style={{ width: '100%' }}>
-                {/* Breadcrumb */}
-                <ArticleBreadcrumb
-                    articleTitle={article.title}
-                    articleId={article.id}
-                />
+                {!params.noHeader && (
+                    <ArticleBreadcrumb
+                        articleTitle={article.title}
+                        articleId={article.id}
+                    />
+                )}
 
                 {/* Article Layout with Table of Contents */}
                 <div className={styles.articleLayout}>
 
-                    <div className={styles.tableOfContentsWrapper}>
+                    <div className={`${styles.tableOfContentsWrapper} ${styles.tocColumn}`}>
                         <TableOfContents />
                         {Array.isArray(article.advertisements) && article.advertisements.slice(1, 2).map((ad, idx) => (
                             ad.imageUrl ? (
