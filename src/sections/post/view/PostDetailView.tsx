@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import PostDetailHeader from '../PostDetailHeader/PostDetailHeader'
 import './styles.css'
+import ArticleDetailPage from '@/app/admin/articles/view/[id]/page'
 
 const PostDetailView = () => {
   const pathname = usePathname()
@@ -50,12 +51,9 @@ const PostDetailView = () => {
   if (!postData) return null
 
   return (
-    <div className="post-detail-container">
-      <PostDetailHeader postData={postData} />
-      <div className="post-detail-body">
-        <ArticleRenderer content={postData.content} />
-        <FollowUs mode="light" />
-      </div>
+    <div>
+      <ArticleDetailPage params={{ id: postId, noHeader: true }} />
+
     </div>
   )
 }

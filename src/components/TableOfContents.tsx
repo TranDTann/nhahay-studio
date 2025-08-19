@@ -168,12 +168,6 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
                         </Space>
                     }
                     className={`table-of-contents ${styles.tableOfContents}`}
-                    style={{
-                        position: 'sticky',
-                        top: '20px',
-                        maxHeight: 'calc(100vh - 40px)',
-                        overflowY: 'auto'
-                    }}
                 >
                     {renderTocItems()}
                 </Card>

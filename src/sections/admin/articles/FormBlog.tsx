@@ -68,6 +68,7 @@ export default function FormBlog({ id }: FormBlogProps) {
     const [isSaving, setIsSaving] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const previewUrlRef = useRef<string | null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
     const [tags, setTags] = useState<Tag[]>([]);
     const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>([]);
@@ -151,23 +152,55 @@ export default function FormBlog({ id }: FormBlogProps) {
         fetchData();
     }, [id]);
 
+    useEffect(() => {
+        return () => {
+            if (previewUrlRef.current) {
+                URL.revokeObjectURL(previewUrlRef.current);
+                previewUrlRef.current = null;
+            }
+        };
+    }, []);
+
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        const inputEl = e.target as HTMLInputElement;
+        const file = inputEl.files?.[0];
         if (!file) return;
+
+        // Create a local preview immediately
+        const objectUrl = URL.createObjectURL(file);
+        if (previewUrlRef.current) {
+            URL.revokeObjectURL(previewUrlRef.current);
+        }
+        previewUrlRef.current = objectUrl;
+        setArticle(prev => ({
+            ...prev,
+            coverImage: objectUrl,
+            coverImagePreview: objectUrl
+        }));
 
         try {
             setIsUploading(true);
             const response = await imageCrud.createImage(file);
-            setArticle(prev => ({
-                ...prev,
-                coverImage: response.url,
-                coverImagePreview: response.url
-            }));
-            messageApi.success('Cover image uploaded successfully');
+            if (response && (response as any).url) {
+                setArticle(prev => ({
+                    ...prev,
+                    coverImage: (response as any).url,
+                    coverImagePreview: (response as any).url
+                }));
+                URL.revokeObjectURL(objectUrl);
+                previewUrlRef.current = null;
+                messageApi.success('Cover image uploaded successfully');
+            } else {
+                throw new Error('Invalid upload response');
+            }
         } catch (error: any) {
             messageApi.error('Failed to upload cover image');
         } finally {
             setIsUploading(false);
+            // Allow selecting the same file again next time
+            if (inputEl) {
+                inputEl.value = '';
+            }
         }
     };
 
@@ -272,27 +305,15 @@ export default function FormBlog({ id }: FormBlogProps) {
         try {
             setIsSaving(true);
             let imageUrl = article.coverImagePreview;
-
-            // Only process new image if coverImage is base64 (new upload)
-            if (article.coverImage && article.coverImage.startsWith('data:image')) {
-                // Convert base64 to File
-                const base64Data = article.coverImage.split(',')[1];
-                const byteCharacters = atob(base64Data);
-                const byteArrays = [];
-                for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-                    const slice = byteCharacters.slice(offset, offset + 512);
-                    const byteNumbers = new Array(slice.length);
-                    for (let i = 0; i < slice.length; i++) {
-                        byteNumbers[i] = slice.charCodeAt(i);
-                    }
-                    const byteArray = new Uint8Array(byteNumbers);
-                    byteArrays.push(byteArray);
+            // If preview is a local object URL, ensure we upload and replace with remote URL
+            const isObjectUrl = article.coverImagePreview.startsWith('blob:') || article.coverImagePreview.startsWith('media:');
+            if (isObjectUrl && fileInputRef.current && fileInputRef.current.files && fileInputRef.current.files[0]) {
+                const uploadRes = await imageCrud.createImage(fileInputRef.current.files[0]);
+                if (uploadRes && (uploadRes as any).url) {
+                    imageUrl = (uploadRes as any).url;
+                } else {
+                    throw new Error('Cover image upload failed');
                 }
-                const blob = new Blob(byteArrays, { type: 'image/jpeg' });
-                const file = new File([blob], 'cover-image.jpg', { type: 'image/jpeg' });
-
-                const imageResponse = await imageCrud.createImage(file);
-                imageUrl = imageResponse.url;
             }
 
             // Merge content blocks into a single content string
@@ -319,7 +340,7 @@ export default function FormBlog({ id }: FormBlogProps) {
                 messageApi.success('Article updated successfully');
             } else {
                 // Create new article
-                await articleCrud.createArticle(articleData);
+                await articleCrud.createArticle(articleData as any);
                 messageApi.success('Article created successfully');
             }
 
@@ -406,7 +427,6 @@ export default function FormBlog({ id }: FormBlogProps) {
                 <div className="image-upload">
                     <div
                         className={`image-preview ${article.coverImage ? 'has-image' : ''}`}
-                        onClick={() => fileInputRef.current?.click()}
                     >
                         {article.coverImage ? (
                             <img

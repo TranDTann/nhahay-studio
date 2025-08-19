@@ -6,6 +6,7 @@ export interface Category {
   id?: string
   name: string
   description?: string
+  urlThumbnail?: string
   createdAt?: string
 }
 
@@ -48,7 +49,11 @@ export const categoryCrud = {
     }
   },
 
-  createCategory: async (data: { name: string; description?: string }) => {
+  createCategory: async (data: {
+    name: string
+    description?: string
+    urlThumbnail?: string
+  }) => {
     try {
       const response = await axiosInstance.post<Category>('/api/category', data)
       return response.data
@@ -62,7 +67,7 @@ export const categoryCrud = {
 
   updateCategory: async (
     id: string,
-    data: { name: string; description?: string }
+    data: { name: string; description?: string; urlThumbnail?: string }
   ) => {
     try {
       const response = await axiosInstance.put<Category>(`/api/category`, {
