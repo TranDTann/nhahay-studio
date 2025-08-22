@@ -28,26 +28,8 @@
   gap: 8px;
 }
 
-.featured-post-info-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .featured-post-title {
   color: #ffffff;
   font-weight: 700;
   font-size: 28px;
-}
-
-.featured-post-info-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.featured-post-info-item p {
-  color: #bacce1;
-  font-size: 13px;
-  font-weight: 600;
 }

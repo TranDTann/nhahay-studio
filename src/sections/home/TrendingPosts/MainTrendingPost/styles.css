@@ -24,29 +24,11 @@
   gap: 8px;
 }
 
-.trending-post-info-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .trending-post-title {
   color: #183354;
   font-weight: 700;
   font-size: 28px;
   cursor: pointer;
-}
-
-.trending-post-info-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.trending-post-info-item p {
-  color: #6d757f;
-  font-size: 13px;
-  font-weight: 600;
 }
 
 .trending-post-description {

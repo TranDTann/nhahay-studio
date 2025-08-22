@@ -1,27 +1,29 @@
 .category-post-container {
   display: flex;
-  gap: 16px;
+  gap: 20px;
 }
 
 .category-post-image {
-  min-height: 80px;
-  max-height: 180px;
-  object-fit: contain;
+  height: 180px;
+  width: 270px;
+  object-fit: cover;
   cursor: pointer;
 }
 
 .category-post-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  padding: 4px 0;
 }
 
 .category-post-title {
-  font-size: 24px;
+  font-size: 22px;
   line-height: 28px;
   font-weight: 700;
   color: #233242;
   cursor: pointer;
+  margin-bottom: 8px;
 }
 
 .category-post-content,
@@ -34,7 +36,7 @@
 .category-post-read-mins,
 .category-post-content {
   font-size: 14px;
-  line-height: 20px;
+  line-height: 21px;
 }
 
 .category-post-author {

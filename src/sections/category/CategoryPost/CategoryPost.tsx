@@ -26,14 +26,16 @@ const CategoryPost = ({ postData }: TCategoryPostProps) => {
         onClick={navigateToPostDetail}
       />
       <div className="category-post-info">
-        <h3
-          className="category-post-title display-max-3-lines"
-          onClick={navigateToPostDetail}
-        >
-          {postData.title}
-        </h3>
-        <div className="category-post-content display-max-3-lines">
-          {parse(postData.content ?? '')}
+        <div>
+          <h3
+            className="category-post-title display-max-3-lines"
+            onClick={navigateToPostDetail}
+          >
+            {postData.title}
+          </h3>
+          <div className="category-post-content display-max-3-lines">
+            {parse(postData.description ?? '')}
+          </div>
         </div>
         <div>
           <p className="category-post-author">
@@ -45,7 +47,7 @@ const CategoryPost = ({ postData }: TCategoryPostProps) => {
             </span>
             {' | '}
             <span className="category-post-read-mins">
-              {postData.readingTimeMinutes}
+              {postData.readingTimeMinutes} phút đọc
             </span>
           </div>
         </div>

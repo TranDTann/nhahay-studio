@@ -3,8 +3,8 @@
 import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
 import { useRouter } from 'next/navigation'
-import { MdOutlineDateRange } from 'react-icons/md'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
+import PostMeta from '../../components/PostMeta/PostMeta'
 import './styles.css'
 
 type TFeaturedPostItemProps = {
@@ -31,9 +31,7 @@ const FeaturedPostItem = ({ postData }: TFeaturedPostItemProps) => {
         <h3 className="featured-post-item-title display-max-2-lines">
           {postData.title}
         </h3>
-        <div className="featured-post-item-date">
-          <MdOutlineDateRange color="#bacce1" /> <p>{postData.publishAt}</p>
-        </div>
+        <PostMeta author={postData.createdByUser.username} />
       </div>
     </div>
   )

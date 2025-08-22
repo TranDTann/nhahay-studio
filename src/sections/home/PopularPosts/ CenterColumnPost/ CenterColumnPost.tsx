@@ -3,6 +3,7 @@ import { Article } from '@/store/article/crud'
 import { Col, Row } from 'antd'
 import parse from 'html-react-parser'
 import { useRouter } from 'next/navigation'
+import PostMeta from '../../components/PostMeta/PostMeta'
 import './styles.css'
 
 type TCenterColumnPostProps = {
@@ -38,13 +39,9 @@ const CenterColumnPost = ({ post }: TCenterColumnPostProps) => {
           {post.title}
         </h2>
         <p className="display-max-3-lines center-post-description">
-          {parse(post.content ?? '')}
+          {parse(post.description ?? '')}
         </p>
-        <div className="center-post-footer">
-          <p>{post.createdByUser.username}</p>
-          <span className="center-post_time">{post.publishAt} | </span>
-          {post.readingTimeMinutes} mins
-        </div>
+        <PostMeta author={post.createdByUser.username} />
       </Col>
     </Row>
   )
