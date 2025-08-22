@@ -46,28 +46,37 @@
 
 /* display max 3 lines */
 .display-max-3-lines {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 /* display max 2 lines */
 .display-max-2-lines {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* display max 1 lines */
+.display-max-1-lines {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .image-hover-zoom {
-  transition: transform 0.5s ease;
+  transition: transform 0.7s ease;
   overflow: hidden;
 }
 
 .image-hover-zoom-container:hover .image-hover-zoom {
   overflow: hidden;
-  transform: scale(1.035);
+  transform: scale(1.025);
 }

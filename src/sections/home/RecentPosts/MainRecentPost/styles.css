@@ -8,11 +8,13 @@
   width: 100%;
   height: 100%;
   border-radius: 4px;
+  object-fit: cover;
   overflow: hidden;
 }
 
 .post-image {
   width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 4px;
 }
@@ -27,26 +29,9 @@
   gap: 8px;
 }
 
-.post-info-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .post-title {
   color: #ffffff;
   font-weight: 700;
-  font-size: 28px;
-}
-
-.post-info-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.post-info-item p {
-  color: #bacce1;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
 }

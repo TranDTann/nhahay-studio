@@ -9,7 +9,7 @@
 .list-category-post-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
   margin-top: 4px;
 }
 

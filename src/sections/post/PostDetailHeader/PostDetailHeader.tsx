@@ -18,11 +18,16 @@ const PostDetailHeader = ({ postData }: TPostDetailHeaderProps) => {
         <div className="post-detail-header-info_author">
           <p className="post-detail-header_author-name">
             {postData.createdByUser.username}
+            <Divider type="vertical" style={{ borderColor: '#bababa' }} />
           </p>
-          <p>{postData.publishAt}</p>
+          <p>
+            {postData.publishAt}
+            <Divider type="vertical" style={{ borderColor: '#bababa' }} />
+          </p>
+
           <div>
-            <span>{postData.readingTimeMinutes} mins</span>
-            <Divider type="vertical" style={{ borderColor: '#233242' }} />
+            <span>{postData.readingTimeMinutes} phút đọc</span>
+            <Divider type="vertical" style={{ borderColor: '#bababa' }} />
             <span>{postData.ratingAvg}*</span>
           </div>
         </div>

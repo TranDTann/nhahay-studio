@@ -2,16 +2,16 @@
   height: fit-content;
 }
 
-.center-post-wrapper {
-  height: fit-content;
-  display: flex !important;
-  flex-direction: column;
+.center-post-wrapper,
+.end-post-wrapper {
+  display: grid !important;
   gap: 24px;
 }
 
+.center-post-wrapper {
+  grid-template-rows: 1fr 1fr;
+}
+
 .end-post-wrapper {
-  height: fit-content;
-  display: flex !important;
-  flex-direction: column;
-  gap: 24px;
+  grid-template-rows: 1fr 1fr 1fr;
 }

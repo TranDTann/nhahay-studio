@@ -2,6 +2,7 @@ import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
 import parse from 'html-react-parser'
 import { useRouter } from 'next/navigation'
+import PostMeta from '../../components/PostMeta/PostMeta'
 import './styles.css'
 
 type TFirstPostProps = {
@@ -34,14 +35,13 @@ const FirstPost = ({ post }: TFirstPostProps) => {
         {post.title}
       </h2>
       <p className="first-post-description display-max-3-lines">
-        {parse(post.content ?? '')}
+        {parse(post.description ?? '')}
       </p>
-      <div className="first-post-footer">
-        <p>{post.createdByUser.username}</p>
-        <p className="first-post-footer_time">
-          {post.publishAt} - {post.readingTimeMinutes} mins
-        </p>
-      </div>
+      <PostMeta
+        author={post.createdByUser.username}
+        readingTimeMinutes={post.readingTimeMinutes}
+        publishTime={post.publishAt}
+      />
     </div>
   )
 }

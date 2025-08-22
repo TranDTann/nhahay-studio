@@ -8,6 +8,6 @@
 .main-container {
   width: 80%;
   margin: 0 auto;
-  padding: 24px 0;
+  padding: 24px 0 96px;
   flex: 1;
 }

@@ -3,10 +3,8 @@
 import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
 import { useRouter } from 'next/navigation'
-import { FaRegUserCircle } from 'react-icons/fa'
-import { IoIosTimer } from 'react-icons/io'
-import { MdOutlineDateRange } from 'react-icons/md'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
+import PostMeta from '../../components/PostMeta/PostMeta'
 import './styles.css'
 
 type TMainFeaturedPostProps = {
@@ -33,20 +31,11 @@ const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
         <h3 className="featured-post-title display-max-3-lines">
           {postData.title}
         </h3>
-        <div className="featured-post-info-container">
-          <div className="featured-post-info-item">
-            <FaRegUserCircle color="#bacce1" />
-            <p>{postData.createdByUser.username}</p>
-          </div>
-          <div className="featured-post-info-item">
-            <IoIosTimer color="#bacce1" />
-            <p>{postData.readingTimeMinutes} mins</p>
-          </div>
-          <div className="featured-post-info-item">
-            <MdOutlineDateRange color="#bacce1" />
-            <p>{postData.publishAt}</p>
-          </div>
-        </div>
+        <PostMeta
+          author={postData.createdByUser.username}
+          readingTimeMinutes={postData.readingTimeMinutes}
+          publishTime={postData.publishAt}
+        />
       </div>
     </div>
   )

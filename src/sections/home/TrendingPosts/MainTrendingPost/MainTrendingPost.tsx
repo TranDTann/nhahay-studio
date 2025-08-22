@@ -5,10 +5,8 @@ import { Article } from '@/store/article/crud'
 import { Col, Row } from 'antd'
 import parse from 'html-react-parser'
 import { useRouter } from 'next/navigation'
-import { FaRegUserCircle } from 'react-icons/fa'
-import { IoIosTimer } from 'react-icons/io'
-import { MdOutlineDateRange } from 'react-icons/md'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
+import PostMeta from '../../components/PostMeta/PostMeta'
 import './styles.css'
 
 type TMainTrendingPostProps = {
@@ -46,22 +44,13 @@ const MainTrendingPost = ({ postData }: TMainTrendingPostProps) => {
             >
               {postData.title}
             </h3>
-            <div className="trending-post-info-container">
-              <div className="trending-post-info-item">
-                <FaRegUserCircle color="#bacce1" />
-                <p>{postData.createdByUser.username}</p>
-              </div>
-              <div className="trending-post-info-item">
-                <IoIosTimer color="#bacce1" />
-                <p>{postData.readingTimeMinutes} mins</p>
-              </div>
-              <div className="trending-post-info-item">
-                <MdOutlineDateRange color="#bacce1" />
-                <p>{postData.publishAt}</p>
-              </div>
-            </div>
+            <PostMeta
+              author={postData.createdByUser.username}
+              readingTimeMinutes={postData.readingTimeMinutes}
+              publishTime={postData.publishAt}
+            />
             <div className="trending-post-description">
-              {parse(postData.content ?? '')}
+              {parse(postData.description ?? '')}
             </div>
           </div>
         </Col>

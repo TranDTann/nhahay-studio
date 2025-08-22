@@ -11,7 +11,9 @@ const CategoryTag = ({ tagName, isCategoriesList }: TCategoryTagProps) => {
     <Tag
       color="#F4796C"
       className={`${
-        isCategoriesList ? 'tag-container_categories-list' : 'tag-container'
+        isCategoriesList
+          ? 'tag-container_categories-list display-max-3-lines'
+          : 'tag-container display-max-1-lines'
       }`}
     >
       {tagName}
