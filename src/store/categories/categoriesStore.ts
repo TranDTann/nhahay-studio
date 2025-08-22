@@ -20,10 +20,11 @@ interface CategoriesState {
   createCategory: (data: {
     name: string
     description?: string
+    urlThumbnail?: string
   }) => Promise<void>
   updateCategory: (
     id: string,
-    data: { name: string; description?: string }
+    data: { name: string; description?: string; urlThumbnail?: string }
   ) => Promise<void>
   deleteCategory: (id: string) => Promise<void>
 }
@@ -83,7 +84,11 @@ export const useCategoriesStore = create<CategoriesState>((set, get) => ({
     })
   },
 
-  createCategory: async (data: { name: string; description?: string }) => {
+  createCategory: async (data: {
+    name: string
+    description?: string
+    urlThumbnail?: string
+  }) => {
     set({ loading: true, error: null })
     try {
       await categoryCrud.createCategory(data)
@@ -108,7 +113,7 @@ export const useCategoriesStore = create<CategoriesState>((set, get) => ({
 
   updateCategory: async (
     id: string,
-    data: { name: string; description?: string }
+    data: { name: string; description?: string; urlThumbnail?: string }
   ) => {
     set({ loading: true, error: null })
     try {

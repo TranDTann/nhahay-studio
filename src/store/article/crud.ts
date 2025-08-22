@@ -45,7 +45,7 @@ export const articleCrud = {
 
       Object.entries({
         search: params?.search,
-        categoryId: params?.categoryId,
+        categoryId: params?.categoryId || '',
         sort: params?.sort,
         SortDir: params?.SortDir?.toString(),
         listType: params?.listType?.toString(),

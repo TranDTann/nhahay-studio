@@ -76,6 +76,17 @@ $loading-padding: 50px;
   }
 }
 
+.tocColumn {
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  height: fit-content;
+
+  @media (max-width: 1280px) {
+    position: static;
+  }
+}
+
 .articleContentWrapper {
   flex: 1;
   min-width: 0;
