@@ -22,6 +22,7 @@ interface Article {
     createdAt: string;
     updatedAt: string;
     publishAt: string | null;
+    featured: boolean;
 }
 
 export default function ArticlesList() {
@@ -187,7 +188,7 @@ export default function ArticlesList() {
 
     const handlePublish = async (id: string, isPublished: boolean) => {
         try {
-            setPublishLoading(id);
+            setLoading(true);
             const publishAt = isPublished ? new Date().toISOString() : null;
 
             // Get the current article data
@@ -223,7 +224,48 @@ export default function ArticlesList() {
         } catch (error: any) {
             messageApi.error(error.response?.data?.message || 'Failed to update article publish status');
         } finally {
-            setPublishLoading(null);
+            setLoading(false);
+        }
+    };
+
+    const handleFeatured = async (id: string, isFeatured: boolean) => {
+        try {
+            setLoading(true);
+            // Get the current article data
+            const currentArticle = articles.find(article => article.id === id);
+            if (!currentArticle) {
+                messageApi.error('Article not found');
+                return;
+            }
+
+            // Prepare article data with all required fields
+            const articleData = {
+                title: currentArticle.title,
+                description: currentArticle.description,
+                content: currentArticle.content,
+                image: currentArticle.image,
+                tagIds: currentArticle.tags.map(tag => tag.id),
+                categoryId: currentArticle.category.id,
+                publishAt: currentArticle.publishAt,
+                featured: isFeatured
+            };
+
+            await articleCrud.updateArticle(id, articleData);
+
+            // Update the local state
+            setArticles(prevArticles =>
+                prevArticles.map(article =>
+                    article.id === id
+                        ? { ...article, featured: isFeatured }
+                        : article
+                )
+            );
+
+            messageApi.success(isFeatured ? 'Article featured successfully' : 'Article unfeatured successfully');
+        } catch (error: any) {
+            messageApi.error(error.response?.data?.message || 'Failed to update article featured status');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -352,15 +394,9 @@ export default function ArticlesList() {
                                                     style={{ height: 200, objectFit: 'cover' }}
                                                 />
                                             }
+
+                                            onClick={() => handleView(article.id)}
                                             actions={[
-                                                <Button
-                                                    key="view"
-                                                    type="text"
-                                                    icon={<EyeOutlined />}
-                                                    onClick={() => handleView(article.id)}
-                                                >
-                                                    View
-                                                </Button>,
                                                 <Button
                                                     key="edit"
                                                     type="text"
@@ -368,6 +404,16 @@ export default function ArticlesList() {
                                                     onClick={() => handleEdit(article.id)}
                                                 >
                                                     Edit
+                                                </Button>,
+                                                <Button
+                                                    key="delete"
+                                                    type="text"
+                                                    danger
+                                                    icon={<DeleteOutlined />}
+                                                    onClick={() => handleDelete(article.id)}
+                                                    loading={deleteLoading === article.id}
+                                                >
+                                                    Delete
                                                 </Button>,
                                                 // <Checkbox
                                                 //     key="publish"
@@ -378,16 +424,15 @@ export default function ArticlesList() {
                                                 // >
                                                 //     Publish
                                                 // </Checkbox>,
-                                                <Button
-                                                    key="delete"
-                                                    type="text"
-                                                    danger
-                                                    icon={<DeleteOutlined />}
-                                                    onClick={() => handleDelete(article.id)}
-                                                    loading={deleteLoading === article.id}
-                                                >
-                                                    Delete
-                                                </Button>
+                                                // <Checkbox
+                                                //     key="featured"
+                                                //     checked={!!article.featured}
+                                                //     onChange={(e) => handleFeatured(article.id, e.target.checked)}
+                                                //     disabled={publishLoading === article.id}
+                                                //     style={{ marginLeft: 8 }}
+                                                // >
+                                                //     Featured
+                                                // </Checkbox>,
                                             ]}
                                         >
                                             <Card.Meta

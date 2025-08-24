@@ -8,11 +8,11 @@ const AdvertisementSection: React.FC = () => {
     const { getConfigByKey } = useSessionConfig();
 
     // Lấy các config từ session storage
-    const websiteUrl = getConfigByKey('website_url') || 'https://nhahaystudio.com';
+    const websiteUrl = getConfigByKey('website') || 'https://nhahaystudio.com';
     const siteName = getConfigByKey('site_name') || 'nhahaystudio.vn';
-    const facebookUrl = getConfigByKey('facebook_url');
-    const youtubeUrl = getConfigByKey('youtube_url');
-    const tiktokUrl = getConfigByKey('tiktok_url');
+    const facebookUrl = getConfigByKey('facebook');
+    const youtubeUrl = getConfigByKey('youtube');
+    const tiktokUrl = getConfigByKey('tiktok');
 
     const socialPlatforms = [
         {
