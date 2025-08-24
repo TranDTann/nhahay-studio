@@ -22,7 +22,7 @@ interface Article {
     createdAt: string;
     updatedAt: string;
     publishAt: string | null;
-    featured: boolean;
+    isFeatured: boolean;
 }
 
 export default function ArticlesList() {
@@ -247,7 +247,7 @@ export default function ArticlesList() {
                 tagIds: currentArticle.tags.map(tag => tag.id),
                 categoryId: currentArticle.category.id,
                 publishAt: currentArticle.publishAt,
-                featured: isFeatured
+                isFeatured: isFeatured
             };
 
             await articleCrud.updateArticle(id, articleData);
@@ -256,7 +256,7 @@ export default function ArticlesList() {
             setArticles(prevArticles =>
                 prevArticles.map(article =>
                     article.id === id
-                        ? { ...article, featured: isFeatured }
+                        ? { ...article, isFeatured: isFeatured }
                         : article
                 )
             );
@@ -401,7 +401,10 @@ export default function ArticlesList() {
                                                     key="edit"
                                                     type="text"
                                                     icon={<EditOutlined />}
-                                                    onClick={() => handleEdit(article.id)}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleEdit(article.id);
+                                                    }}
                                                 >
                                                     Edit
                                                 </Button>,
@@ -410,29 +413,40 @@ export default function ArticlesList() {
                                                     type="text"
                                                     danger
                                                     icon={<DeleteOutlined />}
-                                                    onClick={() => handleDelete(article.id)}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDelete(article.id);
+                                                    }}
                                                     loading={deleteLoading === article.id}
                                                 >
                                                     Delete
                                                 </Button>,
-                                                // <Checkbox
-                                                //     key="publish"
-                                                //     checked={!!article.publishAt}
-                                                //     onChange={(e) => handlePublish(article.id, e.target.checked)}
-                                                //     disabled={publishLoading === article.id}
-                                                //     style={{ marginLeft: 8 }}
-                                                // >
-                                                //     Publish
-                                                // </Checkbox>,
-                                                // <Checkbox
-                                                //     key="featured"
-                                                //     checked={!!article.featured}
-                                                //     onChange={(e) => handleFeatured(article.id, e.target.checked)}
-                                                //     disabled={publishLoading === article.id}
-                                                //     style={{ marginLeft: 8 }}
-                                                // >
-                                                //     Featured
-                                                // </Checkbox>,
+                                                <Checkbox
+                                                    key="publish"
+                                                    checked={!!article.publishAt}
+                                                    onChange={(e) => {
+                                                        e.stopPropagation();
+                                                        handlePublish(article.id, e.target.checked);
+                                                    }}
+                                                    disabled={publishLoading === article.id}
+                                                    style={{ marginLeft: 8 }}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
+                                                    Publish
+                                                </Checkbox>,
+                                                <Checkbox
+                                                    key="isFeatured"
+                                                    checked={!!article.isFeatured}
+                                                    onChange={(e) => {
+                                                        e.stopPropagation();
+                                                        handleFeatured(article.id, e.target.checked);
+                                                    }}
+                                                    disabled={publishLoading === article.id}
+                                                    style={{ marginLeft: 8 }}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
+                                                    Featured
+                                                </Checkbox>,
                                             ]}
                                         >
                                             <Card.Meta
