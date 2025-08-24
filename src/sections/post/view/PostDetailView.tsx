@@ -53,7 +53,6 @@ const PostDetailView = () => {
   return (
     <div>
       <ArticleDetailPage params={{ id: postId, noHeader: true }} />
-
     </div>
   )
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Input, Card, Button, Space, Select, Row, Col, App, Spin, Pagination } from 'antd';
+import { Input, Card, Button, Space, Select, Row, Col, App, Spin, Pagination, Checkbox } from 'antd';
 import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
@@ -21,6 +21,7 @@ interface Article {
     category: { id: string; name: string; description?: string };
     createdAt: string;
     updatedAt: string;
+    publishAt: string | null;
 }
 
 export default function ArticlesList() {
@@ -35,6 +36,7 @@ export default function ArticlesList() {
     const [loading, setLoading] = useState(true);
     const [listLoading, setListLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+    const [publishLoading, setPublishLoading] = useState<string | null>(null);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(0);
@@ -183,6 +185,47 @@ export default function ArticlesList() {
         }
     };
 
+    const handlePublish = async (id: string, isPublished: boolean) => {
+        try {
+            setPublishLoading(id);
+            const publishAt = isPublished ? new Date().toISOString() : null;
+
+            // Get the current article data
+            const currentArticle = articles.find(article => article.id === id);
+            if (!currentArticle) {
+                messageApi.error('Article not found');
+                return;
+            }
+
+            // Prepare article data with all required fields
+            const articleData = {
+                title: currentArticle.title,
+                description: currentArticle.description,
+                content: currentArticle.content,
+                image: currentArticle.image,
+                tagIds: currentArticle.tags.map(tag => tag.id),
+                categoryId: currentArticle.category.id,
+                publishAt: publishAt
+            };
+
+            await articleCrud.updateArticle(id, articleData);
+
+            // Update the local state
+            setArticles(prevArticles =>
+                prevArticles.map(article =>
+                    article.id === id
+                        ? { ...article, publishAt }
+                        : article
+                )
+            );
+
+            messageApi.success(isPublished ? 'Article published successfully' : 'Article unpublished successfully');
+        } catch (error: any) {
+            messageApi.error(error.response?.data?.message || 'Failed to update article publish status');
+        } finally {
+            setPublishLoading(null);
+        }
+    };
 
 
     if (loading) {
@@ -326,6 +369,15 @@ export default function ArticlesList() {
                                                 >
                                                     Edit
                                                 </Button>,
+                                                // <Checkbox
+                                                //     key="publish"
+                                                //     checked={!!article.publishAt}
+                                                //     onChange={(e) => handlePublish(article.id, e.target.checked)}
+                                                //     disabled={publishLoading === article.id}
+                                                //     style={{ marginLeft: 8 }}
+                                                // >
+                                                //     Publish
+                                                // </Checkbox>,
                                                 <Button
                                                     key="delete"
                                                     type="text"
@@ -342,7 +394,7 @@ export default function ArticlesList() {
                                                 title={article.title}
                                                 description={
                                                     <div>
-                                                        <p>{article.description}</p>
+                                                        <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', height: '48px' }}>{article.description}</p>
                                                         <Space direction="vertical" size="small" style={{ width: '100%' }}>
                                                             {article.category && (
                                                                 <div>
