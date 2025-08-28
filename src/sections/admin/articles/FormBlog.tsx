@@ -43,6 +43,8 @@ interface Article {
     categoryId?: string;
     tagIds?: string[];
     advertisementIds?: string[]; // Thêm trường advertisementIds
+    publishAt?: string | null;
+    isFeatured?: boolean;
 }
 
 interface Category {
@@ -87,7 +89,9 @@ export default function FormBlog({ id }: FormBlogProps) {
         coverImagePreview: '',
         categoryId: undefined,
         tagIds: [],
-        advertisementIds: [] // Thêm trường advertisementIds
+        advertisementIds: [], // Thêm trường advertisementIds
+        publishAt: null,
+        isFeatured: false
     });
 
     useEffect(() => {
@@ -116,7 +120,9 @@ export default function FormBlog({ id }: FormBlogProps) {
                         coverImagePreview: detail.image || '',
                         categoryId: detail.category ? detail.category.id : undefined,
                         tagIds: Array.isArray(detail.tags) ? detail.tags.map(tag => tag.id) : [],
-                        advertisementIds: detail.advertisements ? detail.advertisements.map((ad: any) => ad.id) : []
+                        advertisementIds: detail.advertisements ? detail.advertisements.map((ad: any) => ad.id) : [],
+                        publishAt: detail.publishAt || null,
+                        isFeatured: detail.isFeatured || false
                     });
 
                     // Parse content blocks if they exist, otherwise convert from content
@@ -331,7 +337,9 @@ export default function FormBlog({ id }: FormBlogProps) {
                 tagIds: article.tagIds,
                 categoryId: article.categoryId,
                 contentBlocks: contentBlocks, // Keep blocks for future use
-                advertisementIds: article.advertisementIds // Thêm advertisementIds vào payload
+                advertisementIds: article.advertisementIds, // Thêm advertisementIds vào payload
+                publishAt: article.publishAt,
+                isFeatured: article.isFeatured
             }
 
             if (id && id !== 'new') {
@@ -519,6 +527,41 @@ export default function FormBlog({ id }: FormBlogProps) {
                         </Select.Option>
                     ))}
                 </Select>
+            </div>
+
+            <div className="form-group">
+                <label className="form-label">Article Settings</label>
+                <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                        <input
+                            type="checkbox"
+                            checked={!!article.publishAt}
+                            onChange={(e) => setArticle(prev => ({
+                                ...prev,
+                                publishAt: e.target.checked ? new Date().toISOString() : null
+                            }))}
+                            style={{ width: '16px', height: '16px' }}
+                        />
+                        <span>Publish Article</span>
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                        <input
+                            type="checkbox"
+                            checked={!!article.isFeatured}
+                            onChange={(e) => setArticle(prev => ({
+                                ...prev,
+                                isFeatured: e.target.checked
+                            }))}
+                            style={{ width: '16px', height: '16px' }}
+                        />
+                        <span>Featured Article</span>
+                    </label>
+                </div>
+                {article.publishAt && (
+                    <div style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
+                        Will be published at: {new Date(article.publishAt).toLocaleString('vi-VN')}
+                    </div>
+                )}
             </div>
 
             <div className="form-group">
