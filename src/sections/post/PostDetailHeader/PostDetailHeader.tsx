@@ -1,6 +1,7 @@
 'use client'
 
 import { Article } from '@/store/article/crud'
+import { formatDateDisplay } from '@/utils/formatDate'
 import { Divider } from 'antd'
 import { FaUser } from 'react-icons/fa'
 import './styles.css'
@@ -21,7 +22,7 @@ const PostDetailHeader = ({ postData }: TPostDetailHeaderProps) => {
             <Divider type="vertical" style={{ borderColor: '#bababa' }} />
           </p>
           <p>
-            {postData.publishAt}
+            {formatDateDisplay(postData.publishAt)}
             <Divider type="vertical" style={{ borderColor: '#bababa' }} />
           </p>
 

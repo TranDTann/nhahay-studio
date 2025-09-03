@@ -2,6 +2,7 @@
 
 import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
+import { formatDateDisplay } from '@/utils/formatDate'
 import parse from 'html-react-parser'
 import { useRouter } from 'next/navigation'
 import './styles.css'
@@ -43,7 +44,7 @@ const CategoryPost = ({ postData }: TCategoryPostProps) => {
           </p>
           <div>
             <span className="category-post-publish-time">
-              {postData.publishAt}
+              {formatDateDisplay(postData.publishAt)}
             </span>
             {' | '}
             <span className="category-post-read-mins">

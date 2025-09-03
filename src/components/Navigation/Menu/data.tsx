@@ -31,7 +31,7 @@ export const getMenu = (categories: Category[]) => [
     }))
   },
   {
-    key: '/blog',
-    label: <Link href="/">Bài viết</Link>
+    key: '/admin',
+    label: <Link href={paths.admin.articles()}>Admin</Link>
   }
 ]

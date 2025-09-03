@@ -14,7 +14,8 @@ export enum PostTypeEnum {
 }
 
 export const postTyes = [
-  { key: PostTypeEnum.NONE, label: 'Nổi bật' },
+  { key: PostTypeEnum.NONE, label: 'Tất cả' },
+  { key: PostTypeEnum.FEATURED_POSTS, label: 'Nổi bật' },
   { key: PostTypeEnum.MOST_VIEWED, label: 'Phổ biến' },
   { key: PostTypeEnum.LATEST, label: 'Gần đây' },
   { key: PostTypeEnum.TRENDING_POSTS, label: 'Xu hướng' }

@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 80%;
+  width: 65%;
   margin: 0 auto;
+  gap: 36px;
 }

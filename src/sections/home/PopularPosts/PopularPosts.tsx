@@ -23,7 +23,8 @@ const PopularPosts = () => {
         setIsLoading(true)
         const response = await articleCrud.getArticles({
           listType: PostTypeEnum.MOST_VIEWED,
-          pageSize: 6
+          pageSize: 6,
+          isPublished: true
         })
         setPopularPosts(response.result || [])
       } catch (error: any) {

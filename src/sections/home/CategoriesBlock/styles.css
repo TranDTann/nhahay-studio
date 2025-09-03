@@ -10,10 +10,6 @@
 }
 
 .categories-list {
-  display: flex;
-  align-items: center;
-  gap: 48px;
-  justify-content: center;
-  flex-shrink: 0;
-  flex-wrap: wrap;
+  width: 75%;
+  margin: 0 auto;
 }

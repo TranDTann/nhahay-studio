@@ -1,3 +1,4 @@
+import { useConfig } from '@/hooks/useConfig'
 import Link from 'next/link'
 import { FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa'
 import './styles.css'
@@ -7,10 +8,31 @@ type TFollowUsProps = {
 }
 
 const FollowUs = ({ mode = 'dark' }: TFollowUsProps) => {
+  const { configs } = useConfig()
+
+  const getConfigValue = (key: string) => {
+    return configs.find((c) => c.key === key)?.value || ''
+  }
+
   const socials = [
-    { id: 1, name: 'Facebook', icon: FaFacebook, link: '' },
-    { id: 2, name: 'Youtube', icon: FaYoutube, link: '' },
-    { id: 3, name: 'Tiktok', icon: FaTiktok, link: '' }
+    {
+      id: 'facebook',
+      name: 'Facebook',
+      icon: FaFacebook,
+      link: getConfigValue('facebook')
+    },
+    {
+      id: 'youtube',
+      name: 'Youtube',
+      icon: FaYoutube,
+      link: getConfigValue('Footer_Youtube_Link')
+    },
+    {
+      id: 'tiktok',
+      name: 'Tiktok',
+      icon: FaTiktok,
+      link: getConfigValue('Footer_Tiktok_Link')
+    }
   ]
 
   return (
@@ -24,6 +46,7 @@ const FollowUs = ({ mode = 'dark' }: TFollowUsProps) => {
             className="social-item"
             key={socialItem.id}
             href={socialItem.link}
+            target="_blank"
           >
             <socialItem.icon
               className={`social-item_icon social-item_icon-${mode}`}
