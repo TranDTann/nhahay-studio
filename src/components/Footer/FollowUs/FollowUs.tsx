@@ -25,13 +25,13 @@ const FollowUs = ({ mode = 'dark' }: TFollowUsProps) => {
       id: 'youtube',
       name: 'Youtube',
       icon: FaYoutube,
-      link: getConfigValue('Footer_Youtube_Link')
+      link: getConfigValue('youtube')
     },
     {
       id: 'tiktok',
       name: 'Tiktok',
       icon: FaTiktok,
-      link: getConfigValue('Footer_Tiktok_Link')
+      link: getConfigValue('tiktok')
     }
   ]
 
