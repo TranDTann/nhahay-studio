@@ -1,4 +1,5 @@
 import useAuthRouter from '@/auth/useAuthRouter'
+import { BackToTop } from '@/components/BackToTop'
 import { Footer } from '@/components/Footer'
 import { LoadingScreen } from '@/components/LoadingScreen'
 import NavigationBar from '@/components/Navigation/NavigationBar'
@@ -39,6 +40,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         {content}
       </div>
       <Footer />
+      <BackToTop />
     </div>
   )
 }
