@@ -3,6 +3,7 @@ import { EditOutlined, DeleteOutlined, SortAscendingOutlined, SortDescendingOutl
 import type { ColumnsType } from 'antd/es/table';
 import { Advertisement } from '@/store/advertisement/crud';
 import { useEffect, useState } from 'react';
+import '@/assets/style/AdvertisementTable.scss';
 
 interface AdvertisementTableProps {
     advertisements: Advertisement[];
@@ -52,6 +53,7 @@ export default function AdvertisementTable({
                     <Button
                         type="text"
                         size="small"
+                        className={`sort-button ${sortField === 'title' ? 'active' : ''} ${sortField === 'title' && SortDir === 1 ? 'asc' : sortField === 'title' && SortDir === -1 ? 'desc' : ''}`}
                         icon={sortField === 'title' ? (SortDir === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
                         onClick={() => onSort('title')}
                         style={{ marginLeft: 8 }}
@@ -60,6 +62,7 @@ export default function AdvertisementTable({
             ),
             dataIndex: 'title',
             key: 'title',
+            className: sortField === 'title' ? 'sorted-column' : '',
         },
         {
             title: 'Position',
@@ -98,6 +101,7 @@ export default function AdvertisementTable({
                     <Button
                         type="text"
                         size="small"
+                        className={`sort-button ${sortField === 'createdAt' ? 'active' : ''} ${sortField === 'createdAt' && SortDir === 1 ? 'asc' : sortField === 'createdAt' && SortDir === -1 ? 'desc' : ''}`}
                         icon={sortField === 'createdAt' ? (SortDir === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
                         onClick={() => onSort('createdAt')}
                         style={{ marginLeft: 8 }}
@@ -106,6 +110,7 @@ export default function AdvertisementTable({
             ),
             dataIndex: 'createdAt',
             key: 'createdAt',
+            className: sortField === 'createdAt' ? 'sorted-column' : '',
             render: (date) => date ? new Date(date).toLocaleDateString('vi-VN') : '-',
         },
         {
