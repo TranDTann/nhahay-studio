@@ -1,6 +1,5 @@
 .menu-container {
-  width: fit-content;
-  max-width: 50%;
+  flex: 1;
 }
 
 .menu-container .ant-menu-title-content {

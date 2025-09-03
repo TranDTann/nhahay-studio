@@ -41,7 +41,8 @@ const CategoryView = () => {
         const { result = [], count = 0 } = await articleCrud.getArticles({
           categoryId,
           page,
-          listType: postType
+          listType: postType,
+          isPublished: true
         })
         setCategoryPosts([...categoryPosts, ...result])
         setTotalPost(count)

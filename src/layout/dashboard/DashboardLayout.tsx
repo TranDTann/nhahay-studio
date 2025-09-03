@@ -1,10 +1,11 @@
 import useAuthRouter from '@/auth/useAuthRouter'
+import { BackToTop } from '@/components/BackToTop'
+import { Footer } from '@/components/Footer'
 import { LoadingScreen } from '@/components/LoadingScreen'
 import NavigationBar from '@/components/Navigation/NavigationBar'
 import paths from '@/routes/paths'
 import { useAuthStore } from '@/store/auth/authStore'
 import { usePathname } from 'next/navigation'
-import { Footer } from '@/components/Footer'
 import './styles.css'
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
@@ -25,13 +26,21 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     content = children
   }
 
+  const isPostDetailPage = pathname.includes(paths.dashboard.postDetail(''))
+
   return (
     <div className="dashboard-container">
       <NavigationBar />
-      <div id="main-body" className="main-container">
+      <div
+        id="main-body"
+        className={`main-container ${
+          isPostDetailPage && 'main-container-width-80'
+        }`}
+      >
         {content}
       </div>
       <Footer />
+      <BackToTop />
     </div>
   )
 }

@@ -39,6 +39,7 @@ export const articleCrud = {
     sort?: string
     SortDir?: number
     listType?: number
+    isPublished?: boolean
   }) => {
     try {
       const query = new URLSearchParams()
@@ -53,6 +54,10 @@ export const articleCrud = {
       }).forEach(([key, value]) => {
         if (value !== undefined) query.append(key, value)
       })
+
+      // Get post published
+      params?.isPublished &&
+        query.append('isPublished', String(params?.isPublished))
 
       // Chuyển page/pageSize thành take/skip
       const take = params?.pageSize || 10

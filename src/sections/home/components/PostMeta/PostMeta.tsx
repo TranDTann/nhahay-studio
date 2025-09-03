@@ -1,5 +1,6 @@
 'use client'
 
+import { formatDateDisplay } from '@/utils/formatDate'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { IoIosTimer } from 'react-icons/io'
 import { MdOutlineDateRange } from 'react-icons/md'
@@ -33,7 +34,7 @@ const PostMeta = ({
       {publishTime && (
         <div className="post-meta-item">
           <MdOutlineDateRange color="#bacce1" />
-          <p>{publishTime}</p>
+          <p>{formatDateDisplay(publishTime)}</p>
         </div>
       )}
     </div>

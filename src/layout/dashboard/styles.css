@@ -5,8 +5,12 @@
 }
 
 .main-container {
-  width: 80%;
+  width: 65%;
   margin: 0 auto;
   padding: 24px 0 96px;
   flex: 1;
+}
+
+.main-container-width-80 {
+  width: 80%;
 }

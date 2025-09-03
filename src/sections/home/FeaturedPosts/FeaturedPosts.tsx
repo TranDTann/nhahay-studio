@@ -21,7 +21,8 @@ const FeaturedPosts = () => {
         setIsLoading(true)
         const response = await articleCrud.getArticles({
           listType: PostTypeEnum.FEATURED_POSTS,
-          pageSize: 4
+          pageSize: 4,
+          isPublished: true
         })
         setFeaturedPosts(response.result || [])
       } catch (error: any) {
