@@ -42,7 +42,7 @@ export default function ArticlesList() {
     const [total, setTotal] = useState(0);
     const [pendingSearch, setPendingSearch] = useState('');
     const [sortField, setSortField] = useState<string>('createdAt');
-    const [SortDir, setSortDirection] = useState<number>(0);
+    const [SortDir, setSortDirection] = useState<number>(1);
 
     useEffect(() => {
         fetchTags();
@@ -56,7 +56,7 @@ export default function ArticlesList() {
             tags: [],
             categoryId: null,
             sort: 'createdAt',
-            SortDir: 0
+            SortDir: 1
         });
         // eslint-disable-next-line
     }, [page, pageSize]);
@@ -266,26 +266,10 @@ export default function ArticlesList() {
                                     }}
                                     allowClear
                                 >
-                                    <Select.Option value="createdAt-0">Newest First</Select.Option>
-                                    <Select.Option value="createdAt-1">Oldest First</Select.Option>
+                                    <Select.Option value="createdAt-1">Newest First</Select.Option>
+                                    <Select.Option value="createdAt-0">Oldest First</Select.Option>
                                 </Select>
                             </Col>
-                            {/* <Col lg={4} md={12} span={24}>
-                            <Select
-                                mode="multiple"
-                                style={{ width: '100%' }}
-                                placeholder="Select Tags"
-                                value={selectedTags}
-                                onChange={handleTagsChange}
-                                allowClear
-                            >
-                                {tags.map(tag => (
-                                    <Select.Option key={tag.id} value={tag.id}>
-                                        {tag.name}
-                                    </Select.Option>
-                                ))}
-                            </Select>
-                        </Col> */}
 
                         </Row>
                     </Space>
