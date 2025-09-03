@@ -37,13 +37,12 @@ export default function ArticlesList() {
     const [loading, setLoading] = useState(true);
     const [listLoading, setListLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
-    const [publishLoading, setPublishLoading] = useState<string | null>(null);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(0);
     const [pendingSearch, setPendingSearch] = useState('');
-    const [sortField, setSortField] = useState<string>('');
-    const [SortDir, setSortDirection] = useState<number>(0);
+    const [sortField, setSortField] = useState<string>('createdAt');
+    const [SortDir, setSortDirection] = useState<number>(1);
 
     useEffect(() => {
         fetchTags();
@@ -52,7 +51,13 @@ export default function ArticlesList() {
     }, []);
 
     useEffect(() => {
-        fetchArticles();
+        fetchArticles({
+            search: '',
+            tags: [],
+            categoryId: null,
+            sort: 'createdAt',
+            SortDir: 1
+        });
         // eslint-disable-next-line
     }, [page, pageSize]);
 
@@ -64,13 +69,13 @@ export default function ArticlesList() {
                 setLoading(true);
             }
             const response = await articleCrud.getArticles({
-                search: customFilter?.search ?? searchText,
-                tags: customFilter?.tags ?? selectedTags,
-                categoryId: customFilter?.categoryId ?? selectedCategory,
+                search: customFilter?.search || '',
+                tags: customFilter?.tags || null,
+                categoryId: customFilter?.categoryId || null,
                 page,
                 pageSize,
-                sort: customFilter?.sort ?? sortField,
-                SortDir: customFilter?.SortDir ?? SortDir
+                sort: customFilter?.sort || null,
+                SortDir: customFilter?.SortDir || null
             });
             setArticles(response.result || []);
             setTotal(response.count || 0);
@@ -121,18 +126,6 @@ export default function ArticlesList() {
 
     const handleSearchIconClick = () => {
         handleSearch();
-    };
-
-    const handleTagsChange = (values: string[]) => {
-        setSelectedTags(values);
-        setPage(1);
-        fetchArticles({
-            search: pendingSearch,
-            tags: values,
-            categoryId: selectedCategory,
-            sort: sortField,
-            SortDir: SortDir
-        }, true);
     };
 
     const handleCategoryChange = (value: string) => {
@@ -186,88 +179,7 @@ export default function ArticlesList() {
         }
     };
 
-    const handlePublish = async (id: string, isPublished: boolean) => {
-        try {
-            setLoading(true);
-            const publishAt = isPublished ? new Date().toISOString() : null;
 
-            // Get the current article data
-            const currentArticle = articles.find(article => article.id === id);
-            if (!currentArticle) {
-                messageApi.error('Article not found');
-                return;
-            }
-
-            // Prepare article data with all required fields
-            const articleData = {
-                title: currentArticle.title,
-                description: currentArticle.description,
-                content: currentArticle.content,
-                image: currentArticle.image,
-                tagIds: currentArticle.tags.map(tag => tag.id),
-                categoryId: currentArticle.category.id,
-                publishAt: publishAt
-            };
-
-            await articleCrud.updateArticle(id, articleData);
-
-            // Update the local state
-            setArticles(prevArticles =>
-                prevArticles.map(article =>
-                    article.id === id
-                        ? { ...article, publishAt }
-                        : article
-                )
-            );
-
-            messageApi.success(isPublished ? 'Article published successfully' : 'Article unpublished successfully');
-        } catch (error: any) {
-            messageApi.error(error.response?.data?.message || 'Failed to update article publish status');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleFeatured = async (id: string, isFeatured: boolean) => {
-        try {
-            setLoading(true);
-            // Get the current article data
-            const currentArticle = articles.find(article => article.id === id);
-            if (!currentArticle) {
-                messageApi.error('Article not found');
-                return;
-            }
-
-            // Prepare article data with all required fields
-            const articleData = {
-                title: currentArticle.title,
-                description: currentArticle.description,
-                content: currentArticle.content,
-                image: currentArticle.image,
-                tagIds: currentArticle.tags.map(tag => tag.id),
-                categoryId: currentArticle.category.id,
-                publishAt: currentArticle.publishAt,
-                isFeatured: isFeatured
-            };
-
-            await articleCrud.updateArticle(id, articleData);
-
-            // Update the local state
-            setArticles(prevArticles =>
-                prevArticles.map(article =>
-                    article.id === id
-                        ? { ...article, isFeatured: isFeatured }
-                        : article
-                )
-            );
-
-            messageApi.success(isFeatured ? 'Article featured successfully' : 'Article unfeatured successfully');
-        } catch (error: any) {
-            messageApi.error(error.response?.data?.message || 'Failed to update article featured status');
-        } finally {
-            setLoading(false);
-        }
-    };
 
 
     if (loading) {
@@ -354,26 +266,10 @@ export default function ArticlesList() {
                                     }}
                                     allowClear
                                 >
-                                    <Select.Option value="createdAt-0">Newest First</Select.Option>
-                                    <Select.Option value="createdAt-1">Oldest First</Select.Option>
+                                    <Select.Option value="createdAt-1">Newest First</Select.Option>
+                                    <Select.Option value="createdAt-0">Oldest First</Select.Option>
                                 </Select>
                             </Col>
-                            {/* <Col lg={4} md={12} span={24}>
-                            <Select
-                                mode="multiple"
-                                style={{ width: '100%' }}
-                                placeholder="Select Tags"
-                                value={selectedTags}
-                                onChange={handleTagsChange}
-                                allowClear
-                            >
-                                {tags.map(tag => (
-                                    <Select.Option key={tag.id} value={tag.id}>
-                                        {tag.name}
-                                    </Select.Option>
-                                ))}
-                            </Select>
-                        </Col> */}
 
                         </Row>
                     </Space>
@@ -421,32 +317,7 @@ export default function ArticlesList() {
                                                 >
                                                     Delete
                                                 </Button>,
-                                                <Checkbox
-                                                    key="publish"
-                                                    checked={!!article.publishAt}
-                                                    onChange={(e) => {
-                                                        e.stopPropagation();
-                                                        handlePublish(article.id, e.target.checked);
-                                                    }}
-                                                    disabled={publishLoading === article.id}
-                                                    style={{ marginLeft: 8 }}
-                                                    onClick={(e) => e.stopPropagation()}
-                                                >
-                                                    Publish
-                                                </Checkbox>,
-                                                <Checkbox
-                                                    key="isFeatured"
-                                                    checked={!!article.isFeatured}
-                                                    onChange={(e) => {
-                                                        e.stopPropagation();
-                                                        handleFeatured(article.id, e.target.checked);
-                                                    }}
-                                                    disabled={publishLoading === article.id}
-                                                    style={{ marginLeft: 8 }}
-                                                    onClick={(e) => e.stopPropagation()}
-                                                >
-                                                    Featured
-                                                </Checkbox>,
+
                                             ]}
                                         >
                                             <Card.Meta
