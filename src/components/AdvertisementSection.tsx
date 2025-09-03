@@ -59,7 +59,7 @@ const AdvertisementSection: React.FC = () => {
 
             <div style={{ width: '100%', maxWidth: 600, margin: '0 auto 24px auto' }}>
                 <Image
-                    src="/images/nhahaystudio.com.png"
+                    src="https://hangnhatchuan365.com/wp-content/uploads/2020/11/logo-hangnhatchuan365-removebg-preview-e1604745026115.png"
                     alt="nhahaystudio.com"
                     width={600}
                     height={200}
