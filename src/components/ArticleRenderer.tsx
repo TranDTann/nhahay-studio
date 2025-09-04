@@ -100,15 +100,24 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                         case 'image':
                             return (
                                 <div key={block.id} className="content-image" style={{ margin: '24px 0' }}>
-                                    <img
-                                        src={block.imageUrl}
-                                        alt={block.caption || 'Article image'}
-                                        style={{
-                                            maxWidth: '100%',
-                                            borderRadius: '8px',
-                                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-                                        }}
-                                    />
+                                    <div style={{
+
+                                        margin: '0 auto',
+                                        borderRadius: '8px',
+                                        overflow: 'hidden',
+                                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                                    }}>
+                                        <img
+                                            src={block.imageUrl}
+                                            alt={block.caption || 'Article image'}
+                                            style={{
+                                                width: '400px',
+                                                height: '600px',
+                                                objectFit: 'cover',
+                                                borderRadius: '8px'
+                                            }}
+                                        />
+                                    </div>
                                     {block.caption && (
                                         <p className="image-caption" style={{
                                             textAlign: 'center',
@@ -126,12 +135,42 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                         case 'compare':
                             return (
                                 <div key={block.id} className="content-compare" style={{ margin: '24px 0' }}>
-                                    <ImgComparisonSlider>
-                                        <img slot="first" src={block.leftImageUrl!} alt={block.leftLabel || 'Left image'} />
-                                        <img slot="second" src={block.rightImageUrl!} alt={block.rightLabel || 'Right image'} />
-                                    </ImgComparisonSlider>
+                                    <div style={{
+                                        height: '400px',
+                                        width: '100%',
+                                        margin: '0 auto',
+                                        borderRadius: '8px',
+                                        overflow: 'hidden',
+                                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}>
+                                        <ImgComparisonSlider style={{ width: '100%', height: '100%' }}>
+                                            <img
+                                                slot="first"
+                                                src={block.leftImageUrl!}
+                                                alt={block.leftLabel || 'Left image'}
+                                                style={{
+                                                    height: '400px',
+                                                    width: '100%',
+                                                    objectFit: 'cover'
+                                                }}
+                                            />
+                                            <img
+                                                slot="second"
+                                                src={block.rightImageUrl!}
+                                                alt={block.rightLabel || 'Right image'}
+                                                style={{
+                                                    height: '400px',
+                                                    width: '100%',
+                                                    objectFit: 'cover'
+                                                }}
+                                            />
+                                        </ImgComparisonSlider>
+                                    </div>
                                     {(block.leftLabel || block.rightLabel) && (
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
+                                        <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 8, gap: '20px' }}>
                                             <span>{block.leftLabel}</span>
                                             <span>{block.rightLabel}</span>
                                         </div>
@@ -190,15 +229,28 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                             case 'image':
                                 return (
                                     <div key={block.id} className="content-image" style={{ margin: '24px 0' }}>
-                                        <img
-                                            src={block.imageUrl}
-                                            alt={block.caption || 'Article image'}
-                                            style={{
-                                                maxWidth: '100%',
-                                                borderRadius: '8px',
-                                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-                                            }}
-                                        />
+                                        <div style={{
+                                            height: '400px',
+                                            width: 'auto',
+                                            margin: '0 auto',
+                                            borderRadius: '8px',
+                                            overflow: 'hidden',
+                                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}>
+                                            <img
+                                                src={block.imageUrl}
+                                                alt={block.caption || 'Article image'}
+                                                style={{
+                                                    height: '400px',
+                                                    width: 'auto',
+                                                    objectFit: 'contain',
+                                                    borderRadius: '8px'
+                                                }}
+                                            />
+                                        </div>
                                         {block.caption && (
                                             <p className="image-caption" style={{
                                                 textAlign: 'center',
@@ -216,12 +268,42 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                             case 'compare':
                                 return (
                                     <div key={block.id} className="content-compare" style={{ margin: '24px 0' }}>
-                                        <ImgComparisonSlider>
-                                            <img slot="first" src={block.leftImageUrl!} alt={block.leftLabel || 'Left image'} />
-                                            <img slot="second" src={block.rightImageUrl!} alt={block.rightLabel || 'Right image'} />
-                                        </ImgComparisonSlider>
+                                        <div style={{
+                                            height: '400px',
+                                            width: '100%',
+                                            margin: '0 auto',
+                                            borderRadius: '8px',
+                                            overflow: 'hidden',
+                                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}>
+                                            <ImgComparisonSlider style={{ width: '100%', height: '100%' }}>
+                                                <img
+                                                    slot="first"
+                                                    src={block.leftImageUrl!}
+                                                    alt={block.leftLabel || 'Left image'}
+                                                    style={{
+                                                        height: '400px',
+                                                        width: '100%',
+                                                        objectFit: 'cover'
+                                                    }}
+                                                />
+                                                <img
+                                                    slot="second"
+                                                    src={block.rightImageUrl!}
+                                                    alt={block.rightLabel || 'Right image'}
+                                                    style={{
+                                                        height: '400px',
+                                                        width: '100%',
+                                                        objectFit: 'cover'
+                                                    }}
+                                                />
+                                            </ImgComparisonSlider>
+                                        </div>
                                         {(block.leftLabel || block.rightLabel) && (
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
+                                            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 8, gap: '20px' }}>
                                                 <span>{block.leftLabel}</span>
                                                 <span>{block.rightLabel}</span>
                                             </div>

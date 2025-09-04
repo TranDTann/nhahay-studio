@@ -53,6 +53,7 @@ export default function CategoryTable({
                     <Button
                         type="text"
                         size="small"
+                        className={`sort-button ${sortField === 'name' ? 'active' : ''} ${sortField === 'name' && SortDir === 1 ? 'asc' : sortField === 'name' && SortDir === -1 ? 'desc' : ''}`}
                         icon={sortField === 'name' ? (SortDir === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
                         onClick={() => onSort('name')}
                         style={{ marginLeft: 8 }}
@@ -61,6 +62,7 @@ export default function CategoryTable({
             ),
             dataIndex: 'name',
             key: 'name',
+            className: sortField === 'name' ? 'sorted-column' : '',
         },
         {
             title: 'Thumbnail',
@@ -98,6 +100,7 @@ export default function CategoryTable({
                     <Button
                         type="text"
                         size="small"
+                        className={`sort-button ${sortField === 'createdAt' ? 'active' : ''} ${sortField === 'createdAt' && SortDir === 1 ? 'asc' : sortField === 'createdAt' && SortDir === -1 ? 'desc' : ''}`}
                         icon={sortField === 'createdAt' ? (SortDir === 1 ? <SortDescendingOutlined /> : <SortAscendingOutlined />) : <SortAscendingOutlined />}
                         onClick={() => onSort('createdAt')}
                         style={{ marginLeft: 8 }}
@@ -106,6 +109,7 @@ export default function CategoryTable({
             ),
             dataIndex: 'createdAt',
             key: 'createdAt',
+            className: sortField === 'createdAt' ? 'sorted-column' : '',
             render: (date) => date ? new Date(date).toLocaleDateString() : '-',
         },
         {
