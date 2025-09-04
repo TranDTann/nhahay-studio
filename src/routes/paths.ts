@@ -12,7 +12,7 @@ const paths = {
     admin: `${roots.auth}/admin`
   },
   dashboard: {
-    root: () => '/home',
+    root: () => '/',
     home: () => '/home',
     category: (categoryId: string) => `/category/${categoryId}`,
     postDetail: (postId: string) => `/post/${postId}`

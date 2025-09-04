@@ -19,8 +19,9 @@ const CategoryItem = ({ categoryData }: TCategoryItemProps) => {
       <div className="category-thumbnail-container">
         <img
           src={
-            categoryData?.['thumbnail'] ??
-            'https://hangnhatchuan365.com/wp-content/uploads/2020/09/thiet-bi-bep-108x108-1-36x36.png'
+            categoryData.urlThumbnail
+              ? categoryData.urlThumbnail
+              : 'https://hangnhatchuan365.com/wp-content/uploads/2020/09/thiet-bi-bep-108x108-1-36x36.png'
           }
           alt="category-thumbnail"
           className="category-thumbnail image-hover-zoom"

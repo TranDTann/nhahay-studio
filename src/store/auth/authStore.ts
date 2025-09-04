@@ -9,6 +9,12 @@ export type TUser = {
   email: string
   id: string
   username: string
+  role: EUserRole
+}
+
+export enum EUserRole {
+  ADMIN = 'Admin',
+  USER = 'User'
 }
 
 interface AuthState {

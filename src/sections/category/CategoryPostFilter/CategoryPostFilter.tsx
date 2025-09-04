@@ -20,6 +20,7 @@ const CategoryPostFilter = ({ setPostType }: TCategoryPostFilterProps) => {
         defaultActiveKey={PostTypeEnum.NONE.toString()}
         items={tabItems}
         onChange={(activeKey) => setPostType(+activeKey)}
+        style={{ backgroundColor: '#fff' }}
       />
     </div>
   )

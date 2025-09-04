@@ -65,7 +65,8 @@ const CategoryView = () => {
 
         const { result = [], count = 0 } = await articleCrud.getArticles({
           categoryId,
-          listType: postType
+          listType: postType,
+          isPublished: true
         })
         setCategoryPosts(result)
         setTotalPost(count)
@@ -115,22 +116,28 @@ const CategoryView = () => {
 
   return (
     <div className="category-details-container">
-      <CategoryInfo categoryData={categoryView} />
-      <CategoryPostFilter setPostType={setPostType} />
-      {postsContent}
-      {categoryPosts.length < totalPost && (
-        <div className="view-more-button-container">
-          <Button
-            className="view-more-button"
-            variant="outlined"
-            onClick={() => {
-              setPage(page + 1)
-            }}
-          >
-            Xem thêm
-          </Button>
+      <div className="category-details-controller-wrapper">
+        <div className="category-details-controller">
+          <CategoryInfo categoryData={categoryView} />
+          <CategoryPostFilter setPostType={setPostType} />
         </div>
-      )}
+      </div>
+      <div className="category-details-content">
+        {postsContent}
+        {categoryPosts.length < totalPost && (
+          <div className="view-more-button-container">
+            <Button
+              className="view-more-button"
+              variant="outlined"
+              onClick={() => {
+                setPage(page + 1)
+              }}
+            >
+              Xem thêm
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
