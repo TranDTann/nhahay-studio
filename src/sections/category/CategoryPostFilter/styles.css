@@ -7,3 +7,12 @@
 #CategoryPostFilter .ant-tabs-ink-bar {
   background-color: #7754f6 !important;
 }
+
+#CategoryPostFilter {
+  width: fit-content;
+}
+
+#CategoryPostFilter .ant-tabs,
+.ant-tabs-top {
+  background-color: #fff;
+}

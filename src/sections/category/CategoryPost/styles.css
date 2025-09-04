@@ -8,6 +8,7 @@
   width: 270px;
   object-fit: cover;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .category-post-info {

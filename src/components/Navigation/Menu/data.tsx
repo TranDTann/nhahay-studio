@@ -2,7 +2,12 @@ import paths from '@/routes/paths'
 import { Category } from '@/store/categories/crud'
 import Link from 'next/link'
 
-export const getMenu = (categories: Category[]) => [
+type TGetMenuProps = {
+  categories: Category[]
+  isAdmin?: boolean
+}
+
+export const getMenu = ({ categories, isAdmin }: TGetMenuProps) => [
   {
     key: '/home',
     label: <Link href="/home">Trang chủ</Link>
@@ -17,12 +22,14 @@ export const getMenu = (categories: Category[]) => [
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <img
               src={
-                categoryItem?.['thumbnail'] ??
-                'https://hangnhatchuan365.com/wp-content/uploads/2020/09/thiet-bi-bep-108x108-1-36x36.png'
+                categoryItem.urlThumbnail
+                  ? categoryItem.urlThumbnail
+                  : 'https://hangnhatchuan365.com/wp-content/uploads/2020/09/thiet-bi-bep-108x108-1-36x36.png'
               }
               alt={categoryItem.name}
               width={20}
               height={20}
+              style={{ borderRadius: '3px' }}
             />
             <span>{categoryItem.name}</span>
           </div>
@@ -30,8 +37,13 @@ export const getMenu = (categories: Category[]) => [
       )
     }))
   },
-  {
-    key: '/admin',
-    label: <Link href={paths.admin.articles()}>Admin</Link>
-  }
+  ...(isAdmin
+    ? [
+        {
+          key: '/admin',
+          label: <Link href={paths.admin.articles()}>Admin</Link>,
+          hidden: true
+        }
+      ]
+    : [])
 ]

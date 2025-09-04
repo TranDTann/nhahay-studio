@@ -6,8 +6,8 @@
 
 .main-container {
   width: 65%;
-  margin: 0 auto;
-  padding: 24px 0 96px;
+  margin: 80px auto 0;
+  padding: 24px 0 64px;
   flex: 1;
 }
 

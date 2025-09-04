@@ -1,7 +1,13 @@
 .navigation-bar-container {
-  box-shadow: 0 2px 2px -2px rgba(139, 139, 139, 0.2);
+  border-bottom: 1px solid rgba(139, 139, 139, 0.2);
   padding: 12px 0;
   width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #fff;
+  z-index: 1000;
+  height: 80px;
 }
 
 .navigation-bar-content {
