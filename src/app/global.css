@@ -44,31 +44,24 @@
   padding-bottom: '20px';
 }
 
-/* display max 3 lines */
-.display-max-3-lines {
+[class*='display-max-'] {
   display: -webkit-box !important;
-  -webkit-line-clamp: 3 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
-/* display max 2 lines */
-.display-max-2-lines {
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-/* display max 1 lines */
 .display-max-1-lines {
-  display: -webkit-box !important;
   -webkit-line-clamp: 1 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+}
+.display-max-2-lines {
+  -webkit-line-clamp: 2 !important;
+}
+.display-max-3-lines {
+  -webkit-line-clamp: 3 !important;
+}
+.display-max-10-lines {
+  -webkit-line-clamp: 10 !important;
 }
 
 .image-hover-zoom {

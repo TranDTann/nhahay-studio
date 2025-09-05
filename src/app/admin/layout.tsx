@@ -1,77 +1,86 @@
 'use client'
-import { Layout, ConfigProvider } from 'antd';
-import AdminSidebar from '@/components/admin/AdminSidebar';
-import theme from '../../../config/themeConfig';
-import { useState, useEffect } from 'react';
-import { MenuOutlined } from '@ant-design/icons';
-import { ConfigProvider as AppConfigProvider } from '@/contexts/ConfigContext';
 
-const { Content } = Layout;
+import AdminSidebar from '@/components/admin/AdminSidebar'
+import { Logo } from '@/components/Navigation/Logo'
+import { ConfigProvider as AppConfigProvider } from '@/contexts/ConfigContext'
+import paths from '@/routes/paths'
+import { ArrowLeftOutlined, MenuOutlined } from '@ant-design/icons'
+import { Button, ConfigProvider, Layout } from 'antd'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import theme from '../../../config/themeConfig'
+
+const { Content } = Layout
 
 export default function AdminLayout({
-    children,
+  children
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode
 }) {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+  const router = useRouter()
 
-    useEffect(() => {
-        const checkScreenSize = () => {
-            setIsMobile(window.innerWidth <= 1024);
-            if (window.innerWidth > 1024) {
-                setIsSidebarOpen(true);
-            }
-        };
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
-        checkScreenSize();
-        window.addEventListener('resize', checkScreenSize);
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 1024)
+      if (window.innerWidth > 1024) {
+        setIsSidebarOpen(true)
+      }
+    }
 
-        return () => {
-            window.removeEventListener('resize', checkScreenSize);
-        };
-    }, []);
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
 
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
+    return () => {
+      window.removeEventListener('resize', checkScreenSize)
+    }
+  }, [])
 
-    const closeSidebar = () => {
-        if (isMobile) {
-            setIsSidebarOpen(false);
-        }
-    };
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen)
+  }
 
-    return (
-        <AppConfigProvider>
-            <ConfigProvider theme={theme}>
-                <Layout style={{ minHeight: '100vh' }}>
-                    <button
-                        className="admin-sidebar__toggle"
-                        onClick={toggleSidebar}
-                        aria-label="Toggle Sidebar"
-                    >
-                        <MenuOutlined />
-                    </button>
+  const closeSidebar = () => {
+    if (isMobile) {
+      setIsSidebarOpen(false)
+    }
+  }
 
-                    <div
-                        className={`admin-sidebar__overlay ${isSidebarOpen ? 'open' : ''}`}
-                        onClick={closeSidebar}
-                    />
-                    {
-                        isSidebarOpen && (
-                            <AdminSidebar isOpen={isSidebarOpen} />
-                        )
-                    }
+  return (
+    <AppConfigProvider>
+      <ConfigProvider theme={theme}>
+        <Layout style={{ minHeight: '100vh' }}>
+          <button
+            className="admin-sidebar__toggle"
+            onClick={toggleSidebar}
+            aria-label="Toggle Sidebar"
+          >
+            <MenuOutlined />
+          </button>
 
+          <div
+            className={`admin-sidebar__overlay ${isSidebarOpen ? 'open' : ''}`}
+            onClick={closeSidebar}
+          />
+          {isSidebarOpen && <AdminSidebar isOpen={isSidebarOpen} />}
 
-                    <Layout className="admin-content">
-                        <Content style={{ padding: '24px 8px', background: '#fff' }}>
-                            {children}
-                        </Content>
-                    </Layout>
-                </Layout>
-            </ConfigProvider>
-        </AppConfigProvider>
-    );
+          <Layout className="admin-content">
+            <Content style={{ padding: '16px 8px', background: '#fff' }}>
+              <Button
+                style={{ marginLeft: 24 }}
+                onClick={() => router.push(paths.dashboard.home())}
+              >
+                <ArrowLeftOutlined />
+                <Logo size="xs" />
+                Quay lại NhahayStudio
+              </Button>
+              {children}
+            </Content>
+          </Layout>
+        </Layout>
+      </ConfigProvider>
+    </AppConfigProvider>
+  )
 }
