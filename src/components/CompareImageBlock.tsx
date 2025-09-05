@@ -42,7 +42,8 @@ const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<s
 };
 
 export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlockProps) {
-    const [isUploading, setIsUploading] = useState(false);
+    const [isLeftUploading, setIsLeftUploading] = useState(false);
+    const [isRightUploading, setIsRightUploading] = useState(false);
     const [leftImage, setLeftImage] = useState<string | null>(null);
     const [rightImage, setRightImage] = useState<string | null>(null);
     const [leftLabel, setLeftLabel] = useState('');
@@ -58,7 +59,12 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
         if (!file) return;
 
         try {
-            setIsUploading(true);
+            // Set loading state cho button tương ứng
+            if (side === 'left') {
+                setIsLeftUploading(true);
+            } else {
+                setIsRightUploading(true);
+            }
 
             // Resize ảnh trước khi upload để đồng bộ kích thước
             const resizedImageUrl = await resizeImage(file, imageSize.width, imageSize.height);
@@ -74,7 +80,12 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
         } catch (error: any) {
             message.error('Failed to upload image');
         } finally {
-            setIsUploading(false);
+            // Reset loading state cho button tương ứng
+            if (side === 'left') {
+                setIsLeftUploading(false);
+            } else {
+                setIsRightUploading(false);
+            }
         }
     };
 
@@ -161,7 +172,7 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
             <Button
                 type="primary"
                 onClick={() => leftFileInputRef.current?.click()}
-                loading={isUploading}
+                loading={isLeftUploading}
                 style={{ width: '100%', marginBottom: '8px' }}
             >
                 Select Left Image
@@ -193,7 +204,7 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
             <Button
                 type="primary"
                 onClick={() => rightFileInputRef.current?.click()}
-                loading={isUploading}
+                loading={isRightUploading}
                 style={{ width: '100%', marginBottom: '8px' }}
             >
                 Select Right Image

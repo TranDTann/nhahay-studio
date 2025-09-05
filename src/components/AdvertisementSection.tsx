@@ -57,13 +57,11 @@ const AdvertisementSection: React.FC = () => {
                 (đây là website con nằm trong hệ sinh thái NHÀ, tại đây trưng bày các sản phẩm mà chúng tôi đánh giá là HAY!)
             </p>
 
-            <div style={{ width: '100%', maxWidth: 600, margin: '0 auto 24px auto' }}>
-                <Image
+            <div style={{ width: 'auto', maxWidth: 600, margin: '0 auto 24px auto' }}>
+                <img
                     src="https://hangnhatchuan365.com/wp-content/uploads/2020/11/logo-hangnhatchuan365-removebg-preview-e1604745026115.png"
                     alt="nhahaystudio.com"
-                    width={600}
-                    height={200}
-                    style={{ width: '100%', borderRadius: 12, objectFit: 'cover' }}
+                    style={{ maxWidth: '100%', borderRadius: 12, objectFit: 'cover', maxHeight: 200 }}
                 />
             </div>
 
