@@ -101,12 +101,15 @@ export default function ArticleDetailPage({ params }: { params: { id: string, no
                         {Array.isArray(article.advertisements) && article.advertisements.slice(1, 2).map((ad, idx) => (
                             ad.imageUrl ? (
                                 <div key={ad.id || idx} style={{ width: '100%', maxWidth: 600, margin: '24px auto 0 auto' }}>
-                                    <Image
+                                    <img
                                         src={ad.imageUrl}
                                         alt={ad.title || 'Advertisement'}
                                         width={280}
                                         height={240}
                                         style={{ width: '100%', borderRadius: 12, objectFit: 'cover' }}
+                                        onClick={() => {
+                                            window.open(ad.link, '_blank');
+                                        }}
                                     />
                                 </div>
                             ) : null

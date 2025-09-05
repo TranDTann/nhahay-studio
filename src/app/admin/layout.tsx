@@ -45,7 +45,7 @@ export default function AdminLayout({
     return (
         <AppConfigProvider>
             <ConfigProvider theme={theme}>
-                <Layout style={{ minHeight: '100vh' }}>
+                <Layout>
                     <button
                         className="admin-sidebar__toggle"
                         onClick={toggleSidebar}
@@ -65,8 +65,8 @@ export default function AdminLayout({
                     }
 
 
-                    <Layout className="admin-content">
-                        <Content style={{ padding: '24px 8px', background: '#fff' }}>
+                    <Layout className="admin-content" style={{ height: '100vh' }}>
+                        <Content style={{ padding: '0 8px', background: '#fff', height: '100%', overflow: 'auto' }}>
                             {children}
                         </Content>
                     </Layout>

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Input, Card, Button, Space, Select, Row, Col, App, Spin, Pagination, Checkbox } from 'antd';
-import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { Input, Card, Button, Space, Select, Row, Col, App, Spin, Pagination, Checkbox, Tag, Badge } from 'antd';
+import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined, CheckCircleOutlined, StarOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
 import { articleCrud } from '@/store/article/crud';
@@ -179,7 +179,46 @@ export default function ArticlesList() {
         }
     };
 
+    // Add this component for status badges
+    const ArticleStatusBadges = ({ article }: { article: Article }) => {
+        const isPublished = !!article.publishAt;
+        const isFeatured = !!article.isFeatured;
+        const publishDate = article.publishAt ? new Date(article.publishAt) : null;
+        const now = new Date();
+        const isScheduled = publishDate && publishDate > now;
 
+        return (
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', flexWrap: 'wrap' }}>
+                {isPublished && (
+                    <Tag
+                        icon={<CheckCircleOutlined />}
+                        color={isScheduled ? "orange" : "green"}
+                        style={{ margin: 0 }}
+                    >
+                        {isScheduled ? 'Scheduled' : 'Published'}
+                    </Tag>
+                )}
+                {!isPublished && (
+                    <Tag
+                        icon={<ClockCircleOutlined />}
+                        color="default"
+                        style={{ margin: 0 }}
+                    >
+                        Draft
+                    </Tag>
+                )}
+                {isFeatured && (
+                    <Tag
+                        icon={<StarOutlined />}
+                        color="gold"
+                        style={{ margin: 0 }}
+                    >
+                        Featured
+                    </Tag>
+                )}
+            </div>
+        );
+    };
 
 
     if (loading) {
@@ -317,14 +356,38 @@ export default function ArticlesList() {
                                                 >
                                                     Delete
                                                 </Button>,
-
                                             ]}
                                         >
                                             <Card.Meta
-                                                title={article.title}
+                                                title={
+                                                    <div>
+                                                        <div style={{
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis',
+                                                            display: '-webkit-box',
+                                                            WebkitLineClamp: 2,
+                                                            WebkitBoxOrient: 'vertical',
+                                                            marginBottom: '8px'
+                                                        }}>
+                                                            {article.title}
+                                                        </div>
+                                                        {/* Status badges in card content */}
+                                                        <ArticleStatusBadges article={article} />
+                                                    </div>
+                                                }
                                                 description={
                                                     <div>
-                                                        <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', height: '48px' }}>{article.description}</p>
+                                                        <p style={{
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis',
+                                                            display: '-webkit-box',
+                                                            WebkitLineClamp: 2,
+                                                            WebkitBoxOrient: 'vertical',
+                                                            height: '48px',
+                                                            marginBottom: '12px'
+                                                        }}>
+                                                            {article.description}
+                                                        </p>
                                                         <Space direction="vertical" size="small" style={{ width: '100%' }}>
                                                             {article.category && (
                                                                 <div>
