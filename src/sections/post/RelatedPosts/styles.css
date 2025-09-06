@@ -1,0 +1,9 @@
+.related-post-container {
+  padding: 20px 48px;
+  background-color: #efefef;
+  border-radius: 8px;
+}
+
+.related-post-title {
+  margin-bottom: 12px;
+}
