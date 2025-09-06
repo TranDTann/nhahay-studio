@@ -1,5 +1,4 @@
 'use client'
-
 import AdminSidebar from '@/components/admin/AdminSidebar'
 import { Logo } from '@/components/Navigation/Logo'
 import { ConfigProvider as AppConfigProvider } from '@/contexts/ConfigContext'
@@ -51,7 +50,7 @@ export default function AdminLayout({
   return (
     <AppConfigProvider>
       <ConfigProvider theme={theme}>
-        <Layout style={{ minHeight: '100vh' }}>
+        <Layout>
           <button
             className="admin-sidebar__toggle"
             onClick={toggleSidebar}
@@ -66,8 +65,15 @@ export default function AdminLayout({
           />
           {isSidebarOpen && <AdminSidebar isOpen={isSidebarOpen} />}
 
-          <Layout className="admin-content">
-            <Content style={{ padding: '16px 8px', background: '#fff' }}>
+          <Layout className="admin-content" style={{ height: '100vh' }}>
+            <Content
+              style={{
+                padding: '16px 8px',
+                background: '#fff',
+                height: '100%',
+                overflow: 'auto'
+              }}
+            >
               <Button
                 style={{ marginLeft: 24 }}
                 onClick={() => router.push(paths.dashboard.home())}

@@ -62,6 +62,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen }) => {
     return (
         <Sider
             width={250}
+            style={{ height: '100vh', position: 'fixed' }}
             className={`admin-sidebar__container ${isOpen ? 'open' : ''}`}
         >
             <div className="admin-sidebar__header">

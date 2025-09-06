@@ -407,16 +407,99 @@ export default function FormBlog({ id }: FormBlogProps) {
 
     return (
         <div className="article-form">
-            {id && id !== 'new' && (
-                <Button
-                    type="default"
-                    onClick={() => router.push(paths.admin.articleView(id))}
-                    style={{ marginBottom: 16 }}
-                >
-                    ← Back
-                </Button>
-            )}
-            <h1>{id === 'new' ? 'Create Article' : 'Edit Article'}</h1>
+            {/* Improved Header with better styling and UX */}
+            <div className="article-form-header">
+                <div className="header-content">
+                    <div className="header-left">
+                        {id && id !== 'new' && (
+                            <Button
+                                type="default"
+                                onClick={() => router.push(paths.admin.articleView(id))}
+                                className="back-button"
+                                icon={<span>←</span>}
+                            >
+                                Back to View
+                            </Button>
+                        )}
+                        <div className="form-group" style={{ marginTop: 8 }}>
+                            <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={!!article.publishAt}
+                                        onChange={(e) => setArticle(prev => ({
+                                            ...prev,
+                                            publishAt: e.target.checked ? new Date().toISOString() : null
+                                        }))}
+                                        style={{ width: '16px', height: '16px' }}
+                                    />
+                                    <span>Publish Article</span>
+                                </label>
+                                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={!!article.isFeatured}
+                                        onChange={(e) => setArticle(prev => ({
+                                            ...prev,
+                                            isFeatured: e.target.checked
+                                        }))}
+                                        style={{ width: '16px', height: '16px' }}
+                                    />
+                                    <span>Featured Article</span>
+                                </label>
+                            </div>
+                            {article.publishAt && (
+                                <div style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
+                                    Will be published at: {new Date(article.publishAt).toLocaleString('vi-VN')}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="header-center">
+                        <h1 className="header-title">
+                            {id === 'new' ? 'Create New Article' : 'Edit Article'}
+                        </h1>
+                    </div>
+
+                    <div className="header-right">
+                        <div className="action-buttons">
+                            <button
+                                className="action-button preview-button"
+                                onClick={previewHtml}
+                                disabled={isSaving}
+                                title="Preview article"
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor" />
+                                </svg>
+                                Preview
+                            </button>
+
+                            <button
+                                className="action-button save-button"
+                                onClick={handleSave}
+                                disabled={isSaving}
+                                title="Save article"
+                            >
+                                {isSaving ? (
+                                    <>
+                                        <div className="loading-spinner small"></div>
+                                        Saving...
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z" fill="currentColor" />
+                                        </svg>
+                                        Save Article
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div className="form-group">
                 <label className="form-label" htmlFor="title">Title</label>
@@ -528,42 +611,6 @@ export default function FormBlog({ id }: FormBlogProps) {
                     ))}
                 </Select>
             </div>
-
-            <div className="form-group">
-                <label className="form-label">Article Settings</label>
-                <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                        <input
-                            type="checkbox"
-                            checked={!!article.publishAt}
-                            onChange={(e) => setArticle(prev => ({
-                                ...prev,
-                                publishAt: e.target.checked ? new Date().toISOString() : null
-                            }))}
-                            style={{ width: '16px', height: '16px' }}
-                        />
-                        <span>Publish Article</span>
-                    </label>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                        <input
-                            type="checkbox"
-                            checked={!!article.isFeatured}
-                            onChange={(e) => setArticle(prev => ({
-                                ...prev,
-                                isFeatured: e.target.checked
-                            }))}
-                            style={{ width: '16px', height: '16px' }}
-                        />
-                        <span>Featured Article</span>
-                    </label>
-                </div>
-                {article.publishAt && (
-                    <div style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
-                        Will be published at: {new Date(article.publishAt).toLocaleString('vi-VN')}
-                    </div>
-                )}
-            </div>
-
             <div className="form-group">
                 <label className="form-label">Content</label>
                 <div className="content-preview">
@@ -654,32 +701,7 @@ export default function FormBlog({ id }: FormBlogProps) {
 
 
 
-            <div className="button-container">
-                <button
-                    className="preview-button"
-                    onClick={previewHtml}
-                    disabled={isSaving}
-                >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor" />
-                    </svg>
-                    Preview
-                </button>
-                <button
-                    className="preview-button save-button"
-                    onClick={handleSave}
-                    disabled={isSaving}
-                >
-                    {isSaving ? (
-                        <>
-                            <div className="loading-spinner small"></div>
-                            Saving...
-                        </>
-                    ) : (
-                        'Save Article'
-                    )}
-                </button>
-            </div>
+
 
             {/* Preview Modal */}
             <Modal
