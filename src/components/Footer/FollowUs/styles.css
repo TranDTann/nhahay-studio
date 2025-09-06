@@ -31,6 +31,10 @@
   gap: 8px;
 }
 
+.social-item:hover {
+  color: #52c41a;
+}
+
 .social-item_icon {
   width: 20px;
   height: 20px;

@@ -1,15 +1,13 @@
 'use client'
 
-import ArticleRenderer from '@/components/ArticleRenderer'
-import { FollowUs } from '@/components/Footer/FollowUs'
+import ArticleDetailPage from '@/app/admin/articles/view/[id]/page'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { Article, articleCrud } from '@/store/article/crud'
 import { App } from 'antd'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import PostDetailHeader from '../PostDetailHeader/PostDetailHeader'
+import RelatedPosts from '../RelatedPosts/RelatedPosts'
 import './styles.css'
-import ArticleDetailPage from '@/app/admin/articles/view/[id]/page'
 
 const PostDetailView = () => {
   const pathname = usePathname()
@@ -53,6 +51,7 @@ const PostDetailView = () => {
   return (
     <div>
       <ArticleDetailPage params={{ id: postId, noHeader: true }} />
+      <RelatedPosts postData={postData} />
     </div>
   )
 }

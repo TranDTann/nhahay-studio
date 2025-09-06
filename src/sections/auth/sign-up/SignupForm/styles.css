@@ -33,7 +33,7 @@
 }
 
 .signup-button {
-  background: #7754f6 !important;
+  /* background: #7754f6 !important; */
   height: 52px !important;
   width: 172px !important;
   font-weight: 600 !important;
@@ -45,11 +45,11 @@
   margin-bottom: 12px !important;
 }
 .remember-checkbox .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #7754f6;
-  border-color: #7754f6;
+  /* background-color: #7754f6;
+  border-color: #7754f6; */
 }
 .remember-checkbox .ant-checkbox-inner {
-  border-color: #7754f6;
+  /* border-color: #7754f6; */
 }
 .remember-checkbox .ant-checkbox-checked .ant-checkbox-inner::after {
   border-color: white;
@@ -61,11 +61,11 @@
 /* Forgot password button */
 .forgot-password-button,
 .forgot-password-button:hover {
-  color: #7754f6;
+  /* color: #7754f6; */
 }
 
 /* antd input */
 .ant-input-outlined:hover,
 .ant-input-outlined:focus-within {
-  border-color: #7754f6 !important;
+  /* border-color: #7754f6 !important; */
 }
