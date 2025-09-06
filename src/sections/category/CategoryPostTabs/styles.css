@@ -1,11 +1,11 @@
 #CategoryPostTabs .ant-tabs-tab:hover,
 #CategoryPostTabs .ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: #7754f6 !important;
-  text-shadow: 0 0 0.25px #7754f6 !important;
+  /* color: #7754f6 !important; */
+  /* text-shadow: 0 0 0.25px #7754f6 !important; */
 }
 
 #CategoryPostTabs .ant-tabs-ink-bar {
-  background-color: #7754f6 !important;
+  /* background-color: #7754f6 !important; */
 }
 
 #CategoryPostTabs {
