@@ -1,28 +1,80 @@
 'use client'
 
-import { postTyes, PostTypeEnum } from '@/store/article/articleStore'
-import { Tabs, TabsProps } from 'antd'
+import { useDebounce } from '@/hooks/useDebounce'
+import {
+  EViewMode,
+  useCategoryPostsStore
+} from '@/store/categoryPosts/categoryPostStore'
+import { SearchOutlined } from '@ant-design/icons'
+import { Button, Flex, Input, Tooltip } from 'antd'
+import { useEffect, useState } from 'react'
+import { FaList, FaThLarge } from 'react-icons/fa'
 import './styles.css'
 
-type TCategoryPostFilterProps = {
-  setPostType: (data: number) => void
-}
+const CategoryPostFilter = () => {
+  const [valueSearch, setValueSearch] = useState('')
 
-const CategoryPostFilter = ({ setPostType }: TCategoryPostFilterProps) => {
-  const tabItems: TabsProps['items'] = postTyes.map((i) => ({
-    key: i.key.toString(),
-    label: i.label
-  }))
+  const searchQuery = useDebounce(valueSearch, 300).trim()
+
+  const { viewMode, filters } = useCategoryPostsStore((state) => state)
+
+  useEffect(() => {
+    useCategoryPostsStore.setState({
+      filters: { ...filters, search: searchQuery ? searchQuery : undefined }
+    })
+  }, [searchQuery])
+
+  const tooltipStyles = {
+    body: {
+      fontSize: 12,
+      lineHeight: 1.2,
+      minHeight: 'auto'
+    },
+    root: {
+      borderRadius: 4
+    }
+  }
 
   return (
-    <div id="CategoryPostFilter">
-      <Tabs
-        defaultActiveKey={PostTypeEnum.NONE.toString()}
-        items={tabItems}
-        onChange={(activeKey) => setPostType(+activeKey)}
-        style={{ backgroundColor: '#fff' }}
+    <Flex justify="space-between" gap={16} style={{ padding: '4px 0 20px' }}>
+      <Input
+        prefix={<SearchOutlined />}
+        placeholder="Tìm kiếm bài viết"
+        onChange={(e) => setValueSearch(e.target.value)}
+        value={valueSearch}
+        style={{ width: '40%' }}
       />
-    </div>
+      <div className="category-post-view-mode">
+        <Tooltip
+          styles={tooltipStyles}
+          placement="topRight"
+          title="Chế độ xem danh sách"
+        >
+          <Button
+            onClick={() =>
+              useCategoryPostsStore.setState({ viewMode: EViewMode.LIST })
+            }
+            type={viewMode === EViewMode.LIST ? 'primary' : 'text'}
+          >
+            <FaList />
+          </Button>
+        </Tooltip>
+        <Tooltip
+          placement="topLeft"
+          title="Chế độ xem lưới"
+          styles={tooltipStyles}
+        >
+          <Button
+            onClick={() =>
+              useCategoryPostsStore.setState({ viewMode: EViewMode.GRID })
+            }
+            type={viewMode === EViewMode.GRID ? 'primary' : 'text'}
+          >
+            <FaThLarge />
+          </Button>
+        </Tooltip>
+      </div>
+    </Flex>
   )
 }
 

@@ -29,18 +29,20 @@ export interface Article {
   readingTimeMinutes: number
 }
 
+export interface ArticleFilters {
+  search?: string
+  tags?: string[]
+  categoryId?: string
+  page?: number
+  pageSize?: number
+  sort?: string
+  SortDir?: number
+  listType?: number
+  isPublished?: boolean
+}
+
 export const articleCrud = {
-  getArticles: async (params?: {
-    search?: string
-    tags?: string[]
-    categoryId?: string
-    page?: number
-    pageSize?: number
-    sort?: string
-    SortDir?: number
-    listType?: number
-    isPublished?: boolean
-  }) => {
+  getArticles: async (params?: ArticleFilters) => {
     try {
       const query = new URLSearchParams()
 
