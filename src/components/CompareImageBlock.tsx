@@ -6,7 +6,14 @@ import { Button, Col, Image, Input, message, Row, Select, Tabs } from 'antd';
 import { useRef, useState } from 'react';
 
 interface CompareImageBlockProps {
-    onCompareImageAdd: (leftImageUrl: string, rightImageUrl: string, leftLabel?: string, rightLabel?: string) => void;
+    onCompareImageAdd: (
+        leftImageUrl: string,
+        rightImageUrl: string,
+        leftLabel?: string,
+        rightLabel?: string,
+        leftAlt?: string,
+        rightAlt?: string
+    ) => void;
 }
 
 // Hàm resize ảnh để đồng bộ kích thước
@@ -48,6 +55,8 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
     const [rightImage, setRightImage] = useState<string | null>(null);
     const [leftLabel, setLeftLabel] = useState('');
     const [rightLabel, setRightLabel] = useState('');
+    const [leftAlt, setLeftAlt] = useState('');
+    const [rightAlt, setRightAlt] = useState('');
     const [leftImageUrl, setLeftImageUrl] = useState('');
     const [rightImageUrl, setRightImageUrl] = useState('');
     const [imageSize, setImageSize] = useState<{ width: number; height: number }>({ width: 400, height: 300 });
@@ -147,11 +156,13 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
 
     const handleAddCompareImage = () => {
         if (leftImage && rightImage) {
-            onCompareImageAdd(leftImage, rightImage, leftLabel, rightLabel);
+            onCompareImageAdd(leftImage, rightImage, leftLabel, rightLabel, leftAlt || undefined, rightAlt || undefined);
             setLeftImage(null);
             setRightImage(null);
             setLeftLabel('');
             setRightLabel('');
+            setLeftAlt('');
+            setRightAlt('');
             setLeftImageUrl('');
             setRightImageUrl('');
         }
@@ -352,6 +363,20 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
                             padding: '8px 12px',
                             border: '1px solid #d9d9d9',
                             borderRadius: '6px',
+                            fontSize: '14px',
+                            marginBottom: 8
+                        }}
+                    />
+                    <Input
+                        type="text"
+                        value={leftAlt}
+                        onChange={(e) => setLeftAlt(e.target.value)}
+                        placeholder="Left image alt (SEO, optional)"
+                        style={{
+                            width: '100%',
+                            padding: '8px 12px',
+                            border: '1px solid #d9d9d9',
+                            borderRadius: '6px',
                             fontSize: '14px'
                         }}
                     />
@@ -407,6 +432,20 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
                         value={rightLabel}
                         onChange={(e) => setRightLabel(e.target.value)}
                         placeholder="Right image label (optional)"
+                        style={{
+                            width: '100%',
+                            padding: '8px 12px',
+                            border: '1px solid #d9d9d9',
+                            borderRadius: '6px',
+                            fontSize: '14px',
+                            marginBottom: 8
+                        }}
+                    />
+                    <Input
+                        type="text"
+                        value={rightAlt}
+                        onChange={(e) => setRightAlt(e.target.value)}
+                        placeholder="Right image alt (SEO, optional)"
                         style={{
                             width: '100%',
                             padding: '8px 12px',

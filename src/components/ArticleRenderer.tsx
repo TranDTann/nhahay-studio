@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import hljs from 'highlight.js/lib/core';
 import css from 'highlight.js/lib/languages/css';
 import java from 'highlight.js/lib/languages/java';
@@ -59,6 +59,65 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
         }, 100);
     }, [content, contentBlocks]);
 
+    const YouTubeLazy = ({ youtubeId, title }: { youtubeId?: string, title?: string }) => {
+        const [isPlaying, setIsPlaying] = useState(false);
+        return (
+            <div className="content-youtube" style={{ margin: '24px auto', position: 'relative', width: '100%', maxWidth: 800, aspectRatio: '16/9' }}>
+                {!isPlaying ? (
+                    <button
+                        type="button"
+                        onClick={() => setIsPlaying(true)}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            border: 0,
+                            padding: 0,
+                            cursor: 'pointer',
+                            position: 'relative',
+                            background: 'transparent'
+                        }}
+                        aria-label="Play YouTube video"
+                        title={title}
+                    >
+                        <img
+                            src={`https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`}
+                            alt={title || 'YouTube thumbnail'}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 8 }}
+                        />
+                        <span
+                            style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: 68,
+                                height: 48,
+                                background: 'rgba(0,0,0,0.6)',
+                                borderRadius: 8,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: '#fff'
+                            }}
+                        >
+                            ▶
+                        </span>
+                    </button>
+                ) : (
+                    <iframe
+                        width="100%"
+                        height="100%"
+                        src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`}
+                        title={title || 'YouTube video player'}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        style={{ border: 0, borderRadius: 8 }}
+                    />
+                )}
+            </div>
+        );
+    };
+
     // If contentBlocks are provided, render them instead of content
     if (contentBlocks && contentBlocks.length > 0) {
         return (
@@ -109,7 +168,8 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                     }}>
                                         <img
                                             src={block.imageUrl}
-                                            alt={block.caption || 'Article image'}
+                                            alt={block.imageAlt || block.caption || 'Article image'}
+                                            title={block.imageTitle}
                                             style={{
                                                 width: '400px',
                                                 height: '600px',
@@ -136,7 +196,6 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                             return (
                                 <div key={block.id} className="content-compare" style={{ margin: '24px 0' }}>
                                     <div style={{
-                                        height: '400px',
                                         width: '100%',
                                         margin: '0 auto',
                                         borderRadius: '8px',
@@ -150,9 +209,8 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                             <img
                                                 slot="first"
                                                 src={block.leftImageUrl!}
-                                                alt={block.leftLabel || 'Left image'}
+                                                alt={block.leftAlt || block.leftLabel || 'Left image'}
                                                 style={{
-                                                    height: '400px',
                                                     width: '100%',
                                                     objectFit: 'cover'
                                                 }}
@@ -160,9 +218,8 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                             <img
                                                 slot="second"
                                                 src={block.rightImageUrl!}
-                                                alt={block.rightLabel || 'Right image'}
+                                                alt={block.rightAlt || block.rightLabel || 'Right image'}
                                                 style={{
-                                                    height: '400px',
                                                     width: '100%',
                                                     objectFit: 'cover'
                                                 }}
@@ -175,6 +232,13 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                             <span>{block.rightLabel}</span>
                                         </div>
                                     )}
+                                </div>
+                            );
+
+                        case 'youtube':
+                            return (
+                                <div key={block.id}>
+                                    <YouTubeLazy youtubeId={block.youtubeId} title={block.youtubeTitle} />
                                 </div>
                             );
 
@@ -230,7 +294,6 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                 return (
                                     <div key={block.id} className="content-image" style={{ margin: '24px 0' }}>
                                         <div style={{
-                                            height: '400px',
                                             width: 'auto',
                                             margin: '0 auto',
                                             borderRadius: '8px',
@@ -242,9 +305,9 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                         }}>
                                             <img
                                                 src={block.imageUrl}
-                                                alt={block.caption || 'Article image'}
+                                                alt={block.imageAlt || block.caption || 'Article image'}
+                                                title={block.imageTitle}
                                                 style={{
-                                                    height: '400px',
                                                     width: 'auto',
                                                     objectFit: 'contain',
                                                     borderRadius: '8px'
@@ -269,7 +332,6 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                 return (
                                     <div key={block.id} className="content-compare" style={{ margin: '24px 0' }}>
                                         <div style={{
-                                            height: '400px',
                                             width: '100%',
                                             margin: '0 auto',
                                             borderRadius: '8px',
@@ -283,9 +345,8 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                                 <img
                                                     slot="first"
                                                     src={block.leftImageUrl!}
-                                                    alt={block.leftLabel || 'Left image'}
+                                                    alt={block.leftAlt || block.leftLabel || 'Left image'}
                                                     style={{
-                                                        height: '400px',
                                                         width: '100%',
                                                         objectFit: 'cover'
                                                     }}
@@ -293,9 +354,8 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                                 <img
                                                     slot="second"
                                                     src={block.rightImageUrl!}
-                                                    alt={block.rightLabel || 'Right image'}
+                                                    alt={block.rightAlt || block.rightLabel || 'Right image'}
                                                     style={{
-                                                        height: '400px',
                                                         width: '100%',
                                                         objectFit: 'cover'
                                                     }}
@@ -308,6 +368,13 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                                 <span>{block.rightLabel}</span>
                                             </div>
                                         )}
+                                    </div>
+                                );
+
+                            case 'youtube':
+                                return (
+                                    <div key={block.id}>
+                                        <YouTubeLazy youtubeId={block.youtubeId} title={block.youtubeTitle} />
                                     </div>
                                 );
 

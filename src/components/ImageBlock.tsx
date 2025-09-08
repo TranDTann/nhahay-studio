@@ -6,13 +6,15 @@ import { PictureOutlined, LinkOutlined } from '@ant-design/icons';
 import { imageCrud } from '@/store/image/crud';
 
 interface ImageBlockProps {
-    onImageAdd: (imageUrl: string, caption?: string) => void;
+    onImageAdd: (imageUrl: string, caption?: string, imageAlt?: string, imageTitle?: string) => void;
 }
 
 export default function ImageBlock({ onImageAdd }: ImageBlockProps) {
     const [isUploading, setIsUploading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [caption, setCaption] = useState('');
+    const [imageAlt, setImageAlt] = useState('');
+    const [imageTitle, setImageTitle] = useState('');
     const [imageUrl, setImageUrl] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -42,9 +44,11 @@ export default function ImageBlock({ onImageAdd }: ImageBlockProps) {
 
     const handleAddImage = () => {
         if (selectedImage) {
-            onImageAdd(selectedImage, caption);
+            onImageAdd(selectedImage, caption, imageAlt || undefined, imageTitle || undefined);
             setSelectedImage(null);
             setCaption('');
+            setImageAlt('');
+            setImageTitle('');
             setImageUrl('');
         }
     };
@@ -134,6 +138,27 @@ export default function ImageBlock({ onImageAdd }: ImageBlockProps) {
                     onChange={(e) => setCaption(e.target.value)}
                     placeholder="Enter image caption"
                 />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+                <div>
+                    <label style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>Alt (SEO)</label>
+                    <Input
+                        type="text"
+                        value={imageAlt}
+                        onChange={(e) => setImageAlt(e.target.value)}
+                        placeholder="Describe the image"
+                    />
+                </div>
+                <div>
+                    <label style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>Title (SEO)</label>
+                    <Input
+                        type="text"
+                        value={imageTitle}
+                        onChange={(e) => setImageTitle(e.target.value)}
+                        placeholder="Optional title tooltip"
+                    />
+                </div>
             </div>
 
             <Button
