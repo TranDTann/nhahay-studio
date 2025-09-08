@@ -22,7 +22,7 @@ import ImageBlock from '@/components/ImageBlock';
 import CompareImageBlock from '@/components/CompareImageBlock';
 import ContentBlock from '@/components/ContentBlock';
 import ArticleRenderer from '@/components/ArticleRenderer';
-import { PlusOutlined, PictureOutlined, SwapOutlined, FileTextOutlined } from '@ant-design/icons';
+import { PlusOutlined, PictureOutlined, SwapOutlined, FileTextOutlined, PlayCircleOutlined } from '@ant-design/icons';
 
 // Register highlight.js languages
 hljs.registerLanguage('javascript', javascript);
@@ -77,6 +77,9 @@ export default function FormBlog({ id }: FormBlogProps) {
     const [showImageModal, setShowImageModal] = useState(false);
     const [showCompareModal, setShowCompareModal] = useState(false);
     const [showPreviewModal, setShowPreviewModal] = useState(false);
+    const [showYouTubeModal, setShowYouTubeModal] = useState(false);
+    const [youTubeInput, setYouTubeInput] = useState('');
+    const [youTubeTitle, setYouTubeTitle] = useState('');
     const [editingTextBlock, setEditingTextBlock] = useState<string | null>(null);
     const [insertionIndex, setInsertionIndex] = useState<number | null>(null);
     const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
@@ -167,6 +170,24 @@ export default function FormBlog({ id }: FormBlogProps) {
         };
     }, []);
 
+    const parseYouTubeId = (url: string): string | null => {
+        if (!url) return null;
+        // Handle various formats: full URL, share URL, embed URL, short
+        const patterns = [
+            /[?&]v=([a-zA-Z0-9_-]{11})/, // watch?v=
+            /youtu\.be\/([a-zA-Z0-9_-]{11})/, // youtu.be/
+            /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/, // /embed/
+            /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/ // /shorts/
+        ];
+        for (const p of patterns) {
+            const m = url.match(p);
+            if (m && m[1]) return m[1];
+        }
+        // If just the ID
+        if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+        return null;
+    };
+
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputEl = e.target as HTMLInputElement;
         const file = inputEl.files?.[0];
@@ -227,13 +248,15 @@ export default function FormBlog({ id }: FormBlogProps) {
         messageApi.success('Text block added successfully');
     };
 
-    const handleAddImage = (imageUrl: string, caption?: string) => {
+    const handleAddImage = (imageUrl: string, caption?: string, imageAlt?: string, imageTitle?: string) => {
         const newBlock: ContentBlock = {
             id: Date.now().toString(),
             type: 'image',
             content: '',
             imageUrl,
-            caption
+            caption,
+            imageAlt,
+            imageTitle
         };
         const targetIndex = insertionIndex !== null ? insertionIndex : contentBlocks.length;
         setContentBlocks(prev => {
@@ -245,7 +268,7 @@ export default function FormBlog({ id }: FormBlogProps) {
         messageApi.success('Image added successfully');
     };
 
-    const handleAddCompareImage = (leftImageUrl: string, rightImageUrl: string, leftLabel?: string, rightLabel?: string) => {
+    const handleAddCompareImage = (leftImageUrl: string, rightImageUrl: string, leftLabel?: string, rightLabel?: string, leftAlt?: string, rightAlt?: string) => {
         console.log(leftImageUrl, rightImageUrl, leftLabel, rightLabel);
         const newBlock: ContentBlock = {
             id: Date.now().toString(),
@@ -254,7 +277,9 @@ export default function FormBlog({ id }: FormBlogProps) {
             leftImageUrl,
             rightImageUrl,
             leftLabel,
-            rightLabel
+            rightLabel,
+            leftAlt,
+            rightAlt
         };
         const targetIndex = insertionIndex !== null ? insertionIndex : contentBlocks.length;
         setContentBlocks(prev => {
@@ -264,6 +289,30 @@ export default function FormBlog({ id }: FormBlogProps) {
         });
         setInsertionIndex(null);
         messageApi.success('Compare images added successfully');
+    };
+
+    const handleAddYouTube = (url: string) => {
+        const id = parseYouTubeId(url);
+        if (!id) {
+            messageApi.error('Link YouTube không hợp lệ');
+            return;
+        }
+        const newBlock: ContentBlock = {
+            id: Date.now().toString(),
+            type: 'youtube',
+            content: '',
+            youtubeUrl: url,
+            youtubeId: id,
+            youtubeTitle: youTubeTitle || undefined
+        } as any;
+        const targetIndex = insertionIndex !== null ? insertionIndex : contentBlocks.length;
+        setContentBlocks(prev => {
+            const newBlocks = [...prev];
+            newBlocks.splice(targetIndex, 0, newBlock);
+            return newBlocks;
+        });
+        setInsertionIndex(null);
+        messageApi.success('YouTube video added successfully');
     };
 
     const handleDeleteBlock = (blockId: string) => {
@@ -390,6 +439,18 @@ export default function FormBlog({ id }: FormBlogProps) {
                 const targetIndex = index !== undefined ? index + 1 : contentBlocks.length;
                 setInsertionIndex(targetIndex);
                 setShowCompareModal(true);
+            }
+        },
+        {
+            key: 'youtube',
+            label: 'Add YouTube',
+            icon: <PlayCircleOutlined />,
+            onClick: () => {
+                const targetIndex = index !== undefined ? index + 1 : contentBlocks.length;
+                setInsertionIndex(targetIndex);
+                setYouTubeInput('');
+                setYouTubeTitle('');
+                setShowYouTubeModal(true);
             }
         }
     ];
@@ -702,7 +763,6 @@ export default function FormBlog({ id }: FormBlogProps) {
 
 
 
-
             {/* Preview Modal */}
             <Modal
                 title="Article Preview"
@@ -736,8 +796,8 @@ export default function FormBlog({ id }: FormBlogProps) {
                 width={600}
             >
                 <ImageBlock
-                    onImageAdd={(imageUrl, caption) => {
-                        handleAddImage(imageUrl, caption);
+                    onImageAdd={(imageUrl, caption, imageAlt, imageTitle) => {
+                        handleAddImage(imageUrl, caption, imageAlt, imageTitle);
                         setShowImageModal(false);
                     }}
                 />
@@ -755,11 +815,49 @@ export default function FormBlog({ id }: FormBlogProps) {
                 width={800}
             >
                 <CompareImageBlock
-                    onCompareImageAdd={(leftImageUrl, rightImageUrl, leftLabel, rightLabel) => {
-                        handleAddCompareImage(leftImageUrl, rightImageUrl, leftLabel, rightLabel);
+                    onCompareImageAdd={(leftImageUrl, rightImageUrl, leftLabel, rightLabel, leftAlt, rightAlt) => {
+                        handleAddCompareImage(leftImageUrl, rightImageUrl, leftLabel, rightLabel, leftAlt, rightAlt);
                         setShowCompareModal(false);
                     }}
                 />
+            </Modal>
+
+            {/* YouTube Modal */}
+            <Modal
+                title="Add YouTube Video"
+                open={showYouTubeModal}
+                onCancel={() => {
+                    setShowYouTubeModal(false);
+                    setInsertionIndex(null);
+                }}
+                onOk={() => {
+                    handleAddYouTube(youTubeInput.trim());
+                    setShowYouTubeModal(false);
+                }}
+                okText="Add"
+                width={520}
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <label className="form-label">YouTube URL or ID</label>
+                    <input
+                        type="text"
+                        className="form-input"
+                        placeholder="https://www.youtube.com/watch?v=... hoặc ID 11 ký tự"
+                        value={youTubeInput}
+                        onChange={(e) => setYouTubeInput(e.target.value)}
+                    />
+                    <label className="form-label" style={{ marginTop: 8 }}>Title (optional)</label>
+                    <input
+                        type="text"
+                        className="form-input"
+                        placeholder="Custom video title for accessibility/SEO"
+                        value={youTubeTitle}
+                        onChange={(e) => setYouTubeTitle(e.target.value)}
+                    />
+                    <p style={{ fontSize: 12, color: '#888', margin: 0 }}>
+                        Hỗ trợ: watch?v=, youtu.be/, /embed/, /shorts/ hoặc nhập ID trực tiếp.
+                    </p>
+                </div>
             </Modal>
         </div>
     );

@@ -1,6 +1,6 @@
 export interface ContentBlock {
   id: string
-  type: 'text' | 'image' | 'compare'
+  type: 'text' | 'image' | 'compare' | 'youtube'
   content: string
   imageUrl?: string
   caption?: string
@@ -8,6 +8,14 @@ export interface ContentBlock {
   rightImageUrl?: string
   leftLabel?: string
   rightLabel?: string
+  youtubeUrl?: string
+  youtubeId?: string
+  // SEO fields
+  imageAlt?: string
+  imageTitle?: string
+  leftAlt?: string
+  rightAlt?: string
+  youtubeTitle?: string
 }
 
 // Merge content blocks into a single content string
@@ -25,8 +33,8 @@ export const mergeContentBlocksToString = (
           return block.content
         case 'image':
           return `<img src="${block.imageUrl}" alt="${
-            block.caption || 'Article image'
-          }" />${
+            block.imageAlt || block.caption || 'Article image'
+          }"${block.imageTitle ? ` title="${block.imageTitle}"` : ''} />${
             block.caption ? `<p class="image-caption">${block.caption}</p>` : ''
           }`
         case 'compare':
@@ -34,7 +42,15 @@ export const mergeContentBlocksToString = (
             block.leftImageUrl
           }" data-right="${block.rightImageUrl}" data-left-label="${
             block.leftLabel || ''
-          }" data-right-label="${block.rightLabel || ''}"></div>`
+          }" data-right-label="${block.rightLabel || ''}" data-left-alt="${
+            block.leftAlt || ''
+          }" data-right-alt="${block.rightAlt || ''}"></div>`
+        case 'youtube':
+          return `<div class="youtube-video" data-id="${
+            block.youtubeId || ''
+          }"${
+            block.youtubeTitle ? ` data-title="${block.youtubeTitle}"` : ''
+          }></div>`
         default:
           return ''
       }
@@ -60,7 +76,9 @@ export const convertContentStringToBlocks = (
 
     // Check if it's an image block
     if (trimmedLine.includes('<img src=')) {
-      const imgMatch = trimmedLine.match(/<img src="([^"]+)" alt="([^"]*)" \/>/)
+      const imgMatch = trimmedLine.match(
+        /<img src="([^"]+)" alt="([^"]*)"(?: title="([^"]*)")? \/>/
+      )
       const captionMatch = trimmedLine.match(
         /<p class="image-caption">([^<]+)<\/p>/
       )
@@ -71,6 +89,8 @@ export const convertContentStringToBlocks = (
           type: 'image',
           content: '',
           imageUrl: imgMatch[1],
+          imageAlt: imgMatch[2] || undefined,
+          imageTitle: imgMatch[3] || undefined,
           caption: captionMatch ? captionMatch[1] : undefined
         })
         blockId++
@@ -82,6 +102,8 @@ export const convertContentStringToBlocks = (
       const rightMatch = trimmedLine.match(/data-right="([^"]+)"/)
       const leftLabelMatch = trimmedLine.match(/data-left-label="([^"]*)"/)
       const rightLabelMatch = trimmedLine.match(/data-right-label="([^"]*)"/)
+      const leftAltMatch = trimmedLine.match(/data-left-alt="([^"]*)"/)
+      const rightAltMatch = trimmedLine.match(/data-right-alt="([^"]*)"/)
 
       if (leftMatch && rightMatch) {
         blocks.push({
@@ -91,10 +113,29 @@ export const convertContentStringToBlocks = (
           leftImageUrl: leftMatch[1],
           rightImageUrl: rightMatch[1],
           leftLabel: leftLabelMatch ? leftLabelMatch[1] : undefined,
-          rightLabel: rightLabelMatch ? rightLabelMatch[1] : undefined
+          rightLabel: rightLabelMatch ? rightLabelMatch[1] : undefined,
+          leftAlt: leftAltMatch ? leftAltMatch[1] : undefined,
+          rightAlt: rightAltMatch ? rightAltMatch[1] : undefined
         })
         blockId++
       }
+    }
+    // Check if it's a youtube block
+    else if (trimmedLine.includes('class="youtube-video"')) {
+      const idMatch = trimmedLine.match(/data-id="([^"]*)"/)
+      const titleMatch = trimmedLine.match(/data-title="([^"]*)"/)
+      const youtubeId = idMatch ? idMatch[1] : ''
+      blocks.push({
+        id: blockId.toString(),
+        type: 'youtube',
+        content: '',
+        youtubeUrl: youtubeId
+          ? `https://www.youtube.com/watch?v=${youtubeId}`
+          : undefined,
+        youtubeId,
+        youtubeTitle: titleMatch ? titleMatch[1] : undefined
+      })
+      blockId++
     }
     // Default to text block
     else {
