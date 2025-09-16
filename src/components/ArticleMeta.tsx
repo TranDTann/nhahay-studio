@@ -11,9 +11,11 @@ interface ArticleMetaProps {
     updatedAt: string;
     categoryName: string;
     tags: string[];
+    rating: number;
+    authorName: string;
 }
 
-export default function ArticleMeta({ createdAt, updatedAt, categoryName, tags }: ArticleMetaProps) {
+export default function ArticleMeta({ createdAt, updatedAt, categoryName, tags, rating, authorName }: ArticleMetaProps) {
     const formatDate = (dateString: string) => {
         return moment(dateString).format('DD/MM/YYYY HH:mm');
     };
@@ -28,7 +30,7 @@ export default function ArticleMeta({ createdAt, updatedAt, categoryName, tags }
             <Space direction="vertical" size="small" style={{ width: '100%' }}>
                 <div>
                     <Text type="secondary">
-                        Tác giả: <span style={{ fontWeight: 'bold' }}>Phạm Giang</span>
+                        Tác giả: <span style={{ fontWeight: 'bold' }}>{authorName}</span>
                     </Text>
                 </div>
                 <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -46,7 +48,7 @@ export default function ArticleMeta({ createdAt, updatedAt, categoryName, tags }
                         </Text>
                         <Rate
                             disabled
-                            defaultValue={4.5}
+                            value={rating}
                             allowHalf
                             style={{ fontSize: '14px' }}
                         />
