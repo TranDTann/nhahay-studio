@@ -120,7 +120,7 @@ export default function ArticlesList() {
             tags: selectedTags,
             categoryId: selectedCategory,
             sort: sortField,
-            SortDir: SortDir
+            SortDir: SortDir,
         }, true);
     };
 
@@ -153,8 +153,15 @@ export default function ArticlesList() {
             SortDir: newSortDirection
         }, true);
     };
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
+
+    const handlePageChange = (newPage: number, newPageSize?: number) => {
+        // If page size changes from the control, update both
+        if (newPageSize && newPageSize !== pageSize) {
+            setPageSize(newPageSize);
+            setPage(1);
+        } else {
+            setPage(newPage);
+        }
     };
 
     const handleEdit = (id: string) => {
@@ -169,8 +176,14 @@ export default function ArticlesList() {
         try {
             setDeleteLoading(id);
             await articleCrud.deleteArticle(id);
-            const response = await articleCrud.getArticles();
-            setArticles(response.result || []);
+            // Refetch current page with current filters
+            fetchArticles({
+                search: pendingSearch,
+                tags: selectedTags,
+                categoryId: selectedCategory || undefined,
+                sort: sortField,
+                SortDir: SortDir
+            }, true);
             messageApi.success('Article deleted successfully');
         } catch (error: any) {
             messageApi.error(error.response?.data?.message || 'Failed to delete article');
@@ -428,14 +441,14 @@ export default function ArticlesList() {
                                     </Col>
                                 ))}
                             </Row>
-                            {total > pageSize && (
-                                <div style={{ marginTop: 24, textAlign: 'center' }}>
+                            {total > 0 && (
+                                <div style={{ marginTop: 24, textAlign: 'center', display: 'flex', justifyContent: 'end' }}>
                                     <Pagination
                                         current={page}
                                         pageSize={pageSize}
                                         total={total}
                                         onChange={handlePageChange}
-                                        showSizeChanger={false}
+                                        showTotal={(t, range) => `${range[0]}-${range[1]} of ${t} items`}
                                     />
                                 </div>
                             )}

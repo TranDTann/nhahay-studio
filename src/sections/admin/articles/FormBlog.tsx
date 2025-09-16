@@ -45,6 +45,9 @@ interface Article {
     advertisementIds?: string[]; // Thêm trường advertisementIds
     publishAt?: string | null;
     isFeatured?: boolean;
+    // New fields
+    authorName?: string;
+    rating?: number;
 }
 
 interface Category {
@@ -94,7 +97,9 @@ export default function FormBlog({ id }: FormBlogProps) {
         tagIds: [],
         advertisementIds: [], // Thêm trường advertisementIds
         publishAt: null,
-        isFeatured: false
+        isFeatured: false,
+        authorName: '',
+        rating: undefined
     });
 
     useEffect(() => {
@@ -125,7 +130,9 @@ export default function FormBlog({ id }: FormBlogProps) {
                         tagIds: Array.isArray(detail.tags) ? detail.tags.map(tag => tag.id) : [],
                         advertisementIds: detail.advertisements ? detail.advertisements.map((ad: any) => ad.id) : [],
                         publishAt: detail.publishAt || null,
-                        isFeatured: detail.isFeatured || false
+                        isFeatured: detail.isFeatured || false,
+                        authorName: detail.authorName || '',
+                        rating: typeof detail.rating === 'number' ? detail.rating : undefined
                     });
 
                     // Parse content blocks if they exist, otherwise convert from content
@@ -137,19 +144,23 @@ export default function FormBlog({ id }: FormBlogProps) {
                         setContentBlocks(blocks);
                     } else {
                         // Create initial text block
-                        setContentBlocks([{
-                            id: '1',
-                            type: 'text',
-                            content: ''
-                        }]);
+                        setContentBlocks([
+                            {
+                                id: '1',
+                                type: 'text',
+                                content: ''
+                            }
+                        ]);
                     }
                 } else {
                     // Create initial text block for new article
-                    setContentBlocks([{
-                        id: '1',
-                        type: 'text',
-                        content: ''
-                    }]);
+                    setContentBlocks([
+                        {
+                            id: '1',
+                            type: 'text',
+                            content: ''
+                        }
+                    ]);
                     setEditingTextBlock('1');
                 }
             } catch (error: any) {
@@ -318,7 +329,6 @@ export default function FormBlog({ id }: FormBlogProps) {
     const handleDeleteBlock = (blockId: string) => {
         setContentBlocks(prev => prev.filter(block => block.id !== blockId));
         messageApi.success('Block deleted successfully');
-        setShowPreviewModal(true);
     };
 
     const handleEditBlock = (blockId: string) => {
@@ -357,6 +367,11 @@ export default function FormBlog({ id }: FormBlogProps) {
             return;
         }
 
+        // Normalize rating to 0-5 if provided
+        const normalizedRating = typeof article.rating === 'number'
+            ? Math.max(0, Math.min(5, article.rating))
+            : undefined;
+
         try {
             setIsSaving(true);
             let imageUrl = article.coverImagePreview;
@@ -388,7 +403,9 @@ export default function FormBlog({ id }: FormBlogProps) {
                 contentBlocks: contentBlocks, // Keep blocks for future use
                 advertisementIds: article.advertisementIds, // Thêm advertisementIds vào payload
                 publishAt: article.publishAt,
-                isFeatured: article.isFeatured
+                isFeatured: article.isFeatured,
+                authorName: article.authorName,
+                rating: normalizedRating
             }
 
             if (id && id !== 'new') {
@@ -620,6 +637,39 @@ export default function FormBlog({ id }: FormBlogProps) {
                     value={article.description}
                     onChange={(e) => setArticle(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Enter article description"
+                />
+            </div>
+
+            {/* Author name */}
+            <div className="form-group">
+                <label className="form-label" htmlFor="authorName">Author Name</label>
+                <input
+                    id="authorName"
+                    type="text"
+                    className="form-input"
+                    value={article.authorName || ''}
+                    onChange={(e) => setArticle(prev => ({ ...prev, authorName: e.target.value }))}
+                    placeholder="Enter author name"
+                />
+            </div>
+
+            {/* Rating */}
+            <div className="form-group">
+                <label className="form-label" htmlFor="rating">Rating (0 - 5)</label>
+                <input
+                    id="rating"
+                    type="number"
+                    min={0}
+                    max={5}
+                    step={0.5}
+                    className="form-input"
+                    value={typeof article.rating === 'number' ? article.rating : ''}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        const num = value === '' ? undefined : parseFloat(value);
+                        setArticle(prev => ({ ...prev, rating: isNaN(num as number) ? undefined : num }));
+                    }}
+                    placeholder="Enter rating"
                 />
             </div>
 

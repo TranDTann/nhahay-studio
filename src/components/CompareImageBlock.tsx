@@ -51,8 +51,8 @@ const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<s
 export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlockProps) {
     const [isLeftUploading, setIsLeftUploading] = useState(false);
     const [isRightUploading, setIsRightUploading] = useState(false);
-    const [leftImage, setLeftImage] = useState<string | null>(null);
-    const [rightImage, setRightImage] = useState<string | null>(null);
+    const [leftImage, setLeftImage] = useState<string | null>(null); // preview only
+    const [rightImage, setRightImage] = useState<string | null>(null); // preview only
     const [leftLabel, setLeftLabel] = useState('');
     const [rightLabel, setRightLabel] = useState('');
     const [leftAlt, setLeftAlt] = useState('');
@@ -60,6 +60,8 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
     const [leftImageUrl, setLeftImageUrl] = useState('');
     const [rightImageUrl, setRightImageUrl] = useState('');
     const [imageSize, setImageSize] = useState<{ width: number; height: number }>({ width: 400, height: 300 });
+    const [leftServerUrl, setLeftServerUrl] = useState<string | null>(null);
+    const [rightServerUrl, setRightServerUrl] = useState<string | null>(null);
     const leftFileInputRef = useRef<HTMLInputElement>(null);
     const rightFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -75,16 +77,20 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
                 setIsRightUploading(true);
             }
 
-            // Resize ảnh trước khi upload để đồng bộ kích thước
+            // Resize ảnh trước để preview
             const resizedImageUrl = await resizeImage(file, imageSize.width, imageSize.height);
 
-            // Upload ảnh đã resize
+            // Upload file gốc để lấy remote URL
             const response = await imageCrud.createImage(file);
+            const remoteUrl: string | undefined = (response as any)?.url;
+            if (!remoteUrl) throw new Error('No URL returned');
 
             if (side === 'left') {
                 setLeftImage(resizedImageUrl);
+                setLeftServerUrl(remoteUrl);
             } else {
                 setRightImage(resizedImageUrl);
+                setRightServerUrl(remoteUrl);
             }
         } catch (error: any) {
             message.error('Failed to upload image');
@@ -101,8 +107,9 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
     const handleUrlChange = async (url: string, side: 'left' | 'right') => {
         if (side === 'left') {
             setLeftImageUrl(url);
+            setLeftServerUrl(url || null);
             if (url.trim()) {
-                // Tạo một ảnh tạm thời để lấy kích thước và resize
+                // Tạo preview resize từ URL
                 try {
                     const img = document.createElement('img');
                     img.crossOrigin = 'anonymous';
@@ -128,6 +135,7 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
             }
         } else {
             setRightImageUrl(url);
+            setRightServerUrl(url || null);
             if (url.trim()) {
                 try {
                     const img = document.createElement('img');
@@ -155,8 +163,8 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
     };
 
     const handleAddCompareImage = () => {
-        if (leftImage && rightImage) {
-            onCompareImageAdd(leftImage, rightImage, leftLabel, rightLabel, leftAlt || undefined, rightAlt || undefined);
+        if (leftServerUrl && rightServerUrl) {
+            onCompareImageAdd(leftServerUrl, rightServerUrl, leftLabel, rightLabel, leftAlt || undefined, rightAlt || undefined);
             setLeftImage(null);
             setRightImage(null);
             setLeftLabel('');
@@ -165,10 +173,12 @@ export default function CompareImageBlock({ onCompareImageAdd }: CompareImageBlo
             setRightAlt('');
             setLeftImageUrl('');
             setRightImageUrl('');
+            setLeftServerUrl(null);
+            setRightServerUrl(null);
         }
     };
 
-    const canAdd = leftImage && rightImage;
+    const canAdd = !!(leftServerUrl && rightServerUrl);
 
     // Các preset kích thước ảnh
     const sizePresets = [
