@@ -31,7 +31,7 @@ interface Article {
     updatedAt: string;
     contentBlocks?: any[];
     advertisements?: { id: string; title: string; imageUrl: string; link: string }[];
-    rating: number;
+    ratingAvg: number;
     authorName: string;
 }
 
@@ -132,7 +132,7 @@ export default function ArticleDetailPage({ params }: { params: { id: string, no
                                     updatedAt={article.updatedAt}
                                     categoryName={article.category?.name || 'No category'}
                                     tags={article.tags.map(tag => tag.name)}
-                                    rating={article.rating || 0}
+                                    ratingAvg={article.ratingAvg || 0}
                                     authorName={article.authorName || ''}
                                 />
 

@@ -11,11 +11,11 @@ interface ArticleMetaProps {
     updatedAt: string;
     categoryName: string;
     tags: string[];
-    rating: number;
+    ratingAvg: number;
     authorName: string;
 }
 
-export default function ArticleMeta({ createdAt, updatedAt, categoryName, tags, rating, authorName }: ArticleMetaProps) {
+export default function ArticleMeta({ createdAt, updatedAt, categoryName, tags, ratingAvg, authorName }: ArticleMetaProps) {
     const formatDate = (dateString: string) => {
         return moment(dateString).format('DD/MM/YYYY HH:mm');
     };
@@ -48,7 +48,7 @@ export default function ArticleMeta({ createdAt, updatedAt, categoryName, tags, 
                         </Text>
                         <Rate
                             disabled
-                            value={rating}
+                            value={ratingAvg}
                             allowHalf
                             style={{ fontSize: '14px' }}
                         />
