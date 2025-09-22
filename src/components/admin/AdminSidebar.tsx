@@ -7,6 +7,7 @@ import {
     NotificationOutlined,
     FolderOutlined,
     SettingOutlined,
+    ContactsOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -49,6 +50,11 @@ const menuItems = [
         key: '/admin/config',
         icon: <SettingOutlined />,
         label: <Link href="/admin/config">Config</Link>,
+    },
+    {
+        key: '/admin/contacts',
+        icon: <ContactsOutlined />,
+        label: <Link href="/admin/contacts">Contacts</Link>,
     },
 ];
 

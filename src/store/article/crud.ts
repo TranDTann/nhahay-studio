@@ -29,7 +29,6 @@ export interface Article {
   readingTimeMinutes: number
   // New optional fields for author and rating
   authorName?: string
-  rating?: number
 }
 
 export interface ArticleFilters {
