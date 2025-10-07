@@ -1,5 +1,5 @@
 import { Skeleton } from 'antd'
-import '../styles.css'
+import '../styles.scss'
 import './CategoriesSkeleton.css'
 
 const CategoriesSkeleton = () => {

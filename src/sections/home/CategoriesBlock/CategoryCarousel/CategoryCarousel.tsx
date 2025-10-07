@@ -9,10 +9,12 @@ interface Props {
 }
 
 const CategoryCarousel: React.FC<Props> = ({ categories }) => {
+  const isMobile = window.innerWidth < 576
+
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: isMobile ? 3 : 4,
     slidesToScroll: 1,
     arrows: true,
     autoplay: true,

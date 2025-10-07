@@ -1,7 +1,7 @@
 import { useCategoriesStore } from '@/store/categories/categoriesStore'
 import CategoriesSkeleton from './CategoriesSkeleton/CategoriesSkeleton'
 import CategoryCarousel from './CategoryCarousel/CategoryCarousel'
-import './styles.css'
+import './styles.scss'
 
 const CategoriesBlock = () => {
   const { categories, loading } = useCategoriesStore((state) => state)
@@ -11,12 +11,14 @@ const CategoriesBlock = () => {
   }
 
   return (
-    <div className="categories-container">
-      <h2 className="categories-block-title">
-        Danh mục hàng đầu của chúng tôi
-      </h2>
-      <div className="categories-list">
-        <CategoryCarousel categories={categories} />
+    <div id="CategoriesBlock">
+      <div className="categories-container">
+        <h2 className="categories-block-title">
+          Danh mục hàng đầu của chúng tôi
+        </h2>
+        <div className="categories-list">
+          <CategoryCarousel categories={categories} />
+        </div>
       </div>
     </div>
   )

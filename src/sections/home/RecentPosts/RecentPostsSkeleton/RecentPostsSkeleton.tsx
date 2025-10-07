@@ -1,6 +1,6 @@
 import { Skeleton, Row, Col } from 'antd'
 import './RecentPostsSkeleton.css'
-import '../styles.css'
+import '../styles.scss'
 
 const RecentPostsSkeleton = () => {
   return (

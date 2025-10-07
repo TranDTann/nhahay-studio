@@ -1,0 +1,48 @@
+#RecentPosts {
+  .recent-posts-container {
+    height: 500px;
+  }
+
+  .main-post-container,
+  .right-posts-container,
+  .right-posts-column-wrapper {
+    height: 100%;
+  }
+
+  .right-posts-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 24px;
+    height: 100%;
+  }
+
+  /* Tablet: giảm chiều cao và khoảng cách */
+  @media screen and (max-width: 991px) {
+    .recent-posts-container {
+      height: auto;
+    }
+
+    .right-posts-grid {
+      grid-template-rows: auto;
+      gap: 16px;
+    }
+  }
+
+  /* Mobile: 1 cột full width, nhỏ gọn hơn */
+  @media screen and (max-width: 576px) {
+    .recent-posts-container {
+      height: auto;
+      flex-direction: column;
+    }
+
+    .right-posts-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      gap: 12px;
+    }
+
+    .main-post-container {
+      margin-bottom: 16px;
+    }
+  }
+}

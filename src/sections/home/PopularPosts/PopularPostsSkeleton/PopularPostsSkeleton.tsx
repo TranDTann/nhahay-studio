@@ -1,5 +1,5 @@
 import { Col, Row, Skeleton } from 'antd'
-import '../styles.css'
+import '../styles.scss'
 import './PopularPostsSkeleton.css'
 
 const PopularPostsSkeleton = () => {

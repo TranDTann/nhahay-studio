@@ -1,0 +1,52 @@
+#FirstPost {
+  width: 100%;
+
+  .first-post-container {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .first-post-image-container {
+    width: 100%;
+    height: 150px;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .first-post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .first-post-title {
+    font-size: 22px;
+    line-height: 32px;
+    font-weight: 700;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .first-post-description {
+    font-size: 14px;
+    line-height: 20px;
+    color: #565655;
+  }
+
+  @media screen and (max-width: 991px) {
+    .first-post-image-container {
+      height: 280px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .first-post-image-container {
+      height: 240px;
+    }
+  }
+}

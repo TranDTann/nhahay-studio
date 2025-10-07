@@ -22,12 +22,12 @@ const HomeView = () => {
     <div className="home-container">
       <LazyLoadBlock
         Component={FeaturedPosts}
-        minHeight={500}
+        minHeight={400}
         fallback={<FeaturedPostsSkeleton />}
       />
       <LazyLoadBlock
         Component={CategoriesBlock}
-        minHeight={250}
+        minHeight={200}
         fallback={<CategoriesSkeleton />}
       />
       <LazyLoadBlock

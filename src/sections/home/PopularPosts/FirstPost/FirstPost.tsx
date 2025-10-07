@@ -3,7 +3,7 @@ import { Article } from '@/store/article/crud'
 import parse from 'html-react-parser'
 import { useRouter } from 'next/navigation'
 import PostMeta from '../../components/PostMeta/PostMeta'
-import './styles.css'
+import './styles.scss'
 
 type TFirstPostProps = {
   post: Article
@@ -17,31 +17,33 @@ const FirstPost = ({ post }: TFirstPostProps) => {
   }
 
   return (
-    <div className="first-post-container">
-      <div
-        className="first-post-image-container image-hover-zoom-container"
-        onClick={navigateToPostDetail}
-      >
-        <img
-          src={post.image}
-          alt="first-post-image"
-          className="first-post-image image-hover-zoom"
+    <div id="FirstPost">
+      <div className="first-post-container">
+        <div
+          className="first-post-image-container image-hover-zoom-container"
+          onClick={navigateToPostDetail}
+        >
+          <img
+            src={post.image}
+            alt="first-post-image"
+            className="first-post-image image-hover-zoom"
+          />
+        </div>
+        <h2
+          className="first-post-title display-max-3-lines"
+          onClick={navigateToPostDetail}
+        >
+          {post.title}
+        </h2>
+        <p className="first-post-description display-max-3-lines">
+          {parse(post.description ?? '')}
+        </p>
+        <PostMeta
+          author={post.createdByUser.username}
+          readingTimeMinutes={post.readingTimeMinutes}
+          publishTime={post.publishAt}
         />
       </div>
-      <h2
-        className="first-post-title display-max-3-lines"
-        onClick={navigateToPostDetail}
-      >
-        {post.title}
-      </h2>
-      <p className="first-post-description display-max-3-lines">
-        {parse(post.description ?? '')}
-      </p>
-      <PostMeta
-        author={post.createdByUser.username}
-        readingTimeMinutes={post.readingTimeMinutes}
-        publishTime={post.publishAt}
-      />
     </div>
   )
 }

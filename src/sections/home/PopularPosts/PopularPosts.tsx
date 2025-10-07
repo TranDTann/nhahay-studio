@@ -9,7 +9,7 @@ import { CenterColumnPost } from './ CenterColumnPost'
 import { EndColumnPost } from './EndColumnPost'
 import { FirstPost } from './FirstPost'
 import PopularPostsSkeleton from './PopularPostsSkeleton/PopularPostsSkeleton'
-import './styles.css'
+import './styles.scss'
 
 const PopularPosts = () => {
   const { message: messageApi } = App.useApp()
@@ -50,18 +50,20 @@ const PopularPosts = () => {
   const endColumnPosts = polularPosts.slice(3, 6) ?? []
 
   return (
-    <div>
+    <div id="PopularPosts">
       <BlockHeader title="Phổ biến" />
-      <Row gutter={24}>
-        <Col span={8} className="first-post-wrapper">
+      <Row gutter={[24, 24]}>
+        <Col xs={24} sm={24} md={24} lg={8} className="first-post-wrapper">
           <FirstPost post={firstPost} />
         </Col>
-        <Col span={8} className="center-post-wrapper">
+
+        <Col xs={24} sm={24} md={24} lg={8} className="center-post-wrapper">
           {centerColumnPosts.map((postItem) => (
             <CenterColumnPost key={postItem.id} post={postItem} />
           ))}
         </Col>
-        <Col span={8} className="end-post-wrapper">
+
+        <Col xs={24} sm={24} md={24} lg={8} className="end-post-wrapper">
           {endColumnPosts.map((postItem) => (
             <EndColumnPost key={postItem.id} post={postItem} />
           ))}
