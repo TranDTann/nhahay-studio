@@ -2,8 +2,13 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 // Create axios instance with custom config
+const getBaseUrl = () => {
+  // axios instance uses Cookies, so this runs on the client; use NEXT_PUBLIC_ var
+  return process.env.NEXT_PUBLIC_API_URL
+}
+
 const axiosInstance = axios.create({
-  baseURL: 'https://condition-respondent-ill-mechanics.trycloudflare.com/',
+  baseURL: getBaseUrl(),
   timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',

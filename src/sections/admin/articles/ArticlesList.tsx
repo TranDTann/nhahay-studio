@@ -2,28 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { Input, Card, Button, Space, Select, Row, Col, App, Spin, Pagination, Checkbox, Tag, Badge } from 'antd';
-import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined, CheckCircleOutlined, StarOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined, CheckCircleOutlined, StarOutlined, ClockCircleOutlined, BarChartOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import paths from '@/routes/paths';
 import { articleCrud } from '@/store/article/crud';
 import { tagCrud, Tag as ApiTag } from '@/store/tags/crud';
 import { categoryCrud, Category as ApiCategory } from '@/store/categories/crud';
 import { ImgComparisonSlider } from '@img-comparison-slider/react';
+import RateViewForm from './components/RateViewForm';
 import styles from './Article.module.scss';
 
-interface Article {
-    id: string;
-    title: string;
-    description: string;
-    content: string;
-    image: string;
-    tags: { id: string; name: string; description?: string }[];
-    category: { id: string; name: string; description?: string };
-    createdAt: string;
-    updatedAt: string;
-    publishAt: string | null;
-    isFeatured: boolean;
-}
+import { Article } from '@/store/article/crud';
 
 export default function ArticlesList() {
     const router = useRouter();
@@ -43,6 +32,9 @@ export default function ArticlesList() {
     const [pendingSearch, setPendingSearch] = useState('');
     const [sortField, setSortField] = useState<string>('createdAt');
     const [SortDir, setSortDirection] = useState<number>(1);
+    const [rateViewModalVisible, setRateViewModalVisible] = useState(false);
+    const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+    const [rateViewLoading, setRateViewLoading] = useState(false);
 
     useEffect(() => {
         fetchTags();
@@ -189,6 +181,37 @@ export default function ArticlesList() {
             messageApi.error(error.response?.data?.message || 'Failed to delete article');
         } finally {
             setDeleteLoading(null);
+        }
+    };
+
+    const handleRateView = (article: Article) => {
+        setSelectedArticle(article);
+        setRateViewModalVisible(true);
+    };
+
+    const handleRateViewSubmit = async (data: {
+        id: string;
+        fakeRatingAmount: number;
+        fakeViewAmount: number;
+    }) => {
+        setRateViewLoading(true);
+        try {
+            await articleCrud.updateRateView(data);
+            messageApi.success('Rate and view updated successfully');
+            setRateViewModalVisible(false);
+            setSelectedArticle(null);
+            // Refresh the list
+            fetchArticles({
+                search: pendingSearch,
+                tags: selectedTags,
+                categoryId: selectedCategory || undefined,
+                sort: sortField,
+                SortDir: SortDir
+            }, true);
+        } catch (error: any) {
+            messageApi.error(error.response?.data?.message || 'Failed to update rate and view');
+        } finally {
+            setRateViewLoading(false);
         }
     };
 
@@ -357,6 +380,17 @@ export default function ArticlesList() {
                                                     Edit
                                                 </Button>,
                                                 <Button
+                                                    key="rateview"
+                                                    type="text"
+                                                    icon={<BarChartOutlined />}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleRateView(article);
+                                                    }}
+                                                >
+                                                    Rate/View
+                                                </Button>,
+                                                <Button
                                                     key="delete"
                                                     type="text"
                                                     danger
@@ -479,6 +513,19 @@ export default function ArticlesList() {
                     )}
                 </Spin>
             </div>
+
+            {rateViewModalVisible && (
+                <RateViewForm
+                    visible={rateViewModalVisible}
+                    onCancel={() => {
+                        setRateViewModalVisible(false);
+                        setSelectedArticle(null);
+                    }}
+                    onSubmit={handleRateViewSubmit}
+                    article={selectedArticle}
+                    loading={rateViewLoading}
+                />
+            )}
         </>
     );
 } 

@@ -17,7 +17,7 @@ const LoginForm = () => {
       await login(values)
       router.push(paths.dashboard.home())
       useAuthStore.setState({ isLoggingIn: false })
-    } catch (error) {}
+    } catch (error) { }
   }
 
   return (
@@ -35,7 +35,7 @@ const LoginForm = () => {
         name="username"
         rules={[
           { required: true, message: 'Please input your email address!' },
-          { type: 'email', message: 'Please enter a valid email address!' }
+          // { type: 'email', message: 'Please enter a valid email address!' }
         ]}
       >
         <Input
