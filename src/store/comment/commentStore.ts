@@ -1,7 +1,6 @@
 import { message } from 'antd'
 import { create } from 'zustand'
 import { commentCrud, TComment, TCommentContent } from './crud'
-import { AxiosResponse } from 'axios'
 
 interface CommentState {
   loading: boolean

@@ -24,24 +24,33 @@ const Comment = ({}: TCommentProps) => {
   const isLoggedIn = !!authUser
 
   const [commentValue, setCommentValue] = useState('')
+  const [isPostCommentLoading, setIsPostCommentLoading] = useState(false)
 
   useEffect(() => {
     getComments(postId)
   }, [getComments, postId])
 
   const handlePostComment = async () => {
-    const newComment = await postComment({
-      content: commentValue,
-      postId,
-      parentCommentId: undefined
-    })
+    setIsPostCommentLoading(true)
 
-    setCommentValue(null)
+    try {
+      const newComment = await postComment({
+        content: commentValue,
+        postId,
+        parentCommentId: undefined
+      })
 
-    useCommentStore.setState((state) => ({
-      count: state.count + 1,
-      comments: [...state.comments, newComment]
-    }))
+      setCommentValue(null)
+
+      useCommentStore.setState((state) => ({
+        count: state.count + 1,
+        comments: [...state.comments, newComment]
+      }))
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setIsPostCommentLoading(false)
+    }
   }
 
   const contentWithoutLogin = (
@@ -52,7 +61,7 @@ const Comment = ({}: TCommentProps) => {
   )
 
   const contentWhenLoggedIn = comments?.length ? (
-    <div className="">
+    <div>
       <div className="comment-list">
         {comments.map((commentItem) => {
           return <CommentItem comment={commentItem} />
@@ -66,7 +75,12 @@ const Comment = ({}: TCommentProps) => {
           onChange={(e) => setCommentValue(e.target.value)}
           className="comment-textarea"
         />
-        <Button type="link" onClick={handlePostComment}>
+        <Button
+          type="link"
+          onClick={handlePostComment}
+          disabled={!commentValue}
+          loading={isPostCommentLoading}
+        >
           <SendOutlined className="send-button" />
         </Button>
       </Flex>

@@ -19,29 +19,42 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
 
   const [repliedCommentValue, setRepliedCommentValue] = useState('')
   const [repliedComment, setRepliedComment] = useState<TComment>()
+  const [isReplyCommentLoading, setIsReplyCommentLoading] = useState(false)
 
   const { postComment } = useCommentStore((state) => state)
 
   const handleReplyComment = async () => {
-    const newComment = await postComment({
-      content: repliedCommentValue,
-      postId,
-      parentCommentId: repliedComment.id
-    })
+    setIsReplyCommentLoading(true)
 
-    setRepliedComment(null)
-    setRepliedCommentValue(null)
-
-    useCommentStore.setState((state) => ({
-      count: state.count + 1,
-      comments: state.comments.map((item) => {
-        if (item.id !== repliedComment.id) {
-          return item
-        }
-
-        return { ...item, replies: [...item.replies, newComment] }
+    try {
+      const newComment = await postComment({
+        content: repliedCommentValue,
+        postId,
+        parentCommentId: repliedComment.id
       })
-    }))
+
+      setRepliedComment(null)
+      setRepliedCommentValue(null)
+
+      useCommentStore.setState((state) => ({
+        count: state.count + 1,
+        comments: state.comments.map((item) => {
+          if (item.id !== repliedComment.id) {
+            return item
+          }
+
+          return { ...item, replies: [...item.replies, newComment] }
+        })
+      }))
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setIsReplyCommentLoading(false)
+    }
+  }
+
+  if (!comment) {
+    return null
   }
 
   return (
@@ -86,7 +99,12 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
                         value={repliedCommentValue}
                         onChange={(e) => setRepliedCommentValue(e.target.value)}
                       />
-                      <Button type="link" onClick={handleReplyComment}>
+                      <Button
+                        type="link"
+                        onClick={handleReplyComment}
+                        disabled={!repliedCommentValue}
+                        loading={isReplyCommentLoading}
+                      >
                         <SendOutlined className="send-reply-button" />
                       </Button>
                     </Flex>
@@ -103,7 +121,12 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
               value={repliedCommentValue}
               onChange={(e) => setRepliedCommentValue(e.target.value)}
             />
-            <Button type="link" onClick={handleReplyComment}>
+            <Button
+              type="link"
+              onClick={handleReplyComment}
+              disabled={!repliedCommentValue}
+              loading={isReplyCommentLoading}
+            >
               <SendOutlined className="send-reply-button" />
             </Button>
           </Flex>
