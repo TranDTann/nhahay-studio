@@ -6,6 +6,7 @@ import { Article, articleCrud } from '@/store/article/crud'
 import { App } from 'antd'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import Comment from '../Comment/Comment'
 import RelatedPosts from '../RelatedPosts/RelatedPosts'
 import './styles.css'
 
@@ -49,8 +50,9 @@ const PostDetailView = () => {
   if (!postData) return null
 
   return (
-    <div>
+    <div className="post-detail-container">
       <ArticleDetailPage params={{ id: postId, noHeader: true }} />
+      <Comment />
       <RelatedPosts postData={postData} />
     </div>
   )

@@ -44,15 +44,17 @@ const RelatedPosts = ({ postData }: TRelatedPostsProps) => {
   }
 
   return (
-    <div className="related-post-container">
+    <div>
       <h2 className="related-post-title">Những bài viết liên quan</h2>
-      <Slider {...settings}>
-        {relatedPosts.map((postItem) => (
-          <div key={postItem.id}>
-            <RelatedPostItem postData={postItem} />
-          </div>
-        ))}
-      </Slider>
+      <div className="related-post-container">
+        <Slider {...settings}>
+          {relatedPosts.map((postItem) => (
+            <div key={postItem.id}>
+              <RelatedPostItem postData={postItem} />
+            </div>
+          ))}
+        </Slider>
+      </div>
     </div>
   )
 }
