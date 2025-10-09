@@ -8,6 +8,8 @@ import {
     FolderOutlined,
     SettingOutlined,
     ContactsOutlined,
+    PlayCircleOutlined,
+    UserOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -40,6 +42,16 @@ const menuItems = [
         key: '/admin/advertisement',
         icon: <NotificationOutlined />,
         label: <Link href="/admin/advertisement">Advertisement</Link>,
+    },
+    {
+        key: '/admin/video',
+        icon: <PlayCircleOutlined />,
+        label: <Link href="/admin/video">Video</Link>,
+    },
+    {
+        key: '/admin/user',
+        icon: <UserOutlined />,
+        label: <Link href="/admin/user">User</Link>,
     },
     {
         key: '/admin/banners',

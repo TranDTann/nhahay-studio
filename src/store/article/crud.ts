@@ -29,6 +29,9 @@ export interface Article {
   readingTimeMinutes: number
   // New optional fields for author and rating
   authorName?: string
+  // Fake rate and view fields
+  fakeRatingAmount?: number
+  fakeViewAmount?: number
 }
 
 export interface ArticleFilters {
@@ -106,6 +109,22 @@ export const articleCrud = {
   deleteArticle: async (id: string) => {
     try {
       const response = await axiosInstance.delete(`/api/post/${id}`)
+      return response.data
+    } catch (error) {
+      handleApiError(error)
+    }
+  },
+
+  updateRateView: async (data: {
+    id: string
+    fakeRatingAmount: number
+    fakeViewAmount: number
+  }) => {
+    try {
+      const response = await axiosInstance.put(
+        '/api/post/rateview/update',
+        data
+      )
       return response.data
     } catch (error) {
       handleApiError(error)

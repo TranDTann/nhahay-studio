@@ -17,6 +17,7 @@
     "antd": "^5.25.4",
     "axios": "^1.9.0",
     "css-loader": "^7.1.2",
+    "dotenv": "^17.2.2",
     "highlight.js": "^11.9.0",
     "html-react-parser": "^5.2.6",
     "js-cookie": "^3.0.5",
