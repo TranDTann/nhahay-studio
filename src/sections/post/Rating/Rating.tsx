@@ -19,9 +19,8 @@ const Rating = () => {
   const pathname = usePathname()
   const postId = pathname.substring(pathname.lastIndexOf('/') + 1)
   const { authUser } = useAuthStore((state) => state)
-  const { getRatings, postRating, ratings, count } = useRatingPostStore(
-    (state) => state
-  )
+  const { getRatings, postRating, updateRating, ratings, count } =
+    useRatingPostStore((state) => state)
   const isLoggedIn = !!authUser
 
   const [rating, setRating] = useState(0)
@@ -62,6 +61,25 @@ const Rating = () => {
     setRatingOthers(updatedRatingOhers)
   }, [ratings])
 
+  const updateRatingData = (data: TRating) => {
+    setRating(data.rating)
+
+    const updatedRatings = !ratings?.length
+      ? [data]
+      : ratings.map((item) => {
+          if (item.ratingUserId !== authUser.id) {
+            return item
+          }
+
+          return { ...item, rating: data.rating }
+        })
+
+    useRatingPostStore.setState({
+      count: !ratings?.length ? 1 : count,
+      ratings: updatedRatings
+    })
+  }
+
   const handlePostRating = async () => {
     setIsPostRatingLoading(true)
 
@@ -73,23 +91,31 @@ const Rating = () => {
         ratingUserName: authUser.username
       })
 
-      setRating(newRating.rating)
-
-      const updatedRatings = !ratings?.length
-        ? [newRating]
-        : ratings.map((item) => {
-            if (item.ratingUserId !== authUser.id) {
-              return item
-            }
-
-            return { ...item, rating: newRating.rating }
-          })
-
-      useRatingPostStore.setState({
-        count: !ratings?.length ? 1 : count,
-        ratings: updatedRatings
-      })
+      updateRatingData(newRating)
     } catch (err) {
+      setRating(0)
+
+      console.log(err)
+    } finally {
+      setIsPostRatingLoading(false)
+    }
+  }
+
+  const handleUpdateRating = async () => {
+    setIsPostRatingLoading(true)
+
+    try {
+      const updatedRating = await updateRating({
+        postId,
+        rating,
+        ratingUserId: authUser.id,
+        ratingUserName: authUser.username,
+        id: myRating.id
+      })
+
+      updateRatingData(updatedRating)
+    } catch (err) {
+      setRating(myRating.rating)
       console.log(err)
     } finally {
       setIsPostRatingLoading(false)
@@ -135,7 +161,7 @@ const Rating = () => {
         <Button
           type="default"
           size="small"
-          onClick={handlePostRating}
+          onClick={myRating ? handleUpdateRating : handlePostRating}
           disabled={myRating?.rating === rating}
           loading={isPostRatingLoading}
         >

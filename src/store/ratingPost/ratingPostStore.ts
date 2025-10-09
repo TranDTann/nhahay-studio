@@ -8,6 +8,7 @@ interface RatingPostState {
   count: number
   ratings: TRating[]
   postRating: (data: TPostRatingPayload) => Promise<TRating>
+  updateRating: (data: TPostRatingPayload) => Promise<TRating>
   getRatings: (postId: string) => Promise<void>
 }
 
@@ -27,6 +28,21 @@ export const useRatingPostStore = create<RatingPostState>((set, get) => ({
       return result.data
     } catch (error) {
       const errorMessage = 'Đánh giá bài viết thất bại!'
+      set({ error: errorMessage, loading: false })
+      message.error(errorMessage)
+    }
+  },
+  updateRating: async (data: TPostRatingPayload) => {
+    set({ loading: true, error: null })
+    try {
+      const result = await ratingCrud.updateRating(data)
+      set({
+        loading: false
+      })
+
+      return result.data
+    } catch (error) {
+      const errorMessage = 'Cập nhật đánh giá bài viết thất bại!'
       set({ error: errorMessage, loading: false })
       message.error(errorMessage)
     }

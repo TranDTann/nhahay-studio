@@ -6,6 +6,7 @@ export type TPostRatingPayload = {
   ratingUserName: string
   rating: number
   postId: string
+  id?: string
 }
 
 export type TRating = {
@@ -34,6 +35,21 @@ export const ratingCrud = {
   postRating: async (data: TPostRatingPayload) => {
     try {
       const response = await axiosInstance.post<TRating>(
+        '/api/ratingscore',
+        data
+      )
+
+      return response
+    } catch (error: any) {
+      throw new ApiError(
+        error.response?.data?.message || 'Đánh giá bài viết thất bại!',
+        error.response?.status
+      )
+    }
+  },
+  updateRating: async (data: TPostRatingPayload) => {
+    try {
+      const response = await axiosInstance.put<TRating>(
         '/api/ratingscore',
         data
       )
