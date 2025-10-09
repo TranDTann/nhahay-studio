@@ -1,24 +1,24 @@
 'use client'
 
-import { LoginInformation } from '@/components/Navigation/LoginInformation'
+import paths from '@/routes/paths'
 import { useAuthStore } from '@/store/auth/authStore'
-import { useCommentStore } from '@/store/comment/commentStore'
+import { resetCommentData, useCommentStore } from '@/store/comment/commentStore'
 import { SendOutlined } from '@ant-design/icons'
 import { Button, Flex, Input } from 'antd'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import CommentItem from './CommentItem'
 import './styles.scss'
 
 const { TextArea } = Input
 
-type TCommentProps = {}
+const Comment = () => {
+  const router = useRouter()
 
-const Comment = ({}: TCommentProps) => {
   const pathname = usePathname()
   const postId = pathname.substring(pathname.lastIndexOf('/') + 1)
   const { authUser } = useAuthStore((state) => state)
-  const { getComments, postComment, comments } = useCommentStore(
+  const { getComments, postComment, comments, count } = useCommentStore(
     (state) => state
   )
   const isLoggedIn = !!authUser
@@ -27,8 +27,18 @@ const Comment = ({}: TCommentProps) => {
   const [isPostCommentLoading, setIsPostCommentLoading] = useState(false)
 
   useEffect(() => {
+    return () => {
+      resetCommentData()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      return
+    }
+
     getComments(postId)
-  }, [getComments, postId])
+  }, [getComments, postId, isLoggedIn])
 
   const handlePostComment = async () => {
     setIsPostCommentLoading(true)
@@ -53,44 +63,63 @@ const Comment = ({}: TCommentProps) => {
     }
   }
 
+  const handleClickLogin = () => {
+    useAuthStore.setState({ postDetailPageId: postId })
+    router.push(paths.auth.login)
+  }
+
   const contentWithoutLogin = (
-    <div className="comment-container_not-login">
+    <Flex
+      vertical
+      align="center"
+      justify="center"
+      gap={12}
+      className="comment-container_not-login"
+    >
       <p>Bạn cần đăng nhập để bình luận về bài viết này</p>
-      <LoginInformation />
-    </div>
+      <Button type="primary" onClick={handleClickLogin}>
+        Đăng nhập
+      </Button>
+    </Flex>
+  )
+
+  const textAreaComment = (
+    <Flex align="flex-end" justify="space-between" gap={8}>
+      <TextArea
+        rows={4}
+        placeholder="Hãy để lại bình luận của bạn tại đây..."
+        value={commentValue}
+        onChange={(e) => setCommentValue(e.target.value)}
+        className="comment-textarea"
+      />
+      <Button
+        type="link"
+        onClick={handlePostComment}
+        disabled={!commentValue}
+        loading={isPostCommentLoading}
+      >
+        <SendOutlined className="send-button" />
+      </Button>
+    </Flex>
   )
 
   const contentWhenLoggedIn = comments?.length ? (
     <div>
       <div className="comment-list">
         {comments.map((commentItem) => {
-          return <CommentItem comment={commentItem} />
+          return <CommentItem key={commentItem.id} comment={commentItem} />
         })}
       </div>
-      <Flex align="flex-end" justify="space-between" gap={8}>
-        <TextArea
-          rows={4}
-          placeholder="Hãy để lại bình luận của bạn tại đây..."
-          value={commentValue}
-          onChange={(e) => setCommentValue(e.target.value)}
-          className="comment-textarea"
-        />
-        <Button
-          type="link"
-          onClick={handlePostComment}
-          disabled={!commentValue}
-          loading={isPostCommentLoading}
-        >
-          <SendOutlined className="send-button" />
-        </Button>
-      </Flex>
+      {textAreaComment}
     </div>
-  ) : null
+  ) : (
+    textAreaComment
+  )
 
   return (
     <div id="Comment">
       <h2 className="comment-container-title">
-        Bình luận {comments?.length ? <span>({comments.length})</span> : null}
+        Bình luận {count ? <span>({count})</span> : null}
       </h2>
       <div className={`${isLoggedIn && 'comment-container'}`}>
         {isLoggedIn ? contentWhenLoggedIn : contentWithoutLogin}

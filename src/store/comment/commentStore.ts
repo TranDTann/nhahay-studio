@@ -38,7 +38,8 @@ export const useCommentStore = create<CommentState>((set, get) => ({
 
       set({
         loading: false,
-        comments: response.result
+        comments: response.result,
+        count: response.count
       })
     } catch (error) {
       const errorMessage = 'Lấy comment của bài viết thất bại'
@@ -47,3 +48,12 @@ export const useCommentStore = create<CommentState>((set, get) => ({
     }
   }
 }))
+
+export const resetCommentData = () => {
+  useCommentStore.setState({
+    loading: false,
+    error: null,
+    count: 0,
+    comments: null
+  })
+}

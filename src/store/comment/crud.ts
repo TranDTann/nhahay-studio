@@ -37,7 +37,6 @@ export const commentCrud = {
     try {
       const response = await axiosInstance.post<TComment>('/api/comment', data)
 
-      console.log(response)
       return response
     } catch (error: any) {
       throw new ApiError(
@@ -46,7 +45,7 @@ export const commentCrud = {
       )
     }
   },
-  getComments: async (postId: string, page = 1, take = 10) => {
+  getComments: async (postId: string, page = 1, take = 10000) => {
     try {
       const skip = page > 1 ? (page - 1) * take : 0
       const params = new URLSearchParams()
@@ -57,7 +56,7 @@ export const commentCrud = {
       return response.data
     } catch (error: any) {
       throw new ApiError(
-        error.response?.data?.message || 'Lấy danh sách liên hệ thất bại',
+        error.response?.data?.message || 'Lấy bình luận thất bại',
         error.response?.status
       )
     }

@@ -10,12 +10,17 @@ import './styles.css'
 
 const LoginForm = () => {
   const router = useRouter()
-  const { login } = useAuthStore((state) => state)
+  const { login, postDetailPageId } = useAuthStore((state) => state)
 
   const onFinish: FormProps<TLoginForm>['onFinish'] = async (values) => {
     try {
       await login(values)
-      router.push(paths.dashboard.home())
+      if (postDetailPageId) {
+        router.push(paths.dashboard.postDetail(postDetailPageId))
+      } else {
+        router.push(paths.dashboard.home())
+      }
+
       useAuthStore.setState({ isLoggingIn: false })
     } catch (error) {}
   }

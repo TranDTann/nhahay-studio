@@ -7,6 +7,7 @@ import { App } from 'antd'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Comment from '../Comment/Comment'
+import Rating from '../Rating/Rating'
 import RelatedPosts from '../RelatedPosts/RelatedPosts'
 import './styles.css'
 
@@ -52,6 +53,7 @@ const PostDetailView = () => {
   return (
     <div className="post-detail-container">
       <ArticleDetailPage params={{ id: postId, noHeader: true }} />
+      <Rating />
       <Comment />
       <RelatedPosts postData={postData} />
     </div>

@@ -19,11 +19,7 @@
 
   .comment-container_not-login {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    padding: 24px;
 
     p {
       font-size: 14px;
@@ -34,7 +30,7 @@
 
   .comment-list {
     margin-bottom: 12px;
-    height: 40vh;
+    max-height: 40vh;
     overflow-y: auto;
   }
 
