@@ -4,8 +4,8 @@ export const metadata = {
   title: 'NhaHayStudio Bài viết'
 }
 
-const CategoryDetailPage = () => {
+const PostDetailPage = async () => {
   return <PostDetailView />
 }
 
-export default CategoryDetailPage
+export default PostDetailPage

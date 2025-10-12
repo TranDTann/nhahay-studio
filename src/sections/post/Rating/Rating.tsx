@@ -1,6 +1,7 @@
 'use client'
 
 import paths from '@/routes/paths'
+import { Article } from '@/store/article/crud'
 import { useAuthStore } from '@/store/auth/authStore'
 import { TRating } from '@/store/ratingPost/crud'
 import {
@@ -8,16 +9,18 @@ import {
   useRatingPostStore
 } from '@/store/ratingPost/ratingPostStore'
 import { Button, Flex, Rate } from 'antd'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import RatingItem from './RatingItem'
 import './styles.scss'
 
-const Rating = () => {
+type TRatingProps = {
+  postData: Article
+}
+
+const Rating = ({ postData }: TRatingProps) => {
   const router = useRouter()
 
-  const pathname = usePathname()
-  const postId = pathname.substring(pathname.lastIndexOf('/') + 1)
   const { authUser } = useAuthStore((state) => state)
   const { getRatings, postRating, updateRating, ratings, count } =
     useRatingPostStore((state) => state)
@@ -39,8 +42,8 @@ const Rating = () => {
       return
     }
 
-    getRatings(postId)
-  }, [getRatings, postId, isLoggedIn])
+    getRatings(postData.id)
+  }, [getRatings, postData.id, isLoggedIn])
 
   useEffect(() => {
     if (!ratings?.length) {
@@ -85,7 +88,7 @@ const Rating = () => {
 
     try {
       const newRating = await postRating({
-        postId,
+        postId: postData.id,
         rating,
         ratingUserId: authUser.id,
         ratingUserName: authUser.username
@@ -106,7 +109,7 @@ const Rating = () => {
 
     try {
       const updatedRating = await updateRating({
-        postId,
+        postId: postData.id,
         rating,
         ratingUserId: authUser.id,
         ratingUserName: authUser.username,
@@ -123,7 +126,9 @@ const Rating = () => {
   }
 
   const handleClickLogin = () => {
-    useAuthStore.setState({ postDetailPageId: postId })
+    useAuthStore.setState({
+      postDetailPage: { id: postData.id, title: postData.title }
+    })
     router.push(paths.auth.login)
   }
 

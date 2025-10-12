@@ -39,7 +39,7 @@ const LoginInformation = () => {
     Cookies.remove('token')
 
     router.push(paths.auth.login)
-    useAuthStore.setState({ postDetailPageId: undefined })
+    useAuthStore.setState({ postDetailPage: undefined })
   }
 
   const logoutItems: MenuProps['items'] = [

@@ -14,11 +14,14 @@ type TMainRecentPostProps = {
 const MainRecentPost = ({ postData }: TMainRecentPostProps) => {
   const router = useRouter()
 
+  const navigateToPostDetail = () => {
+    router.push(
+      paths.dashboard.postDetail({ id: postData.id, title: postData.title })
+    )
+  }
+
   return (
-    <div
-      onClick={() => router.push(paths.dashboard.postDetail(postData.id))}
-      className="post-container"
-    >
+    <div onClick={navigateToPostDetail} className="post-container">
       <div className="post-image-container image-hover-zoom-container">
         <img
           src={postData.image}

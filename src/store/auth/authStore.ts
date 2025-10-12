@@ -22,7 +22,7 @@ interface AuthState {
   isLoggingIn: boolean
   isSigningUp: boolean
   errorMessage: string | null
-  postDetailPageId?: string
+  postDetailPage?: { title: string; id: string }
 }
 
 interface AuthActions {

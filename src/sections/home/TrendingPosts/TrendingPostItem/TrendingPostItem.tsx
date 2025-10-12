@@ -15,9 +15,10 @@ const TrendingPostItem = ({ postData }: TTrendingPostItemProps) => {
   const router = useRouter()
 
   const navigateToPostDetail = () => {
-    router.push(paths.dashboard.postDetail(postData.id))
+    router.push(
+      paths.dashboard.postDetail({ id: postData.id, title: postData.title })
+    )
   }
-
   return (
     <div className="trending-post-item-container">
       <div

@@ -14,11 +14,17 @@ type TMainFeaturedPostProps = {
 const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
   const router = useRouter()
 
+  const navigateToPostDetail = () => {
+    router.push(
+      paths.dashboard.postDetail({ id: postData.id, title: postData.title })
+    )
+  }
+
   return (
     <div id="MainFeaturedPost">
       <div
         className="featured-post-container image-hover-zoom-container"
-        onClick={() => router.push(paths.dashboard.postDetail(postData.id))}
+        onClick={navigateToPostDetail}
       >
         <div className="featured-post-image-container">
           <img

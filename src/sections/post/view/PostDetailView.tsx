@@ -3,6 +3,7 @@
 import ArticleDetailPage from '@/app/admin/articles/view/[id]/page'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import { Article, articleCrud } from '@/store/article/crud'
+import { getIdFromPathname } from '@/utils/generatePath'
 import { App } from 'antd'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -15,7 +16,7 @@ const PostDetailView = () => {
   const pathname = usePathname()
   const { message: messageApi } = App.useApp()
 
-  const postId = pathname.substring(pathname.lastIndexOf('/') + 1)
+  const postId = getIdFromPathname(pathname)
 
   const [isGetPostLoading, setIsGetPostLoading] = useState(false)
   const [postData, setPostData] = useState<Article>()
@@ -53,8 +54,8 @@ const PostDetailView = () => {
   return (
     <div className="post-detail-container">
       <ArticleDetailPage params={{ id: postId, noHeader: true }} />
-      <Rating />
-      <Comment />
+      <Rating postData={postData} />
+      <Comment postData={postData} />
       <RelatedPosts postData={postData} />
     </div>
   )
