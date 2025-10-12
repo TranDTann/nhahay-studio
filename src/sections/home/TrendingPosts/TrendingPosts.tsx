@@ -6,7 +6,7 @@ import { App } from 'antd'
 import { useEffect, useState } from 'react'
 import BlockHeader from '../components/BlockHeader/BlockHeader'
 import MainTrendingPost from './MainTrendingPost/MainTrendingPost'
-import './styles.css'
+import './styles.scss'
 import TrendingPostItem from './TrendingPostItem/TrendingPostItem'
 import TrendingPostsSkeleton from './TrendingPostsSkeleton/TrendingPostsSkeleton'
 
@@ -48,7 +48,7 @@ const TrendingPosts = () => {
   const belowPosts = trendingPosts.slice(1, 4)
 
   return (
-    <div>
+    <div id="TrendingPosts">
       <BlockHeader title="Trending" />
       <MainTrendingPost postData={mainPost} />
       <div className="below-posts-container">

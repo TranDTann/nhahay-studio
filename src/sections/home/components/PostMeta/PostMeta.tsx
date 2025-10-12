@@ -4,7 +4,7 @@ import { formatDateDisplay } from '@/utils/formatDate'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { IoIosTimer } from 'react-icons/io'
 import { MdOutlineDateRange } from 'react-icons/md'
-import './styles.css'
+import './styles.scss'
 
 type TPostMetaProps = {
   author?: string
@@ -26,7 +26,7 @@ const PostMeta = ({
         </div>
       )}
       {readingTimeMinutes && (
-        <div className="post-meta-item">
+        <div className="post-meta-item post-reading-time-minutes">
           <IoIosTimer color="#bacce1" />
           <p>{readingTimeMinutes} phút đọc</p>
         </div>

@@ -14,7 +14,7 @@ const CategoryCarousel: React.FC<Props> = ({ categories }) => {
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: isMobile ? 3 : 4,
+    slidesToShow: isMobile ? 2 : 4,
     slidesToScroll: 1,
     arrows: true,
     autoplay: true,

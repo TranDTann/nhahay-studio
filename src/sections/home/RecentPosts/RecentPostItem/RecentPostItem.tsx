@@ -5,7 +5,7 @@ import { Article } from '@/store/article/crud'
 import { useRouter } from 'next/navigation'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import PostMeta from '../../components/PostMeta/PostMeta'
-import './styles.css'
+import './styles.scss'
 
 type TRecentPostItemProps = {
   postData: Article
@@ -21,26 +21,28 @@ const RecentPostItem = ({ postData }: TRecentPostItemProps) => {
   }
 
   return (
-    <div className="post-item-container">
-      <div
-        className="post-item-image-container image-hover-zoom-container"
-        onClick={navigateToPostDetail}
-      >
-        <img
-          src={postData.image}
-          alt="RecentPost-image"
-          className="post-item-image image-hover-zoom"
-        />
-      </div>
-      <div className="post-item-content">
-        <CategoryTag tagName={postData.category?.name} />
-        <h3
-          className="post-item-title display-max-2-lines"
+    <div id="RecentPostItem">
+      <div className="post-item-container">
+        <div
+          className="post-item-image-container image-hover-zoom-container"
           onClick={navigateToPostDetail}
         >
-          {postData.title}
-        </h3>
-        <PostMeta author={postData.createdByUser.username} />
+          <img
+            src={postData.image}
+            alt="RecentPost-image"
+            className="post-item-image image-hover-zoom"
+          />
+        </div>
+        <div className="post-item-content">
+          <CategoryTag tagName={postData.category?.name} />
+          <h3
+            className="post-item-title display-max-2-lines"
+            onClick={navigateToPostDetail}
+          >
+            {postData.title}
+          </h3>
+          <PostMeta author={postData.createdByUser.username} />
+        </div>
       </div>
     </div>
   )

@@ -11,7 +11,11 @@ import { FcGoogle } from 'react-icons/fc'
 import { TbLogout } from 'react-icons/tb'
 import './styles.scss'
 
-const LoginInformation = () => {
+type TLoginInformationProps = {
+  isTablet?: boolean
+}
+
+const LoginInformation = ({ isTablet }: TLoginInformationProps) => {
   const router = useRouter()
   const { loginWithGoogle, authUser } = useAuthStore((state) => state)
 
@@ -24,13 +28,19 @@ const LoginInformation = () => {
 
   if (!authUser) {
     return (
-      <div className="login-information-container">
-        <Button type="default" onClick={() => router.push(paths.auth.login)}>
-          Đăng nhập
-        </Button>
-        <Button type="text" onClick={handleLoginWithGoogle}>
-          <FcGoogle />
-        </Button>
+      <div id="LoginInformation">
+        <div
+          className={`login-information-container ${
+            isTablet ? 'tablet-menu' : 'desktop-menu'
+          }`}
+        >
+          <Button type="default" onClick={() => router.push(paths.auth.login)}>
+            Đăng nhập
+          </Button>
+          <Button type="text" onClick={handleLoginWithGoogle}>
+            <FcGoogle />
+          </Button>
+        </div>
       </div>
     )
   }
@@ -59,16 +69,22 @@ const LoginInformation = () => {
   ]
 
   return (
-    <div className="user-container">
-      <FaUser />
-      <Tooltip placement="bottomLeft" title={authUser?.username}>
-        <p className="user-name">{authUser?.username}</p>
-      </Tooltip>
-      <Dropdown menu={{ items: logoutItems }} trigger={['click']}>
-        <Button type="text" size="large">
-          <TbLogout />
-        </Button>
-      </Dropdown>
+    <div id="LoginInformation">
+      <div
+        className={`user-container ${
+          isTablet ? 'tablet-menu' : 'desktop-menu'
+        }`}
+      >
+        <FaUser />
+        <Tooltip placement="bottomLeft" title={authUser?.username}>
+          <p className="user-name">{authUser?.username}</p>
+        </Tooltip>
+        <Dropdown menu={{ items: logoutItems }} trigger={['click']}>
+          <Button type="text" size="large">
+            <TbLogout />
+          </Button>
+        </Dropdown>
+      </div>
     </div>
   )
 }

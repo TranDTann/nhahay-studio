@@ -1,14 +1,16 @@
 import { useConfig } from '@/hooks/useConfig'
 import { useFooterStore } from '@/store/footer/footerStore'
 import { getConfigValue } from '@/utils/getConfig'
-import { Col, Row } from 'antd'
-import { useEffect } from 'react'
+import { Button, Col, Modal, Row } from 'antd'
+import { useEffect, useState } from 'react'
 import { Logo } from '../Navigation/Logo'
 import { ContactForm } from './ContactForm'
 import { FollowUs } from './FollowUs'
 import './styles.css'
 
 const Footer = () => {
+  const [isOpenContactFormModal, setIsOpenContactFormModal] = useState(false)
+
   const { configs } = useConfig()
 
   useEffect(() => {
@@ -20,6 +22,43 @@ const Footer = () => {
   }
 
   const description = getConfigValue('ABOUT-US', configs)
+
+  const isTablet = window.innerWidth < 767
+
+  if (isTablet) {
+    return (
+      <div className="footer-wrapper">
+        <Row gutter={24} className="footer-container">
+          <Col span={13}>
+            <Logo size="lg" />
+            <p className="app-description display-max-10-lines">
+              {description}
+            </p>
+          </Col>
+          <Col span={11}>
+            <FollowUs />
+            <Button
+              type="primary"
+              style={{ marginTop: '16px' }}
+              onClick={() => setIsOpenContactFormModal(true)}
+            >
+              Gửi liên hệ
+            </Button>
+          </Col>
+        </Row>
+        {isOpenContactFormModal && (
+          <Modal
+            open={isOpenContactFormModal}
+            footer={null}
+            onCancel={() => setIsOpenContactFormModal(false)}
+            title="Liên hệ"
+          >
+            <ContactForm />
+          </Modal>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className="footer-wrapper">

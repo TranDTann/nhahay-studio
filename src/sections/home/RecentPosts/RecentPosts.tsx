@@ -57,10 +57,10 @@ const RecentPosts = () => {
       }}
       className="recent-posts-container"
     >
-      <Col xs={24} sm={24} md={16} className="main-post-container">
+      <Col xs={24} sm={16} md={16} className="main-post-container">
         <MainRecentPost postData={mainPost} />
       </Col>
-      <Col xs={24} sm={24} md={8} className="right-posts-column-wrapper">
+      <Col xs={24} sm={8} md={8} className="right-posts-column-wrapper">
         <div className="right-posts-grid">
           {rightColumnPosts.map((post) => (
             <RecentPostItem key={post.id} postData={post} />
@@ -73,7 +73,8 @@ const RecentPosts = () => {
   return (
     <div id="RecentPosts">
       <BlockHeader title="Bài viết gần đây" />
-      <Row
+      {recentPostsContent}
+      {/* <Row
         gutter={{
           xs: 8,
           sm: 16,
@@ -86,7 +87,7 @@ const RecentPosts = () => {
         <Col xs={24} sm={24} md={8}>
           <RecentPostsAdvertising />
         </Col>
-      </Row>
+      </Row> */}
     </div>
   )
 }

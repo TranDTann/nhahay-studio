@@ -44,5 +44,35 @@
     .center-post-container {
       display: flex !important;
     }
+
+    .center-post-description {
+      display: -webkit-box !important;
+      -webkit-box-orient: vertical !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      -webkit-line-clamp: 1 !important;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .center-post-container {
+      display: flex !important;
+    }
+
+    .center-post-description {
+      display: none !important;
+    }
+
+    .center-post-title {
+      font-size: 16px;
+      line-height: 22px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .center-post-title {
+      font-size: 14px;
+      line-height: 18px;
+    }
   }
 }

@@ -48,5 +48,21 @@
     .first-post-image-container {
       height: 240px;
     }
+
+    .first-post-title {
+      font-size: 20px;
+      line-height: 28px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .first-post-image-container {
+      height: 240px;
+    }
+
+    .first-post-title {
+      font-size: 18px;
+      line-height: 24px;
+    }
   }
 }
