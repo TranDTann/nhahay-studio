@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import { FaUser } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 import { TbLogout } from 'react-icons/tb'
-import './styles.css'
+import './styles.scss'
 
 const LoginInformation = () => {
   const router = useRouter()
@@ -25,7 +25,7 @@ const LoginInformation = () => {
   if (!authUser) {
     return (
       <div className="login-information-container">
-        <Button type="text" onClick={() => router.push(paths.auth.login)}>
+        <Button type="default" onClick={() => router.push(paths.auth.login)}>
           Đăng nhập
         </Button>
         <Button type="text" onClick={handleLoginWithGoogle}>
@@ -37,7 +37,9 @@ const LoginInformation = () => {
 
   const handleLogout = () => {
     Cookies.remove('token')
+
     router.push(paths.auth.login)
+    useAuthStore.setState({ postDetailPageId: undefined })
   }
 
   const logoutItems: MenuProps['items'] = [

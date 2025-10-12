@@ -1,0 +1,41 @@
+#RatingPost {
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+
+  .rating-container-title {
+    border-bottom: 1px solid #ebebeb;
+    padding: 16px;
+  }
+
+  .rating-container {
+    min-height: 80px;
+    width: 100%;
+    padding: 16px;
+  }
+
+  .rating-container_not-login {
+    width: 100%;
+    padding: 24px;
+
+    p {
+      font-size: 14px;
+      line-height: 20px;
+      color: rgb(78, 78, 78);
+    }
+  }
+
+  .rating-list {
+    margin-top: 12px;
+
+    .rating-list-title {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .ratings-list-content {
+      margin: 0 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  }
+}

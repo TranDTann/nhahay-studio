@@ -5,7 +5,7 @@ import { Article } from '@/store/article/crud'
 import { useRouter } from 'next/navigation'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import PostMeta from '../../components/PostMeta/PostMeta'
-import './styles.css'
+import './styles.scss'
 
 type TFeaturedPostItemProps = {
   postData: Article

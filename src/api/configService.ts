@@ -31,7 +31,7 @@ export const configService = {
     params?: ConfigQueryParams
   ): Promise<ConfigResponse> => {
     const queryParams = new URLSearchParams()
-    console.log(params, 'params')
+
     if (params) {
       if (params.sort) queryParams.append('sort', params.sort)
       if (params.sortDir)

@@ -1,0 +1,42 @@
+#CategoryTag {
+  .tag-container {
+    max-width: 120px;
+    width: fit-content;
+    margin: 0 !important;
+  }
+
+  .tag-container,
+  .tag-container_categories-list {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+  }
+
+  .tag-container_categories-list {
+    width: fit-content;
+    max-width: 90px;
+    margin: 0 !important;
+    text-wrap: wrap !important;
+    text-align: center !important;
+  }
+
+  @media screen and (max-width: 991px) {
+    .tag-container,
+    .tag-container_categories-list {
+      font-size: 12px !important;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .tag-container,
+    .tag-container_categories-list {
+      font-size: 11px !important;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .tag-container,
+    .tag-container_categories-list {
+      font-weight: 500;
+    }
+  }
+}

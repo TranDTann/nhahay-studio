@@ -1,5 +1,5 @@
 import { Tag } from 'antd'
-import './styles.css'
+import './styles.scss'
 
 type TCategoryTagProps = {
   tagName: string
@@ -8,16 +8,18 @@ type TCategoryTagProps = {
 
 const CategoryTag = ({ tagName, isCategoriesList }: TCategoryTagProps) => {
   return (
-    <Tag
-      color="#F4796C"
-      className={`${
-        isCategoriesList
-          ? 'tag-container_categories-list display-max-3-lines'
-          : 'tag-container display-max-1-lines'
-      }`}
-    >
-      {tagName}
-    </Tag>
+    <div id="CategoryTag">
+      <Tag
+        color="#F4796C"
+        className={`${
+          isCategoriesList
+            ? 'tag-container_categories-list display-max-3-lines'
+            : 'tag-container display-max-1-lines'
+        }`}
+      >
+        {tagName}
+      </Tag>
+    </div>
   )
 }
 
