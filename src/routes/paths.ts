@@ -1,3 +1,7 @@
+import { generateDetailPath } from '@/utils/generatePath'
+
+type TPageParams = { title: string; id: string }
+
 const roots = {
   auth: '/auth',
   dashboard: '/dashboard',
@@ -14,8 +18,10 @@ const paths = {
   dashboard: {
     root: () => '/',
     home: () => '/home',
-    category: (categoryId: string) => `/category/${categoryId}`,
-    postDetail: (postId: string) => `/post/${postId}`
+    category: ({ id, title }: TPageParams) =>
+      generateDetailPath({ id, title, page: 'category' }),
+    postDetail: ({ id, title }: TPageParams) =>
+      generateDetailPath({ id, title, page: 'post' })
   },
   admin: {
     root: () => `${roots.admin}`,

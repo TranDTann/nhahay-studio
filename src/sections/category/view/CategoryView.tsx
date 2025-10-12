@@ -7,6 +7,7 @@ import {
   EViewMode,
   useCategoryPostsStore
 } from '@/store/categoryPosts/categoryPostStore'
+import { getIdFromPathname } from '@/utils/generatePath'
 import { App, Button } from 'antd'
 import { usePathname } from 'next/navigation'
 import { ReactNode, useEffect, useState } from 'react'
@@ -21,7 +22,7 @@ const CategoryView = () => {
   const pathname = usePathname()
   const { message: messageApi } = App.useApp()
 
-  const categoryId = pathname.substring(pathname.lastIndexOf('/') + 1)
+  const categoryId = getIdFromPathname(pathname)
 
   const [isPostsLoading, setIsPostsLoading] = useState(false)
 

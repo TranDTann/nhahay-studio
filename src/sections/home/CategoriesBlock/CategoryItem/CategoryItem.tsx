@@ -15,7 +15,14 @@ const CategoryItem = ({ categoryData }: TCategoryItemProps) => {
     <div id="CategoryItem">
       <div
         className="category-container image-hover-zoom-container"
-        onClick={() => router.push(paths.dashboard.category(categoryData.id))}
+        onClick={() =>
+          router.push(
+            paths.dashboard.category({
+              id: categoryData.id,
+              title: categoryData.name
+            })
+          )
+        }
       >
         <div className="category-thumbnail-container">
           <img

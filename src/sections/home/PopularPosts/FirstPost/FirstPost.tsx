@@ -13,7 +13,7 @@ const FirstPost = ({ post }: TFirstPostProps) => {
   const router = useRouter()
 
   const navigateToPostDetail = () => {
-    router.push(paths.dashboard.postDetail(post.id))
+    router.push(paths.dashboard.postDetail({ id: post.id, title: post.title }))
   }
 
   return (

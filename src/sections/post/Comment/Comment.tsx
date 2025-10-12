@@ -1,22 +1,25 @@
 'use client'
 
 import paths from '@/routes/paths'
+import { Article } from '@/store/article/crud'
 import { useAuthStore } from '@/store/auth/authStore'
 import { resetCommentData, useCommentStore } from '@/store/comment/commentStore'
 import { SendOutlined } from '@ant-design/icons'
 import { Button, Flex, Input } from 'antd'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import CommentItem from './CommentItem'
 import './styles.scss'
 
 const { TextArea } = Input
 
-const Comment = () => {
+type TCommentProps = {
+  postData: Article
+}
+
+const Comment = ({ postData }: TCommentProps) => {
   const router = useRouter()
 
-  const pathname = usePathname()
-  const postId = pathname.substring(pathname.lastIndexOf('/') + 1)
   const { authUser } = useAuthStore((state) => state)
   const { getComments, postComment, comments, count } = useCommentStore(
     (state) => state
@@ -37,8 +40,8 @@ const Comment = () => {
       return
     }
 
-    getComments(postId)
-  }, [getComments, postId, isLoggedIn])
+    getComments(postData.id)
+  }, [getComments, postData.id, isLoggedIn])
 
   const handlePostComment = async () => {
     setIsPostCommentLoading(true)
@@ -46,7 +49,7 @@ const Comment = () => {
     try {
       const newComment = await postComment({
         content: commentValue,
-        postId,
+        postId: postData.id,
         parentCommentId: undefined
       })
 
@@ -64,7 +67,9 @@ const Comment = () => {
   }
 
   const handleClickLogin = () => {
-    useAuthStore.setState({ postDetailPageId: postId })
+    useAuthStore.setState({
+      postDetailPage: { id: postData.id, title: postData.title }
+    })
     router.push(paths.auth.login)
   }
 

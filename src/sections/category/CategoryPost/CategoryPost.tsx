@@ -15,7 +15,9 @@ const CategoryPost = ({ postData }: TCategoryPostProps) => {
   const router = useRouter()
 
   const navigateToPostDetail = () => {
-    router.push(paths.dashboard.postDetail(postData.id))
+    router.push(
+      paths.dashboard.postDetail({ id: postData.id, title: postData.title })
+    )
   }
 
   return (

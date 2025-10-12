@@ -16,7 +16,9 @@ const CategoryViewGrid = ({ categoryPosts }: TCategoryViewGridProps) => {
   const router = useRouter()
 
   const navigateToPostDetail = (postItem: Article) => {
-    router.push(paths.dashboard.postDetail(postItem.id))
+    router.push(
+      paths.dashboard.postDetail({ id: postItem.id, title: postItem.title })
+    )
   }
 
   return (

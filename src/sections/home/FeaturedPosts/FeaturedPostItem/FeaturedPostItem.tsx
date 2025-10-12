@@ -14,10 +14,16 @@ type TFeaturedPostItemProps = {
 const FeaturedPostItem = ({ postData }: TFeaturedPostItemProps) => {
   const router = useRouter()
 
+  const navigateToPostDetail = () => {
+    router.push(
+      paths.dashboard.postDetail({ id: postData.id, title: postData.title })
+    )
+  }
+
   return (
     <div
       className="featured-post-item-container image-hover-zoom-container"
-      onClick={() => router.push(paths.dashboard.postDetail(postData.id))}
+      onClick={navigateToPostDetail}
     >
       <div className="featured-post-item-image-container">
         <img

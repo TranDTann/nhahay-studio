@@ -18,7 +18,12 @@ export const getMenu = ({ categories, isAdmin }: TGetMenuProps) => [
     children: categories.map((categoryItem) => ({
       key: categoryItem.id,
       label: (
-        <Link href={paths.dashboard.category(categoryItem.id)}>
+        <Link
+          href={paths.dashboard.category({
+            id: categoryItem.id,
+            title: categoryItem.name
+          })}
+        >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <img
               src={

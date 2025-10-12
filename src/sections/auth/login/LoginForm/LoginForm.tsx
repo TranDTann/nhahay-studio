@@ -10,19 +10,24 @@ import './styles.css'
 
 const LoginForm = () => {
   const router = useRouter()
-  const { login, postDetailPageId } = useAuthStore((state) => state)
+  const { login, postDetailPage } = useAuthStore((state) => state)
 
   const onFinish: FormProps<TLoginForm>['onFinish'] = async (values) => {
     try {
       await login(values)
-      if (postDetailPageId) {
-        router.push(paths.dashboard.postDetail(postDetailPageId))
+      if (postDetailPage) {
+        router.push(
+          paths.dashboard.postDetail({
+            id: postDetailPage.id,
+            title: postDetailPage.title
+          })
+        )
       } else {
         router.push(paths.dashboard.home())
       }
 
       useAuthStore.setState({ isLoggingIn: false })
-    } catch (error) { }
+    } catch (error) {}
   }
 
   return (
@@ -39,7 +44,7 @@ const LoginForm = () => {
       <Form.Item<TLoginForm>
         name="username"
         rules={[
-          { required: true, message: 'Please input your email address!' },
+          { required: true, message: 'Please input your email address!' }
           // { type: 'email', message: 'Please enter a valid email address!' }
         ]}
       >

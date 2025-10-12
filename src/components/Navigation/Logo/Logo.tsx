@@ -15,7 +15,10 @@ const Logo = ({ size = 'md' }: TLogoProps) => {
   const logoSize = LOGO_SIZES[size]
 
   return (
-    <Link href="/" style={{ width: logoSize.width, height: logoSize.height }}>
+    <Link
+      href="/home"
+      style={{ width: logoSize.width, height: logoSize.height }}
+    >
       <img
         src="https://cdn.bettamax.com/dev/2025-06-26/logo_nhahaystudio.jpg"
         alt="logo"

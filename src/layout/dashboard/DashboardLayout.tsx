@@ -26,7 +26,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     content = children
   }
 
-  const isPostDetailPage = pathname.includes(paths.dashboard.postDetail(''))
+  const isPostDetailPage = pathname.includes(
+    paths.dashboard.postDetail({ id: '', title: '' })
+  )
 
   return (
     <div className="dashboard-container">
