@@ -25,6 +25,10 @@
   }
 
   @media screen and (max-width: 991px) {
+    .main-post-container {
+      margin-bottom: 16px;
+    }
+
     .featured-posts-container {
       height: auto;
       row-gap: 16px !important;

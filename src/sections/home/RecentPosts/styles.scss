@@ -19,7 +19,8 @@
   /* Tablet: giảm chiều cao và khoảng cách */
   @media screen and (max-width: 991px) {
     .recent-posts-container {
-      height: auto;
+      display: flex !important;
+      flex-wrap: nowrap !important;
     }
 
     .right-posts-grid {
@@ -28,7 +29,6 @@
     }
   }
 
-  /* Mobile: 1 cột full width, nhỏ gọn hơn */
   @media screen and (max-width: 576px) {
     .recent-posts-container {
       height: auto;

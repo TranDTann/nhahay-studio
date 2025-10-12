@@ -6,9 +6,11 @@ import { Menu as MenuAntd } from 'antd'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 import { getMenu } from './data'
-import './styles.css'
+import './styles.scss'
 
-const Menu = () => {
+type TMenuProps = { mode?: 'horizontal' | 'vertical' | 'inline' }
+
+const Menu = ({ mode = 'horizontal' }: TMenuProps) => {
   const pathname = usePathname()
 
   const { categories, getCategories } = useCategoriesStore((state) => state)
@@ -21,13 +23,15 @@ const Menu = () => {
   }, [])
 
   return (
-    <div className="menu-container">
-      <MenuAntd
-        mode="horizontal"
-        selectedKeys={[pathname]}
-        items={getMenu({ categories, isAdmin })}
-        style={{ border: 'none' }}
-      />
+    <div id="Menu">
+      <div className={`menu-container ${mode === 'inline' && 'menu-tablet'}`}>
+        <MenuAntd
+          mode={mode}
+          selectedKeys={[pathname]}
+          items={getMenu({ categories, isAdmin })}
+          style={{ border: 'none' }}
+        />
+      </div>
     </div>
   )
 }

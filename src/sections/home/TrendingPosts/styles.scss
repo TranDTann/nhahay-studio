@@ -1,0 +1,20 @@
+#TrendingPosts {
+  .below-posts-container {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  @media screen and (max-width: 767px) {
+    .below-posts-container {
+      gap: 20px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .below-posts-container {
+      display: block;
+    }
+  }
+}

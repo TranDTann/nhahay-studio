@@ -7,7 +7,7 @@ import parse from 'html-react-parser'
 import { useRouter } from 'next/navigation'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import PostMeta from '../../components/PostMeta/PostMeta'
-import './styles.css'
+import './styles.scss'
 
 type TMainTrendingPostProps = {
   postData: Article
@@ -25,7 +25,7 @@ const MainTrendingPost = ({ postData }: TMainTrendingPostProps) => {
   return (
     <div className="trending-post-container">
       <Row gutter={24}>
-        <Col span={12}>
+        <Col xs={24} sm={12} md={12} lg={12}>
           <div
             className="trending-post-image-container image-hover-zoom-container"
             onClick={navigateToPostDetail}
@@ -37,7 +37,7 @@ const MainTrendingPost = ({ postData }: TMainTrendingPostProps) => {
             />
           </div>
         </Col>
-        <Col span={12}>
+        <Col xs={24} sm={12} md={12} lg={12}>
           <div className="trending-post-content">
             <CategoryTag tagName={postData.category?.name} />
             <h3

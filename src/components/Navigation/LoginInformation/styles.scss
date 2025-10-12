@@ -1,20 +1,51 @@
-.login-information-container {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
+#LoginInformation {
+  .login-information-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .desktop-menu {
+    display: block;
+  }
 
-.user-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+  .user-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 
-.user-name {
-  font-size: 14px;
-  font-weight: 500;
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  .user-name {
+    font-size: 14px;
+    font-weight: 500;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .right-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 767px) {
+    .desktop-menu {
+      display: none;
+    }
+
+    .tablet-menu {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+    }
+  }
 }
