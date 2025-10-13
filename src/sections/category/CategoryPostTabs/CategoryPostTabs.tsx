@@ -2,8 +2,8 @@
 
 import { postTyes, PostTypeEnum } from '@/store/article/articleStore'
 import { useCategoryPostsStore } from '@/store/categoryPosts/categoryPostStore'
-import { Tabs, TabsProps } from 'antd'
-import './styles.css'
+import { Select, Tabs, TabsProps } from 'antd'
+import './styles.scss'
 
 const CategoryPostTabs = () => {
   const { filters } = useCategoryPostsStore((state) => state)
@@ -24,6 +24,22 @@ const CategoryPostTabs = () => {
           })
         }
         style={{ backgroundColor: '#fff' }}
+        className="category-post-tabs-container"
+      />
+      <Select
+        defaultValue={PostTypeEnum.NONE.toString()}
+        value={filters?.listType?.toString()}
+        onChange={(value) =>
+          useCategoryPostsStore.setState({
+            filters: { ...filters, listType: +value }
+          })
+        }
+        className="category-post-selection-container"
+        style={{ backgroundColor: '#fff', width: 200 }}
+        options={tabItems.map((item) => ({
+          label: item.label,
+          value: item.key
+        }))}
       />
     </div>
   )

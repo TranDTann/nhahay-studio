@@ -5,7 +5,7 @@ import { Article } from '@/store/article/crud'
 import { formatDateDisplay } from '@/utils/formatDate'
 import parse from 'html-react-parser'
 import { useRouter } from 'next/navigation'
-import './styles.css'
+import './styles.scss'
 
 type TCategoryPostProps = {
   postData: Article
