@@ -6,14 +6,8 @@
 }
 
 .post-detail-container {
-  width: 80%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 28px;
-}
-
-.post-detail-body {
-  display: flex;
-  gap: 64px;
 }

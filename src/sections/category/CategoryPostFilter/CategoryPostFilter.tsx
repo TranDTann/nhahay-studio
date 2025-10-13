@@ -9,7 +9,7 @@ import { SearchOutlined } from '@ant-design/icons'
 import { Button, Flex, Input, Tooltip } from 'antd'
 import { useEffect, useState } from 'react'
 import { FaList, FaThLarge } from 'react-icons/fa'
-import './styles.css'
+import './styles.scss'
 
 const CategoryPostFilter = () => {
   const [valueSearch, setValueSearch] = useState('')
@@ -36,13 +36,18 @@ const CategoryPostFilter = () => {
   }
 
   return (
-    <Flex justify="space-between" gap={16} style={{ padding: '4px 0 20px' }}>
+    <Flex
+      id="CategoryPostFilter"
+      justify="space-between"
+      gap={16}
+      style={{ padding: '4px 0 20px' }}
+    >
       <Input
         prefix={<SearchOutlined />}
         placeholder="Tìm kiếm bài viết"
         onChange={(e) => setValueSearch(e.target.value)}
         value={valueSearch}
-        style={{ width: '40%' }}
+        className="input-search-post"
       />
       <div className="category-post-view-mode">
         <Tooltip
@@ -55,6 +60,7 @@ const CategoryPostFilter = () => {
               useCategoryPostsStore.setState({ viewMode: EViewMode.LIST })
             }
             type={viewMode === EViewMode.LIST ? 'primary' : 'text'}
+            style={{ marginRight: 8 }}
           >
             <FaList />
           </Button>

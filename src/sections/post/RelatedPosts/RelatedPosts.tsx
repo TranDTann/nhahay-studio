@@ -14,6 +14,12 @@ type TRelatedPostsProps = {
 const RelatedPosts = ({ postData }: TRelatedPostsProps) => {
   const [relatedPosts, setRelatedPosts] = useState<Article[]>([])
 
+  const handleSlidesToShow = (width = window.innerWidth) => {
+    if (width < 768) return 1 // Mobile
+    if (width < 1024) return 2 // Tablet
+    if (width < 1536) return 3 // Laptop
+    return 4 // Desktop
+  }
   useEffect(() => {
     const fetchRelatedPosts = async () => {
       const { result = [] } = await articleCrud.getArticles({
@@ -32,7 +38,7 @@ const RelatedPosts = ({ postData }: TRelatedPostsProps) => {
   const settings = {
     infinite: true,
     speed: 750,
-    slidesToShow: 5,
+    slidesToShow: handleSlidesToShow(),
     slidesToScroll: 1,
     arrows: true,
     autoplay: true,

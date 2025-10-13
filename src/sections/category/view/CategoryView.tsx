@@ -16,7 +16,7 @@ import CategoryPost from '../CategoryPost/CategoryPost'
 import CategoryPostFilter from '../CategoryPostFilter/CategoryPostFilter'
 import CategoryPostTabs from '../CategoryPostTabs/CategoryPostTabs'
 import CategoryViewGrid from './CategoryViewGrid'
-import './styles.css'
+import './styles.scss'
 
 const CategoryView = () => {
   const pathname = usePathname()
@@ -131,7 +131,7 @@ const CategoryView = () => {
   }
 
   return (
-    <div className="category-details-container">
+    <div id="CategoryView">
       <div className="category-details-controller-wrapper">
         <div className="category-details-controller">
           <CategoryInfo categoryData={categoryView} />
