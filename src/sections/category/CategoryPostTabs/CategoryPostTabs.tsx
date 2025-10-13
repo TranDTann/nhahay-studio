@@ -3,7 +3,7 @@
 import { postTyes, PostTypeEnum } from '@/store/article/articleStore'
 import { useCategoryPostsStore } from '@/store/categoryPosts/categoryPostStore'
 import { Select, Tabs, TabsProps } from 'antd'
-import './styles.css'
+import './styles.scss'
 
 const CategoryPostTabs = () => {
   const { filters } = useCategoryPostsStore((state) => state)
