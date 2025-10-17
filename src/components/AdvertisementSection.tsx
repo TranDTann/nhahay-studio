@@ -79,9 +79,9 @@ const AdvertisementSection: React.FC = () => {
                         <React.Fragment key={platform.name}>
                             {index > 0 && index === socialPlatforms.length - 1 && ' và '}
                             {index > 0 && index < socialPlatforms.length - 1 && ', '}
-                            <b style={{ color: platform.color }}>
+                            <a style={{ color: platform.color }} href={platform.url} target="_blank" rel="noopener noreferrer">
                                 {platform.name} Nhà hay Studio
-                            </b>
+                            </a>
                         </React.Fragment>
                     ))}
                     ...vv
