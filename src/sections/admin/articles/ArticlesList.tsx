@@ -242,7 +242,6 @@ export default function ArticlesList() {
 
   const handleRateViewSubmit = async (data: {
     id: string
-    fakeRatingAmount: number
     fakeViewAmount: number
   }) => {
     setRateViewLoading(true)
@@ -465,7 +464,7 @@ export default function ArticlesList() {
                             handleRateView(article)
                           }}
                         >
-                          Rate/View
+                          View Fake
                         </Button>,
                         <Button
                           key="delete"
@@ -551,14 +550,14 @@ export default function ArticlesList() {
                                 <strong>Created:</strong>{' '}
                                 {article.createdAt
                                   ? new Date(
-                                      article.createdAt
-                                    ).toLocaleDateString('vi-VN', {
-                                      year: 'numeric',
-                                      month: 'short',
-                                      day: 'numeric',
-                                      hour: '2-digit',
-                                      minute: '2-digit'
-                                    })
+                                    article.createdAt
+                                  ).toLocaleDateString('vi-VN', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                  })
                                   : '-'}
                               </div>
                             </Space>

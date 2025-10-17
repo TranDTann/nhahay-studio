@@ -29,8 +29,7 @@ export interface Article {
   readingTimeMinutes: number
   // New optional fields for author and rating
   authorName?: string
-  // Fake rate and view fields
-  fakeRatingAmount?: number
+  // Fake view fields
   fakeViewAmount?: number
 }
 
@@ -115,11 +114,7 @@ export const articleCrud = {
     }
   },
 
-  updateRateView: async (data: {
-    id: string
-    fakeRatingAmount: number
-    fakeViewAmount: number
-  }) => {
+  updateRateView: async (data: { id: string; fakeViewAmount: number }) => {
     try {
       const response = await axiosInstance.put(
         '/api/post/rateview/update',

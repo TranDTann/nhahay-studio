@@ -171,8 +171,6 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                             alt={block.imageAlt || block.caption || 'Article image'}
                                             title={block.imageTitle}
                                             style={{
-                                                width: '400px',
-                                                height: '600px',
                                                 objectFit: 'cover',
                                                 borderRadius: '8px'
                                             }}

@@ -63,7 +63,7 @@ export default function ContactsList() {
         <div style={{ padding: 24 }}>
             <div style={{ marginBottom: 24 }}>
                 <h1 style={{ marginBottom: 16 }}>Customer Contacts</h1>
-                <Space style={{ width: '100%' }} direction="vertical" size="middle">
+                <Space style={{ width: '50%' }} direction="vertical" size="middle">
                     <Input.Search
                         placeholder="Search by name, phone, email..."
                         value={pendingSearch}

@@ -31,7 +31,6 @@ export default function ContentBlock({
 }: ContentBlockProps) {
     const [isPlaying, setIsPlaying] = useState(false);
     const renderBlock = () => {
-        console.log(block);
         switch (block.type) {
             case 'text':
                 if (isEditing) {

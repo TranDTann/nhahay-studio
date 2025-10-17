@@ -7,7 +7,6 @@ interface RateViewFormProps {
     onCancel: () => void;
     onSubmit: (data: {
         id: string;
-        fakeRatingAmount: number;
         fakeViewAmount: number;
     }) => Promise<void>;
     article?: Article | null;
@@ -27,7 +26,6 @@ export default function RateViewForm({
         if (visible && article) {
             form.resetFields();
             form.setFieldsValue({
-                fakeRatingAmount: article.fakeRatingAmount || 0,
                 fakeViewAmount: article.fakeViewAmount || 0,
             });
         }
@@ -38,7 +36,6 @@ export default function RateViewForm({
             const values = await form.validateFields();
             await onSubmit({
                 id: article!.id,
-                fakeRatingAmount: values.fakeRatingAmount,
                 fakeViewAmount: values.fakeViewAmount,
             });
         } catch (error) {
@@ -48,7 +45,7 @@ export default function RateViewForm({
 
     return (
         <Modal
-            title={`Update Rate & View - ${article?.title || ''}`}
+            title={`Update View - ${article?.title || ''}`}
             open={visible}
             onOk={handleSubmit}
             onCancel={onCancel}
@@ -63,7 +60,6 @@ export default function RateViewForm({
                 form={form}
                 layout="vertical"
                 initialValues={{
-                    fakeRatingAmount: 0,
                     fakeViewAmount: 0,
                 }}
             >
@@ -80,26 +76,10 @@ export default function RateViewForm({
                         style={{ width: '100%' }}
                         min={0}
                         formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
                     />
                 </Form.Item>
 
-                <Form.Item
-                    name="fakeRatingAmount"
-                    label="Fake Rate Amount"
-                    rules={[
-                        { required: true, message: 'Please enter fake rate amount!' },
-                        { type: 'number', min: 0, message: 'Rate amount must be 0 or greater!' }
-                    ]}
-                >
-                    <InputNumber
-                        placeholder="Enter fake rate amount"
-                        style={{ width: '100%' }}
-                        min={0}
-                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
-                    />
-                </Form.Item>
+
             </Form>
         </Modal>
     );

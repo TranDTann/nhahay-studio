@@ -29,9 +29,9 @@ const Advertising = () => {
 
   return (
     <div className="advertising-image-container image-hover-zoom-container">
-      <Link href={advertisementView.link} target="_blank">
+      <Link href={advertisementView?.link || ''} target="_blank">
         <img
-          src={advertisementView.imageUrl}
+          src={advertisementView?.imageUrl || ''}
           alt="anh-quang-cao"
           className="advertising-image image-hover-zoom"
         />
