@@ -19,7 +19,8 @@ export default function useAuthRouter() {
   const isAuthRequiredPage =
     !publicPaths.includes(pathname) &&
     !pathname.startsWith('/category/') &&
-    !pathname.startsWith('/post/')
+    !pathname.startsWith('/post/') &&
+    !pathname.startsWith('/auth/sign-up')
 
   const handleNavigate = () => {
     if (!token && isAuthRequiredPage) {

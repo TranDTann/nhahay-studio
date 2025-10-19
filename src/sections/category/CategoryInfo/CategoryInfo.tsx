@@ -11,7 +11,11 @@ const CategoryInfo = ({ categoryData }: TCategoryInfoProps) => {
   return (
     <div className="category-info-container">
       <img
-        src="https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/14235/production/_100058428_mediaitem100058424.jpg"
+        src={
+          categoryData.urlThumbnail
+            ? categoryData.urlThumbnail
+            : 'https://hangnhatchuan365.com/wp-content/uploads/2020/09/thiet-bi-bep-108x108-1-36x36.png'
+        }
         alt="category-thumbnail"
         className="category-thumbnail-image"
       />

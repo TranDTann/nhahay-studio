@@ -42,7 +42,7 @@ const CategoryPost = ({ postData }: TCategoryPostProps) => {
         </div>
         <div>
           <p className="category-post-author">
-            {postData.createdByUser.username}
+            {postData?.authorName ?? postData?.createdByUser?.username}
           </p>
           <div>
             <span className="category-post-publish-time">

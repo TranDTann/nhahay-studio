@@ -39,7 +39,7 @@ const FirstPost = ({ post }: TFirstPostProps) => {
           {parse(post.description ?? '')}
         </p>
         <PostMeta
-          author={post.createdByUser.username}
+          author={post?.authorName ?? post.createdByUser.username}
           readingTimeMinutes={post.readingTimeMinutes}
           publishTime={post.publishAt}
         />

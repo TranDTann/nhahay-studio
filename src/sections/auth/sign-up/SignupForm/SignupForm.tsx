@@ -1,16 +1,17 @@
 'use client'
 
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Form, FormProps, Input } from 'antd'
-import './styles.css'
-import { TSignupForm } from '../types'
-import { useAuthStore } from '@/store/auth/authStore'
 import paths from '@/routes/paths'
+import { useAuthStore } from '@/store/auth/authStore'
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
+import { App, Button, Form, FormProps, Input } from 'antd'
 import { useRouter } from 'next/navigation'
+import { TSignupForm } from '../types'
+import './styles.css'
 
 const SignupForm = () => {
   const router = useRouter()
   const { signup } = useAuthStore((state) => state)
+  const { message: messageApi } = App.useApp()
 
   const onFinish: FormProps<TSignupForm>['onFinish'] = async (values) => {
     try {
@@ -20,8 +21,12 @@ const SignupForm = () => {
         password: values.password
       })
 
-      router.push(paths.dashboard.home())
-    } catch (error) {}
+      router.push(paths.auth.login)
+    } catch (error) {
+      messageApi.error(
+        error?.response?.data?.message || 'Đăng ký tài khoản không thành công!'
+      )
+    }
   }
 
   return (
