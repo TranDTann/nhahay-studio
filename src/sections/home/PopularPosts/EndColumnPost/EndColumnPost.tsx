@@ -37,7 +37,9 @@ const EndColumnPost = ({ post }: TEndColumnPostProps) => {
           >
             {post.title}
           </h2>
-          <PostMeta author={post.createdByUser.username} />
+          <PostMeta
+            author={post?.authorName ?? post?.createdByUser?.username}
+          />
         </Col>
       </Row>
     </div>

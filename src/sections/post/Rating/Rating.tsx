@@ -67,18 +67,29 @@ const Rating = ({ postData }: TRatingProps) => {
   const updateRatingData = (data: TRating) => {
     setRating(data.rating)
 
-    const updatedRatings = !ratings?.length
-      ? [data]
-      : ratings.map((item) => {
-          if (item.ratingUserId !== authUser.id) {
-            return item
-          }
+    const updatedRatings = []
+    let updatedCount = 0
 
-          return { ...item, rating: data.rating }
-        })
+    if (!ratings?.length) {
+      updatedRatings.push(data)
+      updatedCount = 1
+    } else {
+      myRating
+        ? updatedRatings.push(
+            ...ratings.map((item) => {
+              if (item.ratingUserId !== authUser.id) {
+                return item
+              }
+              return { ...item, rating: data.rating }
+            })
+          )
+        : updatedRatings.push(...ratings, data)
+
+      updatedCount = count
+    }
 
     useRatingPostStore.setState({
-      count: !ratings?.length ? 1 : count,
+      count: updatedCount,
       ratings: updatedRatings
     })
   }

@@ -46,7 +46,7 @@ const TrendingPostItem = ({ postData }: TTrendingPostItemProps) => {
             {postData.title}
           </h3>
           <PostMeta
-            author={postData.createdByUser.username}
+            author={postData?.authorName ?? postData.createdByUser.username}
             publishTime={postData.publishAt}
           />
         </div>

@@ -33,7 +33,7 @@ const MainRecentPost = ({ postData }: TMainRecentPostProps) => {
         <CategoryTag tagName={postData.category?.name} />
         <h3 className="post-title display-max-3-lines">{postData.title}</h3>
         <PostMeta
-          author={postData.createdByUser.username}
+          author={postData?.authorName ?? postData.createdByUser.username}
           readingTimeMinutes={postData.readingTimeMinutes}
           publishTime={postData.publishAt}
         />

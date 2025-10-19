@@ -41,7 +41,7 @@ export const authCrud = {
   signup: async (signUpFormData: TSignupForm) => {
     try {
       const response = await axiosInstance.post<TSignupForm[]>(
-        '/api/account/admin/register',
+        '/api/account/register',
         signUpFormData
       )
       return response.data

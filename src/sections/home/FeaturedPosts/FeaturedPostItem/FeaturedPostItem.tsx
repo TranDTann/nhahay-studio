@@ -37,7 +37,9 @@ const FeaturedPostItem = ({ postData }: TFeaturedPostItemProps) => {
         <h3 className="featured-post-item-title display-max-2-lines">
           {postData.title}
         </h3>
-        <PostMeta author={postData.createdByUser.username} />
+        <PostMeta
+          author={postData?.authorName ?? postData?.createdByUser?.username}
+        />
       </div>
     </div>
   )

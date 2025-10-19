@@ -39,7 +39,7 @@ const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
             {postData.title}
           </h3>
           <PostMeta
-            author={postData.createdByUser.username}
+            author={postData?.authorName ?? postData?.createdByUser?.username}
             readingTimeMinutes={postData.readingTimeMinutes}
             publishTime={postData.publishAt}
           />

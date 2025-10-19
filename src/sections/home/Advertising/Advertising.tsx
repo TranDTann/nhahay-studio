@@ -27,6 +27,8 @@ const Advertising = () => {
 
   const advertisementView = advertisements[1]
 
+  if (!advertisementView) return null
+
   return (
     <div className="advertising-image-container image-hover-zoom-container">
       <Link href={advertisementView?.link || ''} target="_blank">

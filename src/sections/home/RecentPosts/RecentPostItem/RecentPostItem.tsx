@@ -41,7 +41,9 @@ const RecentPostItem = ({ postData }: TRecentPostItemProps) => {
           >
             {postData.title}
           </h3>
-          <PostMeta author={postData.createdByUser.username} />
+          <PostMeta
+            author={postData?.authorName ?? postData.createdByUser.username}
+          />
         </div>
       </div>
     </div>

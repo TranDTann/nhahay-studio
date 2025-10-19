@@ -42,7 +42,9 @@ const CenterColumnPost = ({ post }: TCenterColumnPostProps) => {
           <p className="display-max-3-lines center-post-description">
             {parse(post.description ?? '')}
           </p>
-          <PostMeta author={post.createdByUser.username} />
+          <PostMeta
+            author={post?.authorName ?? post?.createdByUser?.username}
+          />
         </Col>
       </Row>
     </div>

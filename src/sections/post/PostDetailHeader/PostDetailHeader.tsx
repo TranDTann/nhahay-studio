@@ -18,7 +18,7 @@ const PostDetailHeader = ({ postData }: TPostDetailHeaderProps) => {
         <FaUser />
         <div className="post-detail-header-info_author">
           <p className="post-detail-header_author-name">
-            {postData.createdByUser.username}
+            {postData?.authorName ?? postData.createdByUser.username}
             <Divider type="vertical" style={{ borderColor: '#bababa' }} />
           </p>
           <p>

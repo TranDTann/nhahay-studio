@@ -50,7 +50,7 @@ const CategoryViewGrid = ({ categoryPosts }: TCategoryViewGridProps) => {
               </div>
               <div>
                 <p className="category-post-author_grid">
-                  {postItem.createdByUser.username}
+                  {postItem?.authorName ?? postItem.createdByUser.username}
                 </p>
                 <div>
                   <span className="category-post-publish-time_grid">
