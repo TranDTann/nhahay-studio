@@ -6,6 +6,7 @@ import css from 'highlight.js/lib/languages/css';
 import java from 'highlight.js/lib/languages/java';
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/github.css';
+import parse from 'html-react-parser';
 import { convertContentStringToBlocks, ContentBlock } from '@/utils/contentBlocksUtils';
 import { ImgComparisonSlider } from '@img-comparison-slider/react';
 
@@ -23,13 +24,13 @@ interface ArticleRendererProps {
 export default function ArticleRenderer({ content, className = '', contentBlocks }: ArticleRendererProps) {
     useEffect(() => {
         // Apply syntax highlighting to code blocks
-        const codeBlocks = document.querySelectorAll('pre code');
+        const codeBlocks = document.querySelectorAll('.article-renderer pre code');
         codeBlocks.forEach((block) => {
             hljs.highlightBlock(block as HTMLElement);
         });
 
         // Apply custom styling to paragraphs with alignment
-        const paragraphs = document.querySelectorAll('p');
+        const paragraphs = document.querySelectorAll('.article-renderer p');
         paragraphs.forEach((p) => {
             const style = p.getAttribute('style') || '';
             if (style.includes('text-align: center')) {
@@ -43,7 +44,7 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
 
         // Add IDs to h2 elements for table of contents
         setTimeout(() => {
-            const h2Elements = document.querySelectorAll('h2');
+            const h2Elements = document.querySelectorAll('.article-renderer h2');
             h2Elements.forEach((h2, index) => {
                 if (!h2.id) {
                     // Create a more stable ID based on content
@@ -129,7 +130,6 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                 <div
                                     key={block.id}
                                     className="content-text"
-                                    dangerouslySetInnerHTML={{ __html: block.content }}
                                     style={{
                                         fontSize: '16px',
                                         lineHeight: '1.8',
@@ -153,40 +153,36 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                             });
                                         }
                                     }}
-                                />
+                                >
+                                    {parse(block.content)}
+                                </div>
                             );
 
                         case 'image':
                             return (
                                 <div key={block.id} className="content-image" style={{ margin: '24px 0' }}>
-                                    <div style={{
-
-                                        margin: '0 auto',
-                                        borderRadius: '8px',
-                                        overflow: 'hidden',
-                                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-                                    }}>
-                                        <img
-                                            src={block.imageUrl}
-                                            alt={block.imageAlt || block.caption || 'Article image'}
-                                            title={block.imageTitle}
-                                            style={{
-                                                objectFit: 'cover',
-                                                borderRadius: '8px'
-                                            }}
-                                        />
-                                    </div>
-                                    {block.caption && (
-                                        <p className="image-caption" style={{
-                                            textAlign: 'center',
-                                            color: '#666',
-                                            fontSize: '14px',
-                                            marginTop: '8px',
-                                            fontStyle: 'italic'
-                                        }}>
-                                            {block.caption}
-                                        </p>
-                                    )}
+                                    <img
+                                        src={block.imageUrl}
+                                        alt={block.imageAlt || block.caption || 'Article image'}
+                                        title={block.imageTitle}
+                                        style={{
+                                            objectFit: 'cover',
+                                            borderRadius: '8px'
+                                        }}
+                                    />
+                                    {
+                                        block.caption && (
+                                            <p className="image-caption" style={{
+                                                textAlign: 'center',
+                                                color: '#666',
+                                                fontSize: '14px',
+                                                marginTop: '8px',
+                                                fontStyle: 'italic'
+                                            }}>
+                                                {block.caption}
+                                            </p>
+                                        )
+                                    }
                                 </div>
                             );
 
@@ -244,7 +240,7 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                             return null;
                     }
                 })}
-            </div>
+            </div >
         );
     }
 
@@ -261,7 +257,6 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                     <div
                                         key={block.id}
                                         className="content-text"
-                                        dangerouslySetInnerHTML={{ __html: block.content }}
                                         style={{
                                             fontSize: '16px',
                                             lineHeight: '1.8',
@@ -285,33 +280,24 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
                                                 });
                                             }
                                         }}
-                                    />
+                                    >
+                                        {parse(block.content)}
+                                    </div>
                                 );
 
                             case 'image':
                                 return (
                                     <div key={block.id} className="content-image" style={{ margin: '24px 0' }}>
-                                        <div style={{
-                                            width: 'auto',
-                                            margin: '0 auto',
-                                            borderRadius: '8px',
-                                            overflow: 'hidden',
-                                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center'
-                                        }}>
-                                            <img
-                                                src={block.imageUrl}
-                                                alt={block.imageAlt || block.caption || 'Article image'}
-                                                title={block.imageTitle}
-                                                style={{
-                                                    width: 'auto',
-                                                    objectFit: 'contain',
-                                                    borderRadius: '8px'
-                                                }}
-                                            />
-                                        </div>
+                                        <img
+                                            src={block.imageUrl}
+                                            alt={block.imageAlt || block.caption || 'Article image'}
+                                            title={block.imageTitle}
+                                            style={{
+                                                width: 'auto',
+                                                objectFit: 'contain',
+                                                borderRadius: '8px'
+                                            }}
+                                        />
                                         {block.caption && (
                                             <p className="image-caption" style={{
                                                 textAlign: 'center',
@@ -389,12 +375,13 @@ export default function ArticleRenderer({ content, className = '', contentBlocks
     return (
         <div
             className={`article-renderer ${className}`}
-            dangerouslySetInnerHTML={{ __html: content }}
             style={{
                 fontSize: '16px',
                 lineHeight: '1.8',
                 textAlign: 'justify'
             }}
-        />
+        >
+            {parse(content)}
+        </div>
     );
 } 

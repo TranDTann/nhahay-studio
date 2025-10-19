@@ -116,15 +116,79 @@ export default function ArticleDetailPage({ params }: { params: { id: string, no
                                 </div>
                             ) : null
                         ))}
+
+                        {/* Laptop version - Social Media and Ads below TOC */}
+                        <div className={styles.desktopSocialCard}>
+                            <Card
+                                className={styles.socialMediaCard}
+                                title={
+                                    <Space>
+                                        <span style={{ fontSize: '16px' }}>📱</span>
+                                        <Text strong style={{ fontSize: '16px' }}>Theo dõi Nhà Hay</Text>
+                                    </Space>
+                                }
+                                style={{
+                                    borderRadius: '8px',
+                                    border: '1px solid #f0f0f0',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+                                }}
+                            >
+                                <SocialMediaLinks size="large" />
+                            </Card>
+                            {Array.isArray(article.advertisements) && article.advertisements.slice(0, 1).map((ad, idx) => (
+                                ad.imageUrl ? (
+                                    <div key={ad.id || idx} style={{ width: '100%', maxWidth: 600, margin: '24px auto 0 auto' }}>
+                                        <img
+                                            src={ad.imageUrl}
+                                            alt={ad.title || 'Advertisement'}
+                                            width={280}
+                                            height={240}
+                                            style={{ width: '100%', borderRadius: 12, objectFit: 'cover', cursor: 'pointer' }}
+                                            onClick={() => {
+                                                window.open(ad.link, '_blank');
+                                            }}
+                                        />
+                                    </div>
+                                ) : null
+                            ))}
+                        </div>
+
+                        {/* Mobile version - Collapse */}
+                        <div className={styles.mobileSocialCollapse}>
+                            <Collapse
+                                ghost
+                                expandIcon={({ isActive }) => (
+                                    <DownOutlined rotate={isActive ? 180 : 0} />
+                                )}
+                                style={{
+                                    background: 'white',
+                                    border: '1px solid #f0f0f0',
+                                    borderRadius: '8px',
+                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+                                }}
+                            >
+                                <Collapse.Panel
+                                    header={
+                                        <Space>
+                                            <span style={{ fontSize: '16px' }}>📱</span>
+                                            <Text strong style={{ fontSize: '16px' }}>Theo dõi Nhà Hay</Text>
+                                        </Space>
+                                    }
+                                    key="1"
+                                >
+                                    <SocialMediaLinks size="middle" />
+                                </Collapse.Panel>
+                            </Collapse>
+                        </div>
                     </div>
 
                     <div className={styles.articleContentWrapper}>
                         <Card>
                             <Space direction="vertical" size="large" style={{ width: '100%' }}>
                                 {/* Title */}
-                                <Title level={1} style={{ margin: 0 }}>
+                                <div className={styles.articleTitle}>
                                     {article.title}
-                                </Title>
+                                </div>
 
                                 {/* Meta Information */}
                                 <ArticleMeta
@@ -218,9 +282,9 @@ export default function ArticleDetailPage({ params }: { params: { id: string, no
                         </Card>
                     </div>
 
-                    <div className={styles.tableOfContentsWrapper}>
-                        {/* Desktop version - Card */}
-                        <div className={styles.desktopSocialCard}>
+                    {/* Desktop version - Third column for Social Media and Ads */}
+                    <div className={styles.desktopLargeSocialWrapper}>
+                        <div className={styles.desktopLargeSocialCard}>
                             <Card
                                 className={styles.socialMediaCard}
                                 title={
@@ -254,35 +318,6 @@ export default function ArticleDetailPage({ params }: { params: { id: string, no
                                 ) : null
                             ))}
                         </div>
-
-                        {/* Mobile version - Collapse */}
-                        <div className={styles.mobileSocialCollapse}>
-                            <Collapse
-                                ghost
-                                expandIcon={({ isActive }) => (
-                                    <DownOutlined rotate={isActive ? 180 : 0} />
-                                )}
-                                style={{
-                                    background: 'white',
-                                    border: '1px solid #f0f0f0',
-                                    borderRadius: '8px',
-                                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
-                                }}
-                            >
-                                <Collapse.Panel
-                                    header={
-                                        <Space>
-                                            <span style={{ fontSize: '16px' }}>📱</span>
-                                            <Text strong style={{ fontSize: '16px' }}>Theo dõi Nhà Hay</Text>
-                                        </Space>
-                                    }
-                                    key="1"
-                                >
-                                    <SocialMediaLinks size="middle" />
-                                </Collapse.Panel>
-                            </Collapse>
-                        </div>
-
                     </div>
                 </div>
 
