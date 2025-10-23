@@ -25,7 +25,12 @@
   }
 
   .rating-list {
-    margin-top: 12px;
+    margin: 12px 0;
+    padding: 8px;
+
+    .p-6 {
+      padding: 24px;
+    }
 
     .rating-list-title {
       font-size: 14px;

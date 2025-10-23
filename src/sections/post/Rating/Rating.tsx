@@ -38,12 +38,8 @@ const Rating = ({ postData }: TRatingProps) => {
   }, [])
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      return
-    }
-
     getRatings(postData.id)
-  }, [getRatings, postData.id, isLoggedIn])
+  }, [getRatings, postData.id])
 
   useEffect(() => {
     if (!ratings?.length) {
@@ -187,10 +183,10 @@ const Rating = ({ postData }: TRatingProps) => {
     </div>
   )
 
-  const contentWhenLoggedIn = ratingOthers?.length ? (
+  const ratingContent = ratingOthers?.length ? (
     <div>
-      {myRatingContent}
-      <Flex vertical gap={8} className="rating-list">
+      {isLoggedIn && myRatingContent}
+      <Flex vertical gap={8} className={`rating-list ${!isLoggedIn && 'p-6'}`}>
         <p className="rating-list-title">Các lượt đánh giá khác:</p>
         <Flex vertical gap={8} className="ratings-list-content">
           {ratingOthers.map((ratingItem) => {
@@ -209,7 +205,8 @@ const Rating = ({ postData }: TRatingProps) => {
         Đánh giá {count ? <span>({count})</span> : null}
       </h2>
       <div className={`${isLoggedIn && 'rating-container'}`}>
-        {isLoggedIn ? contentWhenLoggedIn : contentWithoutLogin}
+        {!isLoggedIn && contentWithoutLogin}
+        {ratingContent}
       </div>
     </div>
   )

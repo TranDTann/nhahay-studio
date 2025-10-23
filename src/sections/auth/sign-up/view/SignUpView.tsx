@@ -11,17 +11,17 @@ const SignUpView = () => {
 
   return (
     <div className="signup-wrapper">
-      <h1 className="signup-title">Signup</h1>
-      <p className="signup-description">Create your account</p>
+      <h1 className="signup-title">Đăng ký</h1>
+      <p className="signup-description">Tạo tài khoản</p>
       <SignupForm />
       <div className="have-account">
-        <p>Already have an account?</p>
+        <p>Bạn đã có tài khoản?</p>
         <Button
           type="link"
           className="login-now-button"
           onClick={() => router.push(paths.auth.login)}
         >
-          Login Now
+          Đăng nhập
         </Button>
       </div>
     </div>

@@ -41,7 +41,7 @@ const ContactForm = () => {
         <Row gutter={24}>
           <Col span={15} style={{ padding: '0 4px 0 12px' }}>
             <Form.Item
-              name="fullName"
+              name="userName"
               rules={[
                 { required: true, message: 'Vui lòng nhập tên của bạn!' },
                 { min: 3, message: 'Tên phải có ít nhất 3 ký tự.' }
@@ -56,7 +56,7 @@ const ContactForm = () => {
           </Col>
           <Col span={9} style={{ padding: '0 12px 0 4px' }}>
             <Form.Item
-              name="phoneNumber"
+              name="phone"
               rules={[
                 { required: true, message: 'Vui lòng nhập số điện thoại!' },
                 {
