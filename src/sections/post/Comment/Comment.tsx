@@ -36,12 +36,8 @@ const Comment = ({ postData }: TCommentProps) => {
   }, [])
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      return
-    }
-
     getComments(postData.id)
-  }, [getComments, postData.id, isLoggedIn])
+  }, [getComments, postData.id])
 
   const handlePostComment = async () => {
     setIsPostCommentLoading(true)
@@ -88,7 +84,7 @@ const Comment = ({ postData }: TCommentProps) => {
     </Flex>
   )
 
-  const textAreaComment = (
+  const textAreaComment = isLoggedIn ? (
     <Flex align="flex-end" justify="space-between" gap={8}>
       <TextArea
         rows={4}
@@ -106,11 +102,11 @@ const Comment = ({ postData }: TCommentProps) => {
         <SendOutlined className="send-button" />
       </Button>
     </Flex>
-  )
+  ) : null
 
-  const contentWhenLoggedIn = comments?.length ? (
+  const commentContent = comments?.length ? (
     <div>
-      <div className="comment-list">
+      <div className={`comment-list ${!isLoggedIn && 'p-4'}`}>
         {comments.map((commentItem) => {
           return <CommentItem key={commentItem.id} comment={commentItem} />
         })}
@@ -127,7 +123,8 @@ const Comment = ({ postData }: TCommentProps) => {
         Bình luận {count ? <span>({count})</span> : null}
       </h2>
       <div className={`${isLoggedIn && 'comment-container'}`}>
-        {isLoggedIn ? contentWhenLoggedIn : contentWithoutLogin}
+        {!isLoggedIn && contentWithoutLogin}
+        {commentContent}
       </div>
     </div>
   )

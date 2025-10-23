@@ -27,7 +27,9 @@ const LoginForm = () => {
       }
 
       useAuthStore.setState({ isLoggingIn: false })
-    } catch (error) {}
+    } catch (error) {
+      console.log({ error })
+    }
   }
 
   return (
@@ -44,40 +46,39 @@ const LoginForm = () => {
       <Form.Item<TLoginForm>
         name="username"
         rules={[
-          { required: true, message: 'Please input your email address!' }
-          // { type: 'email', message: 'Please enter a valid email address!' }
+          { required: true, message: 'Vui lòng nhập địa chỉ email của bạn.' }
         ]}
       >
         <Input
           prefix={<UserOutlined />}
-          placeholder="Email Address"
+          placeholder="Tên đăng nhập"
           className="email-address-input"
         />
       </Form.Item>
       <Form.Item<TLoginForm>
         name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
+        rules={[{ required: true, message: 'Vui lòng nhập mật khẩu của bạn.' }]}
       >
         <Input.Password
           prefix={<LockOutlined />}
           type="password"
-          placeholder="Password"
+          placeholder="Mật khẩu"
           className="password-input"
         />
       </Form.Item>
       <Form.Item className="remember-wrapper">
         <Flex justify="space-between" align="center">
           <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox className="remember-checkbox">Remember me</Checkbox>
+            <Checkbox className="remember-checkbox">Ghi nhớ đăng nhập</Checkbox>
           </Form.Item>
-          <Button type="link" className="forgot-password-button">
+          {/* <Button type="link" className="forgot-password-button">
             Forgot password
-          </Button>
+          </Button> */}
         </Flex>
       </Form.Item>
       <Form.Item className="login-button-wrapper">
         <Button block type="primary" htmlType="submit" className="login-button">
-          Login Now
+          Đăng nhập
         </Button>
       </Form.Item>
     </Form>

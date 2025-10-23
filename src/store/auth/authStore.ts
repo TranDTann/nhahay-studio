@@ -46,7 +46,7 @@ export const useAuthStore = create<AuthState & AuthActions>((set) => ({
         isLoggingIn: true
       }))
     } catch (error) {
-      const message = error?.message ? error.message : 'Login failed!'
+      const message = error?.message ? error.message : 'Đăng nhập thất bại!'
       set({ errorMessage: message, isLoggingIn: false })
       showToast.error(message)
 
@@ -61,8 +61,10 @@ export const useAuthStore = create<AuthState & AuthActions>((set) => ({
         isSigningUp: false
       }))
     } catch (error) {
-      const message = error instanceof ApiError ? error.message : 'Login failed'
+      const message = error?.message ? error.message : 'Đăng ký thất bại!'
       set({ errorMessage: message, isSigningUp: false })
+      showToast.error(message)
+
       throw error
     }
   },

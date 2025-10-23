@@ -1,7 +1,9 @@
 'use client'
 
+import { useAuthStore } from '@/store/auth/authStore'
 import { useCommentStore } from '@/store/comment/commentStore'
 import { TComment } from '@/store/comment/crud'
+import { getIdFromPathname } from '@/utils/generatePath'
 import { SendOutlined } from '@ant-design/icons'
 import { Button, Flex, Input } from 'antd'
 import { usePathname } from 'next/navigation'
@@ -15,7 +17,10 @@ type TCommentItemProps = {
 
 const CommentItem = ({ comment }: TCommentItemProps) => {
   const pathname = usePathname()
-  const postId = pathname.substring(pathname.lastIndexOf('/') + 1)
+
+  const postId = getIdFromPathname(pathname)
+  const { authUser } = useAuthStore((state) => state)
+  const isLoggedIn = !!authUser
 
   const [repliedCommentValue, setRepliedCommentValue] = useState('')
   const [repliedComment, setRepliedComment] = useState<TComment>()
@@ -33,9 +38,6 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
         parentCommentId: repliedComment.id
       })
 
-      setRepliedComment(null)
-      setRepliedCommentValue(null)
-
       useCommentStore.setState((state) => ({
         count: state.count + 1,
         comments: state.comments.map((item) => {
@@ -46,6 +48,9 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
           return { ...item, replies: [...item.replies, newComment] }
         })
       }))
+
+      setRepliedComment(null)
+      setRepliedCommentValue(null)
     } catch (err) {
       console.log(err)
     } finally {
@@ -65,13 +70,17 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
       <div className="comment-content-container">
         <p className="comment-author">{comment.commentUserName}</p>
         <p className="comment-content">{comment.content}</p>
-        <Button
-          type="link"
-          className="reply-button"
-          onClick={() => setRepliedComment(comment)}
-        >
-          Trả lời
-        </Button>
+        {isLoggedIn ? (
+          <Button
+            type="link"
+            className="reply-button"
+            onClick={() => setRepliedComment(comment)}
+          >
+            Trả lời
+          </Button>
+        ) : (
+          <div style={{ height: '16px' }} />
+        )}
         {!!comment.replies.length &&
           comment.replies.map((commentItem) => {
             return (
@@ -84,13 +93,17 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
                     {commentItem.commentUserName}
                   </p>
                   <p className="comment-content">{commentItem.content}</p>
-                  <Button
-                    type="link"
-                    className="reply-button"
-                    onClick={() => setRepliedComment(commentItem)}
-                  >
-                    Trả lời
-                  </Button>
+                  {isLoggedIn ? (
+                    <Button
+                      type="link"
+                      className="reply-button"
+                      onClick={() => setRepliedComment(commentItem)}
+                    >
+                      Trả lời
+                    </Button>
+                  ) : (
+                    <div style={{ height: '16px' }} />
+                  )}
                   {repliedComment?.id === commentItem.id && (
                     <Flex>
                       <Input

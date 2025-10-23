@@ -19,6 +19,7 @@ export const authCrud = {
         '/api/account/login',
         loginFormData
       )
+
       const token = response.data
       if (token) {
         Cookies.set('token', token, {
@@ -32,7 +33,7 @@ export const authCrud = {
       return response.data
     } catch (error: any) {
       throw new ApiError(
-        error.response?.data || 'Login failed',
+        error.response?.data?.error?.[0] || 'Đăng nhập thất bại!',
         error.response?.status
       )
     }
@@ -44,10 +45,11 @@ export const authCrud = {
         '/api/account/register',
         signUpFormData
       )
+
       return response.data
     } catch (error: any) {
       throw new ApiError(
-        error.response?.data?.message || 'Signup failed',
+        error.response?.data?.error?.[0] || 'Đăng ký thất bại!',
         error.response?.status
       )
     }

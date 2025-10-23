@@ -1,10 +1,9 @@
 'use client'
 
 import paths from '@/routes/paths'
-import { Button, Divider } from 'antd'
+import { Button, Flex } from 'antd'
 import { useRouter } from 'next/navigation'
 import LoginForm from '../LoginForm/LoginForm'
-import LoginWithGoogle from '../LoginWithGoogle'
 import './styles.css'
 
 const LoginView = () => {
@@ -12,24 +11,36 @@ const LoginView = () => {
 
   return (
     <div className="login-wrapper">
-      <h1 className="login-title">Login</h1>
-      <p className="login-description">Login your account</p>
+      <h1 className="login-title">Đăng nhập</h1>
+      <p className="login-description">Đăng nhập vào tài khoản của bạn.</p>
       <LoginForm />
       <div className="no-account">
-        <p>Don’t have an account?</p>
+        <p>Bạn chưa có tài khoản?</p>
         <Button
           type="link"
           className="sign-up-button"
           onClick={() => router.push(paths.auth.signup)}
         >
-          Sign up
+          Đăng ký
         </Button>
       </div>
-      <Divider className="login-with-others">
+      <Flex align="center">
+        <p style={{ color: '#818181', fontSize: '14px' }}>
+          Sử dụng không cần đăng nhập
+        </p>
+        <Button
+          style={{ padding: '4px', color: '#52c41a' }}
+          type="link"
+          onClick={() => router.push(paths.dashboard.home())}
+        >
+          Trang chủ
+        </Button>
+      </Flex>
+      {/* <Divider className="login-with-others">
         <p>Login</p>
         <p>with Others</p>
       </Divider>
-      <LoginWithGoogle />
+      <LoginWithGoogle /> */}
     </div>
   )
 }
