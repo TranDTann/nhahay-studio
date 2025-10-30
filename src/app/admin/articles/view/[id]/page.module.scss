@@ -79,7 +79,6 @@ $loading-padding: 50px;
 
   // Desktop layout (>1560px) - only TOC in first column
   @media (min-width: 1561px) {
-    width: 280px;
     position: sticky;
     top: 100px;
     z-index: 2;
@@ -87,7 +86,6 @@ $loading-padding: 50px;
 
   // Laptop layout (1200px - 1560px) - keep sidebar width but adjust
   @media (min-width: 1200px) and (max-width: 1560px) {
-    width: 260px;
     position: sticky;
     top: 100px;
   }
@@ -120,7 +118,6 @@ $loading-padding: 50px;
   @media (min-width: 1200px) and (max-width: 1560px) {
     position: sticky;
     top: 100px;
-    width: 260px;
   }
 
   @media (max-width: 1280px) {
