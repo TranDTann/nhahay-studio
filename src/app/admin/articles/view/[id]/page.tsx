@@ -14,6 +14,7 @@ import { DownOutlined } from '@ant-design/icons'
 import { App, Button, Card, Collapse, Space, Spin, Tag, Typography } from 'antd'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { useSessionConfig } from '@/hooks/useSessionConfig'
 import styles from './page.module.scss'
 
 const { Title, Paragraph, Text } = Typography
@@ -48,10 +49,12 @@ export default function ArticleDetailPage({
 }) {
   const router = useRouter()
   const { message: messageApi } = App.useApp()
+  const { getConfigByKey } = useSessionConfig()
   const [article, setArticle] = useState<Article | null>(null)
   const [tags, setTags] = useState<ApiTag[]>([])
   const [categories, setCategories] = useState<ApiCategory[]>([])
   const [loading, setLoading] = useState(true)
+  const greetingDetail = getConfigByKey('GREETING_DETAIL_ARTICLE_KEY') || ''
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,7 +104,9 @@ export default function ArticleDetailPage({
   }
 
   return (
-    <div className={styles.container}>
+    <div>
+      {/* Title */}
+      <div className={styles.articleTitle}>{article.title}</div>
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         {!params.noHeader && (
           <ArticleBreadcrumb
@@ -200,8 +205,9 @@ export default function ArticleDetailPage({
             <div className={styles.mobileSocialCollapse}>
               <Collapse
                 ghost
+                activeKey={["1"]}
                 expandIcon={({ isActive }) => (
-                  <DownOutlined rotate={isActive ? 180 : 0} />
+                  <></>
                 )}
                 style={{
                   background: 'white',
@@ -228,138 +234,134 @@ export default function ArticleDetailPage({
           </div>
 
           <div className={styles.articleContentWrapper}>
-            <Card>
-              <Space
-                direction="vertical"
-                size="large"
-                style={{ width: '100%' }}
+            <Space
+              direction="vertical"
+              size="large"
+              style={{ width: '100%' }}
+            >
+
+              {/* Meta Information */}
+              <ArticleMeta
+                createdAt={article.createdAt}
+                updatedAt={article.updatedAt}
+                publishAt={article?.publishAt}
+                categoryName={article.category?.name || 'No category'}
+                tags={article.tags.map((tag) => tag.name)}
+                ratingAvg={article.ratingAvg || 0}
+                authorName={article.authorName || ''}
+              />
+
+              <div
+                className={styles.introCard}
+                style={{
+                  background:
+                    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  margin: '24px 0',
+                  border: '1px solid #e8e8e8',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
               >
-                {/* Title */}
-                <div className={styles.articleTitle}>{article.title}</div>
-
-                {/* Meta Information */}
-                <ArticleMeta
-                  createdAt={article.createdAt}
-                  updatedAt={article.updatedAt}
-                  publishAt={article?.publishAt}
-                  categoryName={article.category?.name || 'No category'}
-                  tags={article.tags.map((tag) => tag.name)}
-                  ratingAvg={article.ratingAvg || 0}
-                  authorName={article.authorName || ''}
-                />
-
                 <div
-                  className={styles.introCard}
                   style={{
-                    background:
-                      'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    borderRadius: '12px',
-                    padding: '20px',
-                    margin: '24px 0',
-                    border: '1px solid #e8e8e8',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                    position: 'relative',
-                    overflow: 'hidden'
+                    position: 'absolute',
+                    top: '-10px',
+                    right: '-10px',
+                    width: '60px',
+                    height: '60px',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                 >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '-10px',
-                      right: '-10px',
-                      width: '60px',
-                      height: '60px',
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <span style={{ fontSize: '24px', color: 'white' }}>🏠</span>
-                  </div>
+                  <span style={{ fontSize: '24px', color: 'white' }}>🏠</span>
+                </div>
 
-                  <div style={{ position: 'relative', zIndex: 1 }}>
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontSize: '16px',
-                        lineHeight: '1.6',
-                        display: 'block'
-                      }}
-                    >
-                      {article.description}
-                    </Text>
-
-                    <div
-                      style={{
-                        marginTop: '12px',
-                        display: 'flex',
-                        gap: '8px',
-                        flexWrap: 'wrap'
-                      }}
-                    >
-                      <Tag
-                        color="white"
-                        style={{ color: '#667eea', fontWeight: '500' }}
-                      >
-                        🏠 Nhà cửa
-                      </Tag>
-                      <Tag
-                        color="white"
-                        style={{ color: '#667eea', fontWeight: '500' }}
-                      >
-                        🔧 Thiết bị
-                      </Tag>
-                      <Tag
-                        color="white"
-                        style={{ color: '#667eea', fontWeight: '500' }}
-                      >
-                        💡 Ý tưởng
-                      </Tag>
-                      <Tag
-                        color="white"
-                        style={{ color: '#667eea', fontWeight: '500' }}
-                      >
-                        📋 Thông tin
-                      </Tag>
-                    </div>
-                  </div>
-                  <Title
-                    level={4}
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <Text
                     style={{
                       color: 'white',
-                      margin: '24px 0 12px 0',
-                      fontSize: '18px',
-                      fontWeight: '600'
+                      fontSize: '16px',
+                      lineHeight: '1.6',
+                      display: 'block'
                     }}
                   >
-                    🛒 Xem ngay sản phẩm được review tại đây
-                  </Title>
-                </div>
+                    {greetingDetail}
+                  </Text>
 
-                {/* description */}
-                <p
+                  <div
+                    style={{
+                      marginTop: '12px',
+                      display: 'flex',
+                      gap: '8px',
+                      flexWrap: 'wrap'
+                    }}
+                  >
+                    <Tag
+                      color="white"
+                      style={{ color: '#667eea', fontWeight: '500' }}
+                    >
+                      🏠 Nhà cửa
+                    </Tag>
+                    <Tag
+                      color="white"
+                      style={{ color: '#667eea', fontWeight: '500' }}
+                    >
+                      🔧 Thiết bị
+                    </Tag>
+                    <Tag
+                      color="white"
+                      style={{ color: '#667eea', fontWeight: '500' }}
+                    >
+                      💡 Ý tưởng
+                    </Tag>
+                    <Tag
+                      color="white"
+                      style={{ color: '#667eea', fontWeight: '500' }}
+                    >
+                      📋 Thông tin
+                    </Tag>
+                  </div>
+                </div>
+                {/* <Title
+                  level={4}
                   style={{
-                    fontSize: '16px',
-                    lineHeight: '1.6',
-                    display: 'block',
-                    marginBottom: '16px'
+                    color: 'white',
+                    margin: '24px 0 12px 0',
+                    fontSize: '18px',
+                    fontWeight: '600'
                   }}
                 >
-                  {article.description}
-                </p>
+                  🛒 Xem ngay sản phẩm được review tại đây
+                </Title> */}
+              </div>
 
-                {/* Content */}
-                <div>
-                  <ArticleRenderer
-                    content={article.content}
-                    contentBlocks={article.contentBlocks}
-                    className={styles.articleContent}
-                  />
-                </div>
-              </Space>
-            </Card>
+              {/* description */}
+              <p
+                style={{
+                  fontSize: '16px',
+                  lineHeight: '1.6',
+                  display: 'block',
+                  marginBottom: '16px'
+                }}
+              >
+                {article.description}
+              </p>
+
+              {/* Content */}
+              <div>
+                <ArticleRenderer
+                  content={article.content}
+                  contentBlocks={article.contentBlocks}
+                  className={styles.articleContent}
+                />
+              </div>
+            </Space>
           </div>
 
           {/* Desktop version - Third column for Social Media and Ads */}
@@ -414,11 +416,11 @@ export default function ArticleDetailPage({
                 )}
             </div>
           </div>
-        </div>
+        </div >
 
         {/* Advertisement Section */}
-        <AdvertisementSection />
-      </Space>
-    </div>
+        < AdvertisementSection />
+      </Space >
+    </div >
   )
 }

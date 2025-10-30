@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { sessionStorageUtils } from '@/utils/sessionStorage'
+import { configService } from '@/api/configService'
 
 export const useSessionConfig = () => {
   const [configs, setConfigs] = useState<any[]>([])
@@ -39,6 +40,21 @@ export const useSessionConfig = () => {
     setConfigs([])
   }
 
+  // Đồng bộ configs từ server và lưu vào session storage
+  const refreshFromServer = async () => {
+    setLoading(true)
+    try {
+      const response = await configService.getAllConfigs()
+      const list = response?.result || []
+      sessionStorageUtils.saveConfigs(list)
+      setConfigs(list)
+    } catch (error) {
+      console.error('Error fetching configs from server:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // Load configs từ session storage
   const loadConfigs = () => {
     setLoading(true)
@@ -56,7 +72,15 @@ export const useSessionConfig = () => {
   }
 
   useEffect(() => {
-    loadConfigs()
+    // Hydrate nhanh từ session (nếu có)
+    const stored = sessionStorageUtils.getConfigs()
+    if (stored && stored.length > 0) {
+      setConfigs(stored)
+      setLoading(false)
+    }
+    // Luôn đồng bộ mới nhất từ server khi reload trang
+    refreshFromServer()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return {
@@ -67,6 +91,7 @@ export const useSessionConfig = () => {
     getSocialMediaUrls,
     hasConfigs,
     refreshConfigs,
-    loadConfigs
+    loadConfigs,
+    refreshFromServer
   }
 }

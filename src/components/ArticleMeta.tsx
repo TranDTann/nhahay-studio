@@ -6,7 +6,8 @@ import {
   EditOutlined,
   TagOutlined,
   FolderOutlined,
-  StarFilled
+  StarFilled,
+  UserOutlined
 } from '@ant-design/icons'
 import moment from 'moment'
 
@@ -38,22 +39,20 @@ export default function ArticleMeta({
   return (
     <div
       style={{
-        padding: '16px',
-        backgroundColor: '#fafafa',
-        borderRadius: '8px',
-        border: '1px solid #f0f0f0'
+        padding: '0 16px'
       }}
     >
       <Space direction="vertical" size="small" style={{ width: '100%' }}>
-        <div>
-          <Text type="secondary">
-            Tác giả: <span style={{ fontWeight: 'bold' }}>{authorName}</span>
-          </Text>
+        <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+          <Space align="center">
+            <UserOutlined style={{ color: '#8c8c8c' }} />
+            <Text style={{ fontWeight: 600, color: '#00000666', fontSize: '16px' }}>{authorName}</Text>
+          </Space>
         </div>
         <div
           style={{
             display: 'flex',
-            gap: '16px',
+            gap: '14px',
             flexWrap: 'wrap',
             alignItems: 'center'
           }}
@@ -66,7 +65,7 @@ export default function ArticleMeta({
         <div
           style={{
             display: 'flex',
-            gap: '16px',
+            gap: '14px',
             flexWrap: 'wrap',
             alignItems: 'center'
           }}
@@ -85,7 +84,7 @@ export default function ArticleMeta({
         <div
           style={{
             display: 'flex',
-            gap: '16px',
+            gap: '14px',
             flexWrap: 'wrap',
             alignItems: 'center'
           }}

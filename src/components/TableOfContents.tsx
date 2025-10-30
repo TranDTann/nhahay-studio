@@ -25,7 +25,7 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
         // Wait for content to be rendered
         const timer = setTimeout(() => {
             // Extract h2 headings from the article content
-            const headings = document.querySelectorAll('h2');
+            const headings = document.querySelectorAll('.article-renderer h2');
             const items: TocItem[] = Array.from(headings).map((heading, index) => {
                 // Use existing id or create a new one
                 let id = heading.id;
