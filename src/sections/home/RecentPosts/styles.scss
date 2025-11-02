@@ -1,8 +1,4 @@
 #RecentPosts {
-  .recent-posts-container {
-    height: 500px;
-  }
-
   .main-post-container,
   .right-posts-container,
   .right-posts-column-wrapper {
@@ -18,11 +14,6 @@
 
   /* Tablet: giảm chiều cao và khoảng cách */
   @media screen and (max-width: 991px) {
-    .recent-posts-container {
-      display: flex !important;
-      flex-wrap: nowrap !important;
-    }
-
     .right-posts-grid {
       grid-template-rows: auto;
       gap: 16px;
@@ -30,11 +21,6 @@
   }
 
   @media screen and (max-width: 576px) {
-    .recent-posts-container {
-      height: auto;
-      flex-direction: column;
-    }
-
     .right-posts-grid {
       grid-template-columns: 1fr;
       grid-template-rows: auto;

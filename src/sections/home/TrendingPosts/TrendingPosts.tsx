@@ -2,10 +2,9 @@
 
 import { PostTypeEnum } from '@/store/article/articleStore'
 import { Article, articleCrud } from '@/store/article/crud'
-import { App } from 'antd'
+import { App, Flex } from 'antd'
 import { useEffect, useState } from 'react'
 import BlockHeader from '../components/BlockHeader/BlockHeader'
-import MainTrendingPost from './MainTrendingPost/MainTrendingPost'
 import './styles.scss'
 import TrendingPostItem from './TrendingPostItem/TrendingPostItem'
 import TrendingPostsSkeleton from './TrendingPostsSkeleton/TrendingPostsSkeleton'
@@ -44,18 +43,14 @@ const TrendingPosts = () => {
 
   if (!trendingPosts.length) return null
 
-  const mainPost = trendingPosts[0]
-  const belowPosts = trendingPosts.slice(1, 4)
-
   return (
     <div id="TrendingPosts">
       <BlockHeader title="Trending" />
-      <MainTrendingPost postData={mainPost} />
-      <div className="below-posts-container">
-        {belowPosts.map((post) => (
-          <TrendingPostItem key={post.id} postData={post} />
+      <Flex vertical gap={24}>
+        {trendingPosts.map((postItem) => (
+          <TrendingPostItem key={postItem.id} post={postItem} />
         ))}
-      </div>
+      </Flex>
     </div>
   )
 }

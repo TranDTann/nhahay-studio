@@ -1,5 +1,8 @@
-#FeaturedPostItem {
-  .featured-post-item-container {
+#SubFeaturedPost {
+  width: 100%;
+  height: 100%;
+
+  .sub-featured-post-container {
     position: relative;
     height: 100%;
     width: 100%;
@@ -7,7 +10,7 @@
     cursor: pointer;
   }
 
-  .featured-post-item-image-container {
+  .sub-featured-post-image-container {
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -15,22 +18,22 @@
     cursor: pointer;
   }
 
-  .featured-post-item-image {
+  .sub-featured-post-image {
     object-fit: cover;
     border-radius: 4px;
   }
 
-  .featured-post-item-content {
+  .sub-featured-post-content {
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: 8px 24px;
+    padding: 36px;
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
 
-  .featured-post-item-title {
+  .sub-featured-post-title {
     color: #ffffff;
     font-weight: 700;
     font-size: 16px;
@@ -38,43 +41,43 @@
   }
 
   @media screen and (max-width: 991px) {
-    .featured-post-item-image {
+    .sub-featured-post-image {
       width: 100%;
       height: 120px;
     }
-    .featured-post-item-title {
+    .sub-featured-post-title {
       font-size: 15px;
       line-height: 19px;
     }
 
-    .featured-post-item-content {
+    .sub-featured-post-content {
       bottom: 6px;
     }
   }
 
   @media screen and (max-width: 767px) {
-    .featured-post-item-image {
+    .sub-featured-post-image {
       width: 100%;
       height: 240px;
     }
 
-    .featured-post-item-title {
+    .sub-featured-post-title {
       font-size: 14px;
       line-height: 18px;
     }
 
-    .featured-post-item-content {
+    .sub-featured-post-content {
       bottom: 16px;
     }
   }
 
   @media screen and (max-width: 576px) {
-    .featured-post-item-image {
+    .sub-featured-post-image {
       width: 100%;
       height: 320px;
     }
 
-    .featured-post-item-title {
+    .sub-featured-post-title {
       font-size: 16px;
       line-height: 20px;
     }

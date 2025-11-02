@@ -2,12 +2,10 @@
 
 import { PostTypeEnum } from '@/store/article/articleStore'
 import { Article, articleCrud } from '@/store/article/crud'
-import { App, Col, Row } from 'antd'
+import { App, Flex } from 'antd'
 import { useEffect, useState } from 'react'
 import BlockHeader from '../components/BlockHeader/BlockHeader'
-import { CenterColumnPost } from './ CenterColumnPost'
-import { EndColumnPost } from './EndColumnPost'
-import { FirstPost } from './FirstPost'
+import PopularPostItem from './PopularPostItem/PopularPostItem'
 import PopularPostsSkeleton from './PopularPostsSkeleton/PopularPostsSkeleton'
 import './styles.scss'
 
@@ -23,7 +21,7 @@ const PopularPosts = () => {
         setIsLoading(true)
         const response = await articleCrud.getArticles({
           listType: PostTypeEnum.MOST_VIEWED,
-          pageSize: 6,
+          pageSize: 4,
           isPublished: true
         })
         setPopularPosts(response.result || [])
@@ -45,30 +43,14 @@ const PopularPosts = () => {
 
   if (!polularPosts.length) return null
 
-  const firstPost = polularPosts[0]
-  const centerColumnPosts = polularPosts.slice(1, 3) ?? []
-  const endColumnPosts = polularPosts.slice(3, 6) ?? []
-
   return (
     <div id="PopularPosts">
       <BlockHeader title="Phổ biến" />
-      <Row gutter={[24, 24]}>
-        <Col xs={24} sm={24} md={24} lg={8} className="first-post-wrapper">
-          <FirstPost post={firstPost} />
-        </Col>
-
-        <Col xs={24} sm={24} md={24} lg={8} className="center-post-wrapper">
-          {centerColumnPosts.map((postItem) => (
-            <CenterColumnPost key={postItem.id} post={postItem} />
-          ))}
-        </Col>
-
-        <Col xs={24} sm={24} md={24} lg={8} className="end-post-wrapper">
-          {endColumnPosts.map((postItem) => (
-            <EndColumnPost key={postItem.id} post={postItem} />
-          ))}
-        </Col>
-      </Row>
+      <Flex vertical gap={24}>
+        {polularPosts.map((postItem) => (
+          <PopularPostItem key={postItem.id} post={postItem} />
+        ))}
+      </Flex>
     </div>
   )
 }
