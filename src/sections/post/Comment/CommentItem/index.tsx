@@ -79,7 +79,7 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
             Trả lời
           </Button>
         ) : (
-          <div style={{ height: '16px' }} />
+          <div style={{ height: '8px' }} />
         )}
         {!!comment.replies.length &&
           comment.replies.map((commentItem) => {
@@ -102,7 +102,7 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
                       Trả lời
                     </Button>
                   ) : (
-                    <div style={{ height: '16px' }} />
+                    <div style={{ height: '8px' }} />
                   )}
                   {repliedComment?.id === commentItem.id && (
                     <Flex>

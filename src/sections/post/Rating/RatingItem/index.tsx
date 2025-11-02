@@ -5,11 +5,11 @@ import { Flex, Rate } from 'antd'
 import { FaUser } from 'react-icons/fa'
 import './styles.scss'
 
-type TCommentItemProps = {
+type TRatingItemProps = {
   rating: TRating
 }
 
-const RatingItem = ({ rating }: TCommentItemProps) => {
+const RatingItem = ({ rating }: TRatingItemProps) => {
   if (!rating) {
     return null
   }

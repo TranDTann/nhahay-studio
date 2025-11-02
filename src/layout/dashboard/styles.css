@@ -5,7 +5,7 @@
 }
 
 .main-container {
-  width:70%;
+  width: 80%;
   margin: 80px auto 0;
   padding: 24px 0 64px;
   flex: 1;
@@ -17,14 +17,14 @@
 
 @media (min-width: 1200px) {
   .main-container {
-    width: 70%;
+    width: 85%;
     padding: 24px 0 64px;
   }
 }
 
 @media (max-width: 1199px) and (min-width: 768px) {
   .main-container {
-    width: 85%;
+    width: 90%;
     padding: 20px 0 48px;
   }
 }
