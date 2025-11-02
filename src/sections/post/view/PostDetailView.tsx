@@ -2,10 +2,12 @@
 
 import ArticleDetailPage from '@/app/admin/articles/view/[id]/page'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import paths from '@/routes/paths'
 import { Article, articleCrud } from '@/store/article/crud'
+import { useAuthStore } from '@/store/auth/authStore'
 import { getIdFromPathname } from '@/utils/generatePath'
-import { App } from 'antd'
-import { usePathname } from 'next/navigation'
+import { App, Button, Flex } from 'antd'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Comment from '../Comment/Comment'
 import Rating from '../Rating/Rating'
@@ -13,6 +15,8 @@ import RelatedPosts from '../RelatedPosts/RelatedPosts'
 import './styles.css'
 
 const PostDetailView = () => {
+  const router = useRouter()
+
   const pathname = usePathname()
   const { message: messageApi } = App.useApp()
 
@@ -49,11 +53,30 @@ const PostDetailView = () => {
     )
   }
 
+  const handleClickLogin = () => {
+    useAuthStore.setState({
+      postDetailPage: { id: postData.id, title: postData.title }
+    })
+    router.push(paths.auth.login)
+  }
+
   if (!postData) return null
 
   return (
     <div className="post-detail-container">
       <ArticleDetailPage params={{ id: postId, noHeader: true }} />
+      <Flex
+        vertical
+        align="center"
+        justify="center"
+        gap={12}
+        className="comment-container_not-login"
+      >
+        <p>Bạn cần đăng nhập để bình luận và đánh giá về bài viết này</p>
+        <Button type="primary" onClick={handleClickLogin}>
+          Đăng nhập
+        </Button>
+      </Flex>
       <Rating postData={postData} />
       <Comment postData={postData} />
       <RelatedPosts postData={postData} />

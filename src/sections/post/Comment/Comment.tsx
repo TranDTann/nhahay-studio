@@ -1,12 +1,10 @@
 'use client'
 
-import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
 import { useAuthStore } from '@/store/auth/authStore'
 import { resetCommentData, useCommentStore } from '@/store/comment/commentStore'
 import { SendOutlined } from '@ant-design/icons'
 import { Button, Flex, Input } from 'antd'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import CommentItem from './CommentItem'
 import './styles.scss'
@@ -18,8 +16,6 @@ type TCommentProps = {
 }
 
 const Comment = ({ postData }: TCommentProps) => {
-  const router = useRouter()
-
   const { authUser } = useAuthStore((state) => state)
   const { getComments, postComment, comments, count } = useCommentStore(
     (state) => state
@@ -62,28 +58,6 @@ const Comment = ({ postData }: TCommentProps) => {
     }
   }
 
-  const handleClickLogin = () => {
-    useAuthStore.setState({
-      postDetailPage: { id: postData.id, title: postData.title }
-    })
-    router.push(paths.auth.login)
-  }
-
-  const contentWithoutLogin = (
-    <Flex
-      vertical
-      align="center"
-      justify="center"
-      gap={12}
-      className="comment-container_not-login"
-    >
-      <p>Bạn cần đăng nhập để bình luận về bài viết này</p>
-      <Button type="primary" onClick={handleClickLogin}>
-        Đăng nhập
-      </Button>
-    </Flex>
-  )
-
   const textAreaComment = isLoggedIn ? (
     <Flex align="flex-end" justify="space-between" gap={8}>
       <TextArea
@@ -119,11 +93,10 @@ const Comment = ({ postData }: TCommentProps) => {
 
   return (
     <div id="Comment">
-      <h2 className="comment-container-title">
+      <h3 className="comment-container-title">
         Bình luận {count ? <span>({count})</span> : null}
-      </h2>
+      </h3>
       <div className={`${isLoggedIn && 'comment-container'}`}>
-        {!isLoggedIn && contentWithoutLogin}
         {commentContent}
       </div>
     </div>

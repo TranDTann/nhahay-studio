@@ -73,3 +73,38 @@
   overflow: hidden;
   transform: scale(1.025);
 }
+
+.background-img--scrim-bottom {
+  position: relative;
+}
+
+.background-img--scrim-bottom::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  background-color: transparent;
+  background-image: linear-gradient(
+    0deg,
+    black 0%,
+    rgba(0, 0, 0, 0.917) 5.3%,
+    rgba(0, 0, 0, 0.834) 10.6%,
+    rgba(0, 0, 0, 0.753) 15.9%,
+    rgba(0, 0, 0, 0.672) 21.3%,
+    rgba(0, 0, 0, 0.591) 26.8%,
+    rgba(0, 0, 0, 0.511) 32.5%,
+    rgba(0, 0, 0, 0.433) 38.4%,
+    rgba(0, 0, 0, 0.357) 44.5%,
+    rgba(0, 0, 0, 0.283) 50.9%,
+    rgba(0, 0, 0, 0.213) 57.7%,
+    rgba(0, 0, 0, 0.147) 65%,
+    rgba(0, 0, 0, 0.089) 72.9%,
+    rgba(0, 0, 0, 0.042) 81.4%,
+    rgba(0, 0, 0, 0.011) 90.6%,
+    transparent 100%
+  );
+  pointer-events: none;
+}

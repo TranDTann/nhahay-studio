@@ -1,6 +1,5 @@
 'use client'
 
-import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
 import { useAuthStore } from '@/store/auth/authStore'
 import { TRating } from '@/store/ratingPost/crud'
@@ -9,7 +8,6 @@ import {
   useRatingPostStore
 } from '@/store/ratingPost/ratingPostStore'
 import { Button, Flex, Rate } from 'antd'
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import RatingItem from './RatingItem'
 import './styles.scss'
@@ -19,8 +17,6 @@ type TRatingProps = {
 }
 
 const Rating = ({ postData }: TRatingProps) => {
-  const router = useRouter()
-
   const { authUser } = useAuthStore((state) => state)
   const { getRatings, postRating, updateRating, ratings, count } =
     useRatingPostStore((state) => state)
@@ -132,28 +128,6 @@ const Rating = ({ postData }: TRatingProps) => {
     }
   }
 
-  const handleClickLogin = () => {
-    useAuthStore.setState({
-      postDetailPage: { id: postData.id, title: postData.title }
-    })
-    router.push(paths.auth.login)
-  }
-
-  const contentWithoutLogin = (
-    <Flex
-      vertical
-      align="center"
-      justify="center"
-      gap={12}
-      className="rating-container_not-login"
-    >
-      <p>Bạn cần đăng nhập để đánh giá về bài viết này</p>
-      <Button type="primary" onClick={handleClickLogin}>
-        Đăng nhập
-      </Button>
-    </Flex>
-  )
-
   const myRatingContent = (
     <div>
       {!myRating && (
@@ -201,11 +175,10 @@ const Rating = ({ postData }: TRatingProps) => {
 
   return (
     <div id="RatingPost">
-      <h2 className="rating-container-title">
+      <h3 className="rating-container-title">
         Đánh giá {count ? <span>({count})</span> : null}
-      </h2>
+      </h3>
       <div className={`${isLoggedIn && 'rating-container'}`}>
-        {!isLoggedIn && contentWithoutLogin}
         {ratingContent}
       </div>
     </div>
