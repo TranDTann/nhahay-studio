@@ -2,13 +2,13 @@
 
 import { PostTypeEnum } from '@/store/article/articleStore'
 import { Article, articleCrud } from '@/store/article/crud'
+import { useFeaturedPostStore } from '@/store/featuredPost/featuredPostStore'
 import { App, Col, Row } from 'antd'
 import { useEffect, useState } from 'react'
-import SubFeaturedPost from './SubFeaturedPost/SubFeaturedPost'
 import FeaturedPostsSkeleton from './FeaturedPostsSkeleton/FeaturedPostsSkeleton'
 import MainFeaturedPost from './MainFeaturedPost/MainFeaturedPost'
 import './styles.scss'
-import { useFeaturedPostStore } from '@/store/featuredPost/FeaturedPostStore'
+import SubFeaturedPost from './SubFeaturedPost/SubFeaturedPost'
 
 const FeaturedPosts = () => {
   const { message: messageApi } = App.useApp()
