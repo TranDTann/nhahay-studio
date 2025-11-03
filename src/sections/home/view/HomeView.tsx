@@ -1,15 +1,15 @@
 'use client'
 
 import { LazyLoadBlock } from '@/components/LazyLoadBlock'
+import { Col, Row } from 'antd'
 import { lazy } from 'react'
 import AdvertisingSkeleton from '../Advertising/AdvertisingSkeleton/AdvertisingSkeleton'
-import CategoriesSkeleton from '../CategoriesBlock/CategoriesSkeleton/CategoriesSkeleton'
 import FeaturedPostsSkeleton from '../FeaturedPosts/FeaturedPostsSkeleton/FeaturedPostsSkeleton'
+import SubFeaturedPostsSkeleton from '../FeaturedPosts/SubFeaturedPost/SubFeaturedPostsSkeleton/SubFeaturedPostsSkeleton'
 import PopularPostsSkeleton from '../PopularPosts/PopularPostsSkeleton/PopularPostsSkeleton'
 import RecentPostsSkeleton from '../RecentPosts/RecentPostsSkeleton/RecentPostsSkeleton'
 import TrendingPostsSkeleton from '../TrendingPosts/TrendingPostsSkeleton/TrendingPostsSkeleton'
 import './styles.css'
-import { Col, Row } from 'antd'
 
 const FeaturedPosts = lazy(() => import('../FeaturedPosts'))
 const SubFeaturedPost = lazy(
@@ -41,7 +41,7 @@ const HomeView = () => {
           <LazyLoadBlock
             Component={SubFeaturedPost}
             minHeight={450}
-            fallback={<></>}
+            fallback={<SubFeaturedPostsSkeleton />}
           />
         </Col>
         <Col xs={24} md={24} lg={8} className="right-posts-wrapper">

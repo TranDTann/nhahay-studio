@@ -27,7 +27,13 @@ const RecentPostItem = ({ post }: TRecentPostItemProps) => {
             <img
               src={post.image}
               alt="recent-post-image"
-              className="recent-post-item-image image-hover-zoom"
+              style={{
+                height: '100%',
+                width: '100%',
+                objectFit: 'cover',
+                borderRadius: '4px'
+              }}
+              className=" recent-post-item-image image-hover-zoom"
             />
           </div>
         </Col>

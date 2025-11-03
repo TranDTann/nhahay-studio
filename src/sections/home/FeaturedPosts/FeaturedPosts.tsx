@@ -13,13 +13,15 @@ import { useFeaturedPostStore } from '@/store/featuredPost/FeaturedPostStore'
 const FeaturedPosts = () => {
   const { message: messageApi } = App.useApp()
 
+  const { isLoading } = useFeaturedPostStore((state) => state)
+
   const [featuredPosts, setFeaturedPosts] = useState<Article[]>([])
-  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        setIsLoading(true)
+        useFeaturedPostStore.setState({ isLoading: true })
+
         const response = await articleCrud.getArticles({
           listType: PostTypeEnum.FEATURED_POSTS,
           pageSize: 3,
@@ -34,7 +36,7 @@ const FeaturedPosts = () => {
           error.response?.data?.message || 'Failed to fetch articles'
         )
       } finally {
-        setIsLoading(false)
+        useFeaturedPostStore.setState({ isLoading: false })
       }
     }
 

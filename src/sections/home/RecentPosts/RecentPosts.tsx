@@ -2,12 +2,12 @@
 
 import { PostTypeEnum } from '@/store/article/articleStore'
 import { Article, articleCrud } from '@/store/article/crud'
-import { App, Flex, Row } from 'antd'
+import { App, Flex } from 'antd'
 import { useEffect, useState } from 'react'
 import BlockHeader from '../components/BlockHeader/BlockHeader'
+import RecentPostItem from './RecentPostItem/RecentPostItem'
 import RecentPostsSkeleton from './RecentPostsSkeleton/RecentPostsSkeleton'
 import './styles.scss'
-import RecentPostItem from './RecentPostItem/RecentPostItem'
 
 const RecentPosts = () => {
   const { message: messageApi } = App.useApp()

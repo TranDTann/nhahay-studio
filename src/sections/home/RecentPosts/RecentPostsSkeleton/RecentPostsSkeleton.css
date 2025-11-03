@@ -1,17 +1,12 @@
-.recent-posts-skeleton_header {
-  width: 160px;
-  margin-bottom: 24px;
-}
+#RecentPostItem {
+  .recent-posts-skeleton_header {
+    width: 160px;
+    margin-bottom: 24px;
+  }
 
-.main-post-container .ant-skeleton-element,
-.recent-posts-advertising_node {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-.main-post-container_node,
-.post-item-container_skeleton {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 8px !important;
+  .recent-post-image-wrapper_node {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 8px !important;
+  }
 }

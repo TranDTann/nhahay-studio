@@ -2,11 +2,12 @@
 
 import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
+import { useFeaturedPostStore } from '@/store/featuredPost/featuredPostStore'
 import { useRouter } from 'next/navigation'
 import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import PostMeta from '../../components/PostMeta/PostMeta'
 import './styles.scss'
-import { useFeaturedPostStore } from '@/store/featuredPost/FeaturedPostStore'
+import SubFeaturedPostsSkeleton from './SubFeaturedPostsSkeleton/SubFeaturedPostsSkeleton'
 
 type TSubFeaturedPostProps = {
   postData?: Article
@@ -15,7 +16,11 @@ type TSubFeaturedPostProps = {
 const SubFeaturedPost = ({ postData }: TSubFeaturedPostProps) => {
   const router = useRouter()
 
-  const { featuredPosts } = useFeaturedPostStore((state) => state)
+  const { featuredPosts, isLoading } = useFeaturedPostStore((state) => state)
+
+  if (isLoading && !postData) {
+    return <SubFeaturedPostsSkeleton />
+  }
 
   const subPost = featuredPosts?.[2]
 
