@@ -9,7 +9,7 @@ import SubFeaturedPostsSkeleton from '../FeaturedPosts/SubFeaturedPost/SubFeatur
 import PopularPostsSkeleton from '../PopularPosts/PopularPostsSkeleton/PopularPostsSkeleton'
 import RecentPostsSkeleton from '../RecentPosts/RecentPostsSkeleton/RecentPostsSkeleton'
 import TrendingPostsSkeleton from '../TrendingPosts/TrendingPostsSkeleton/TrendingPostsSkeleton'
-import './styles.css'
+import './styles.scss'
 
 const FeaturedPosts = lazy(() => import('../FeaturedPosts'))
 const SubFeaturedPost = lazy(
@@ -29,25 +29,25 @@ const HomeView = () => {
         minHeight={400}
         fallback={<FeaturedPostsSkeleton />}
       />
-      <Row gutter={[24, 24]} className="featured-posts-container">
-        <Col xs={24} md={24} lg={8} className="main-post-container">
+      <Row gutter={[24, 24]}>
+        <Col xs={24} md={24} lg={8}>
           <LazyLoadBlock
             Component={PopularPosts}
-            minHeight={450}
+            minHeight={300}
             fallback={<PopularPostsSkeleton />}
           />
         </Col>
-        <Col xs={24} md={24} lg={8} className="right-posts-wrapper">
+        <Col xs={24} md={24} lg={8} className="sub-featured-post">
           <LazyLoadBlock
             Component={SubFeaturedPost}
-            minHeight={450}
+            minHeight={240}
             fallback={<SubFeaturedPostsSkeleton />}
           />
         </Col>
         <Col xs={24} md={24} lg={8} className="right-posts-wrapper">
           <LazyLoadBlock
             Component={TrendingPosts}
-            minHeight={450}
+            minHeight={300}
             fallback={<TrendingPostsSkeleton />}
           />
         </Col>
@@ -59,7 +59,7 @@ const HomeView = () => {
       />
       <LazyLoadBlock
         Component={Advertising}
-        minHeight={300}
+        minHeight={240}
         fallback={<AdvertisingSkeleton />}
       />
       {/* <LazyLoadBlock

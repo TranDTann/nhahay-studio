@@ -1,4 +1,4 @@
-#TrendingPosts {
+#TrendingPostsSkeleton {
   .trending-posts-skeleton_header {
     width: 160px;
     margin-bottom: 24px;
@@ -8,5 +8,11 @@
     width: 100% !important;
     height: 100% !important;
     border-radius: 8px !important;
+  }
+
+  @media screen and (max-width: 991px) {
+    .trending-post-image-wrapper_node {
+      height: 160px !important;
+    }
   }
 }

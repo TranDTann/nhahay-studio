@@ -13,23 +13,27 @@
   }
 
   @media screen and (max-width: 991px) {
-    .main-post-container {
-      margin-bottom: 16px;
-    }
-
     .featured-posts-container {
       height: auto;
-      row-gap: 16px !important;
     }
 
     .main-post-container :global(.article-card-image) {
       height: 300px !important;
     }
-  }
 
-  @media screen and (max-width: 767px) {
+    .right-posts-wrapper {
+      height: 360px;
+    }
   }
 
   @media screen and (max-width: 576px) {
+    .featured-posts-container {
+      height: auto;
+      row-gap: 20px !important;
+    }
+
+    .right-posts-wrapper {
+      height: 240px;
+    }
   }
 }

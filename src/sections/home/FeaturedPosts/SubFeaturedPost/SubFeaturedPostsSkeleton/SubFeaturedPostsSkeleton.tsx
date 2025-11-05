@@ -3,7 +3,7 @@ import '../styles.scss'
 import './SubFeaturedPostsSkeleton.scss'
 
 const SubFeaturedPostsSkeleton = () => (
-  <div id="SubFeaturedPost">
+  <div id="SubFeaturedPostsSkeleton">
     <Row gutter={24} className="sub-featured-post-container">
       <Col span={24}>
         <Skeleton.Node active className="skeleton-container" />

@@ -4,7 +4,7 @@ import './PopularPostsSkeleton.css'
 
 const PopularPostsSkeleton = () => {
   return (
-    <div id="PopularPosts">
+    <div id="PopularPostsSkeleton">
       <div className="popular-posts-skeleton_header">
         <Skeleton.Input active size="default" />
       </div>

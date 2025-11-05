@@ -34,29 +34,42 @@
   .featured-post-title {
     color: #ffffff;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 28px;
   }
 
   @media screen and (max-width: 991px) {
     .featured-post-container {
-      height: 320px;
+      height: 360px;
     }
 
     .featured-post-title {
-      font-size: 24px;
+      font-size: 20px;
+      font-weight: 26px;
+    }
+
+    .featured-post-content {
+      padding: 24px;
+      gap: 6px;
     }
   }
 
   @media screen and (max-width: 767px) {
-    .featured-post-title {
-      font-size: 22px;
-    }
   }
 
   @media screen and (max-width: 576px) {
     .featured-post-title {
-      font-size: 20px;
+      font-size: 18px;
+      font-weight: 24px;
+    }
+
+    .featured-post-container {
+      height: 240px;
+    }
+
+    .featured-post-content {
+      padding: 12px 20px;
+      gap: 4px;
     }
   }
 }

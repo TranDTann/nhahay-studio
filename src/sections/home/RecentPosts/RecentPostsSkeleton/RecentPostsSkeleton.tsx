@@ -3,7 +3,7 @@ import './RecentPostsSkeleton.css'
 
 const RecentPostsSkeleton = () => {
   return (
-    <div id="RecentPostItem">
+    <div id="RecentPostsSkeleton">
       <div className="recent-posts-skeleton_header">
         <Skeleton.Input active size="default" />
       </div>
@@ -19,7 +19,7 @@ const RecentPostsSkeleton = () => {
             <Col span={16}>
               <Skeleton
                 active
-                paragraph={{ rows: 5 }}
+                paragraph={{ rows: 4 }}
                 style={{ marginTop: 8 }}
               />
             </Col>

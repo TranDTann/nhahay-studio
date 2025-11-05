@@ -3,7 +3,7 @@ import './TrendingPostsSkeleton.css'
 
 const TrendingPostsSkeleton = () => {
   return (
-    <div id="TrendingPosts">
+    <div id="TrendingPostsSkeleton">
       <div className="trending-posts-skeleton_header">
         <Skeleton.Input active size="default" />
       </div>

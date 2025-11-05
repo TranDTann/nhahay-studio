@@ -57,7 +57,7 @@ const SubFeaturedPost = ({ postData }: TSubFeaturedPostProps) => {
         </div>
         <div className="sub-featured-post-content">
           <CategoryTag tagName={postView.category?.name} />
-          <h3 className="sub-featured-post-title display-max-2-lines">
+          <h3 className="sub-featured-post-title display-max-3-lines">
             {postView.title}
           </h3>
           <PostMeta

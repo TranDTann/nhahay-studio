@@ -1,4 +1,4 @@
-#SubFeaturedPost {
+#SubFeaturedPostsSkeleton {
   width: 100% !important;
   height: 100% !important;
 
@@ -12,5 +12,11 @@
   .main-post-container .ant-skeleton-element {
     width: 100% !important;
     height: 100% !important;
+  }
+
+  @media screen and (max-width: 991px) {
+    .trending-post-image-wrapper_node {
+      height: 160px !important;
+    }
   }
 }
