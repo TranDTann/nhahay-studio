@@ -5,7 +5,6 @@ export type TContactInfo = {
   userName: string
   phone: string
   email: string
-  address: string
   note: string
 }
 

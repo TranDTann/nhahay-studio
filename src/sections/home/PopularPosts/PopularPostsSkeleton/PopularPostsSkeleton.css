@@ -1,32 +1,18 @@
-.polular-posts-skeleton_header {
-  width: 160px;
-  margin-bottom: 24px;
-}
+#PopularPostsSkeleton {
+  .popular-posts-skeleton_header {
+    width: 160px;
+    margin-bottom: 24px;
+  }
 
-.center-post-image-container .ant-skeleton-element,
-.first-post-wrapper .ant-skeleton-element {
-  width: 100% !important;
-  height: 100% !important;
-}
+  .popular-post-image-wrapper_node {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 8px !important;
+  }
 
-.center-post-image-container_node,
-.end-post-wrapper_node {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 8px !important;
-}
-
-.first-post-wrapper_node {
-  width: 100% !important;
-  height: 150px !important;
-  border-radius: 8px !important;
-  margin-bottom: 16px;
-}
-
-.h-full {
-  height: 100% !important;
-}
-
-.w-full {
-  width: 100% !important;
+  @media screen and (max-width: 991px) {
+    .popular-post-image-wrapper_node {
+      height: 160px !important;
+    }
+  }
 }

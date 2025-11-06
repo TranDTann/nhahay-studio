@@ -4,3 +4,17 @@
   font-weight: 700;
   margin-bottom: 16px;
 }
+
+@media screen and (max-width: 991px) {
+  .block-header-post-title {
+    font-size: 22px;
+    line-height: 36px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .block-header-post-title {
+    font-size: 20px;
+    line-height: 32px;
+  }
+}

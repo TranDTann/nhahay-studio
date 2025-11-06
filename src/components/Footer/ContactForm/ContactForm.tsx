@@ -38,7 +38,7 @@ const ContactForm = () => {
         autoComplete="off"
         layout="vertical"
       >
-        <Row gutter={24}>
+        <Row gutter={16} style={{ height: '48px' }}>
           <Col span={15} style={{ padding: '0 4px 0 12px' }}>
             <Form.Item
               name="userName"
@@ -73,8 +73,8 @@ const ContactForm = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={24}>
-          <Col span={12} style={{ padding: '0 4px 0 12px' }}>
+        <Row gutter={24} style={{ height: '48px' }}>
+          <Col span={24} style={{ padding: '0 4px 0 12px' }}>
             <Form.Item
               name="email"
               rules={[
@@ -85,21 +85,6 @@ const ContactForm = () => {
               <Input
                 prefix={<MailOutlined />}
                 placeholder="Nhập địa chỉ email của bạn"
-                className="contact-input"
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12} style={{ padding: '0 12px 0 4px' }}>
-            <Form.Item
-              name="address"
-              rules={[
-                { required: true, message: 'Vui lòng nhập địa chỉ của bạn!' },
-                { min: 5, message: 'Địa chỉ phải có ít nhất 5 ký tự.' }
-              ]}
-            >
-              <Input
-                prefix={<HomeOutlined />}
-                placeholder="Nhập địa chỉ của bạn"
                 className="contact-input"
               />
             </Form.Item>

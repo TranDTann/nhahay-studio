@@ -1,51 +1,57 @@
-'use client'
-
 import paths from '@/routes/paths'
 import { Article } from '@/store/article/crud'
+import { Col, Row } from 'antd'
+import parse from 'html-react-parser'
 import { useRouter } from 'next/navigation'
-import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import PostMeta from '../../components/PostMeta/PostMeta'
 import './styles.scss'
 
 type TRecentPostItemProps = {
-  postData: Article
+  post: Article
 }
 
-const RecentPostItem = ({ postData }: TRecentPostItemProps) => {
+const RecentPostItem = ({ post }: TRecentPostItemProps) => {
   const router = useRouter()
 
   const navigateToPostDetail = () => {
-    router.push(
-      paths.dashboard.postDetail({ id: postData.id, title: postData.title })
-    )
+    router.push(paths.dashboard.postDetail({ id: post.id, title: post.title }))
   }
-
   return (
     <div id="RecentPostItem">
-      <div className="post-item-container">
-        <div
-          className="post-item-image-container image-hover-zoom-container"
-          onClick={navigateToPostDetail}
-        >
-          <img
-            src={postData.image}
-            alt="RecentPost-image"
-            className="post-item-image image-hover-zoom"
-          />
-        </div>
-        <div className="post-item-content">
-          <CategoryTag tagName={postData.category?.name} />
-          <h3
-            className="post-item-title display-max-2-lines"
+      <Row gutter={24} className="recent-post-item-container">
+        <Col span={8}>
+          <div
+            className="recent-post-item-image-container image-hover-zoom-container"
             onClick={navigateToPostDetail}
           >
-            {postData.title}
-          </h3>
+            <img
+              src={post.image}
+              alt="recent-post-image"
+              style={{
+                height: '100%',
+                width: '100%',
+                objectFit: 'cover',
+                borderRadius: '4px'
+              }}
+              className=" recent-post-item-image image-hover-zoom"
+            />
+          </div>
+        </Col>
+        <Col span={16} className="recent-post-item-info">
+          <h2
+            className="display-max-2-lines recent-post-item-title"
+            onClick={navigateToPostDetail}
+          >
+            {post.title}
+          </h2>
           <PostMeta
-            author={postData?.authorName ?? postData.createdByUser.username}
+            author={post?.authorName ?? post?.createdByUser?.username}
           />
-        </div>
-      </div>
+          <p className="display-max-3-lines center-post-description">
+            {parse(post.description ?? '')}
+          </p>
+        </Col>
+      </Row>
     </div>
   )
 }

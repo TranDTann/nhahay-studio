@@ -128,7 +128,7 @@ const Rating = ({ postData }: TRatingProps) => {
     }
   }
 
-  const myRatingContent = (
+  const myRatingContent = isLoggedIn ? (
     <div>
       {!myRating && (
         <p style={{ paddingBottom: '6px' }}>
@@ -155,11 +155,11 @@ const Rating = ({ postData }: TRatingProps) => {
         </Button>
       </Flex>
     </div>
-  )
+  ) : null
 
   const ratingContent = ratingOthers?.length ? (
     <div>
-      {isLoggedIn && myRatingContent}
+      {myRatingContent}
       <Flex vertical gap={8} className={`rating-list ${!isLoggedIn && 'p-6'}`}>
         <p className="rating-list-title">Các lượt đánh giá khác:</p>
         <Flex vertical gap={8} className="ratings-list-content">

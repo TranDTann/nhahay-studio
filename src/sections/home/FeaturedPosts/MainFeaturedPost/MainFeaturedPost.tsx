@@ -26,7 +26,7 @@ const MainFeaturedPost = ({ postData }: TMainFeaturedPostProps) => {
         className="featured-post-container image-hover-zoom-container"
         onClick={navigateToPostDetail}
       >
-        <div className="featured-post-image-container">
+        <div className="featured-post-image-container background-img--scrim-bottom">
           <img
             src={postData.image}
             alt="MainFeatured-image"

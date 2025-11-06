@@ -1,10 +1,10 @@
-#EndColumnPost {
-  .end-post-container {
+#PopularPostItem {
+  .popular-post-item-container {
     width: 100%;
     overflow: hidden;
   }
 
-  .end-post-image-container {
+  .popular-post-item-image-container {
     height: 100%;
     width: 100%;
     border-radius: 4px;
@@ -12,20 +12,20 @@
     cursor: pointer;
   }
 
-  .end-post-image {
+  .popular-post-item-image {
     height: 100%;
     width: 100%;
     object-fit: cover;
     border-radius: 4px;
   }
 
-  .end-post-info {
+  .popular-post-item-info {
     display: flex !important;
     flex-direction: column;
     gap: 4px;
   }
 
-  .end-post-title {
+  .popular-post-item-title {
     font-size: 18px;
     line-height: 24px;
     font-weight: 700;
@@ -33,20 +33,20 @@
   }
 
   @media screen and (max-width: 991px) {
-    .end-post-container {
+    .popular-post-item-container {
       display: flex !important;
     }
   }
 
   @media screen and (max-width: 767px) {
-    .end-post-title {
+    .popular-post-item-title {
       font-size: 16px;
       line-height: 22px;
     }
   }
 
   @media screen and (max-width: 576px) {
-    .end-post-title {
+    .popular-post-item-title {
       font-size: 14px;
       line-height: 18px;
     }

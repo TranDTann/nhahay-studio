@@ -1,16 +1,20 @@
 'use client'
 
 import { LazyLoadBlock } from '@/components/LazyLoadBlock'
+import { Col, Row } from 'antd'
 import { lazy } from 'react'
 import AdvertisingSkeleton from '../Advertising/AdvertisingSkeleton/AdvertisingSkeleton'
-import CategoriesSkeleton from '../CategoriesBlock/CategoriesSkeleton/CategoriesSkeleton'
 import FeaturedPostsSkeleton from '../FeaturedPosts/FeaturedPostsSkeleton/FeaturedPostsSkeleton'
+import SubFeaturedPostsSkeleton from '../FeaturedPosts/SubFeaturedPost/SubFeaturedPostsSkeleton/SubFeaturedPostsSkeleton'
 import PopularPostsSkeleton from '../PopularPosts/PopularPostsSkeleton/PopularPostsSkeleton'
 import RecentPostsSkeleton from '../RecentPosts/RecentPostsSkeleton/RecentPostsSkeleton'
 import TrendingPostsSkeleton from '../TrendingPosts/TrendingPostsSkeleton/TrendingPostsSkeleton'
-import './styles.css'
+import './styles.scss'
 
 const FeaturedPosts = lazy(() => import('../FeaturedPosts'))
+const SubFeaturedPost = lazy(
+  () => import('../FeaturedPosts/SubFeaturedPost/SubFeaturedPost')
+)
 const CategoriesBlock = lazy(() => import('../CategoriesBlock'))
 const PopularPosts = lazy(() => import('../PopularPosts'))
 const RecentPosts = lazy(() => import('../RecentPosts'))
@@ -25,16 +29,29 @@ const HomeView = () => {
         minHeight={400}
         fallback={<FeaturedPostsSkeleton />}
       />
-      <LazyLoadBlock
-        Component={CategoriesBlock}
-        minHeight={200}
-        fallback={<CategoriesSkeleton />}
-      />
-      <LazyLoadBlock
-        Component={PopularPosts}
-        minHeight={450}
-        fallback={<PopularPostsSkeleton />}
-      />
+      <Row gutter={[24, 24]}>
+        <Col xs={24} md={24} lg={8}>
+          <LazyLoadBlock
+            Component={PopularPosts}
+            minHeight={300}
+            fallback={<PopularPostsSkeleton />}
+          />
+        </Col>
+        <Col xs={24} md={24} lg={8} className="sub-featured-post">
+          <LazyLoadBlock
+            Component={SubFeaturedPost}
+            minHeight={240}
+            fallback={<SubFeaturedPostsSkeleton />}
+          />
+        </Col>
+        <Col xs={24} md={24} lg={8} className="right-posts-wrapper">
+          <LazyLoadBlock
+            Component={TrendingPosts}
+            minHeight={300}
+            fallback={<TrendingPostsSkeleton />}
+          />
+        </Col>
+      </Row>
       <LazyLoadBlock
         Component={RecentPosts}
         minHeight={500}
@@ -42,14 +59,14 @@ const HomeView = () => {
       />
       <LazyLoadBlock
         Component={Advertising}
-        minHeight={300}
+        minHeight={240}
         fallback={<AdvertisingSkeleton />}
       />
-      <LazyLoadBlock
-        Component={TrendingPosts}
-        minHeight={725}
-        fallback={<TrendingPostsSkeleton />}
-      />
+      {/* <LazyLoadBlock
+        Component={CategoriesBlock}
+        minHeight={200}
+        fallback={<CategoriesSkeleton />}
+      /> */}
     </div>
   )
 }
