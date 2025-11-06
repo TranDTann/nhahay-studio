@@ -17,6 +17,9 @@ import './styles.css'
 const PostDetailView = () => {
   const router = useRouter()
 
+  const { authUser } = useAuthStore((state) => state)
+  const isLoggedIn = !!authUser
+
   const pathname = usePathname()
   const { message: messageApi } = App.useApp()
 
@@ -65,18 +68,20 @@ const PostDetailView = () => {
   return (
     <div className="post-detail-container">
       <ArticleDetailPage params={{ id: postId, noHeader: true }} />
-      <Flex
-        vertical
-        align="center"
-        justify="center"
-        gap={12}
-        className="comment-container_not-login"
-      >
-        <p>Bạn cần đăng nhập để bình luận và đánh giá về bài viết này</p>
-        <Button type="primary" onClick={handleClickLogin}>
-          Đăng nhập
-        </Button>
-      </Flex>
+      {!isLoggedIn && (
+        <Flex
+          vertical
+          align="center"
+          justify="center"
+          gap={12}
+          className="comment-container_not-login"
+        >
+          <p>Bạn cần đăng nhập để bình luận và đánh giá về bài viết này</p>
+          <Button type="primary" onClick={handleClickLogin}>
+            Đăng nhập
+          </Button>
+        </Flex>
+      )}
       <Rating postData={postData} />
       <Comment postData={postData} />
       <RelatedPosts postData={postData} />
