@@ -10,6 +10,8 @@
 
 #CategoryPostTabs {
   width: fit-content;
+  position: absolute;
+  top: 192px;
 }
 
 #CategoryPostTabs .ant-tabs,
@@ -40,6 +42,16 @@
     .category-post-selection-container {
       display: block;
       padding-left: 24px;
+    }
+  }
+}
+
+@media (max-width: 479px) {
+  #CategoryPostTabs {
+    top: 188px;
+
+    .category-post-selection-container {
+      padding-left: 0;
     }
   }
 }
