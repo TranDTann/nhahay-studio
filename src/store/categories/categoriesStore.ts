@@ -21,10 +21,16 @@ interface CategoriesState {
     name: string
     description?: string
     urlThumbnail?: string
+    bannerIds?: string[]
   }) => Promise<void>
   updateCategory: (
     id: string,
-    data: { name: string; description?: string; urlThumbnail?: string }
+    data: {
+      name: string
+      description?: string
+      urlThumbnail?: string
+      bannerIds?: string[]
+    }
   ) => Promise<void>
   deleteCategory: (id: string) => Promise<void>
 }
@@ -88,6 +94,7 @@ export const useCategoriesStore = create<CategoriesState>((set, get) => ({
     name: string
     description?: string
     urlThumbnail?: string
+    bannerIds?: string[]
   }) => {
     set({ loading: true, error: null })
     try {
@@ -113,7 +120,12 @@ export const useCategoriesStore = create<CategoriesState>((set, get) => ({
 
   updateCategory: async (
     id: string,
-    data: { name: string; description?: string; urlThumbnail?: string }
+    data: {
+      name: string
+      description?: string
+      urlThumbnail?: string
+      bannerIds?: string[]
+    }
   ) => {
     set({ loading: true, error: null })
     try {

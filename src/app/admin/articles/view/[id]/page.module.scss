@@ -128,6 +128,9 @@ $loading-padding: 50px;
 .articleContentWrapper {
   flex: 1;
   min-width: 0;
+  p {
+    margin-bottom: 4px;
+  }
 
   // Desktop layout (>1560px) - middle column
   @media (min-width: 1561px) {

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { articleCrud } from './crud'
+import { articleCrud, type Article } from './crud'
 
 export enum PostTypeEnum {
   NONE = 0,
@@ -20,13 +20,6 @@ export const postTyes = [
   { key: PostTypeEnum.LATEST, label: 'Gần đây' },
   { key: PostTypeEnum.TRENDING_POSTS, label: 'Xu hướng' }
 ]
-interface Article {
-  id: string
-  title: string
-  content: string
-  createdAt: string
-  updatedAt: string
-}
 
 interface ArticleState {
   articles: Article[]

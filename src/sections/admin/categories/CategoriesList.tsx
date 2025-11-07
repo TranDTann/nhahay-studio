@@ -96,13 +96,13 @@ export default function CategoriesList() {
         });
     };
 
-    const handleFormSubmit = async (data: { name: string; description?: string; urlThumbnail?: string }) => {
+    const handleFormSubmit = async (data: { name: string; description?: string; urlThumbnail?: string; bannerIds?: string[] }) => {
         setFormLoading(true);
         try {
             if (selectedCategory) {
-                await updateCategory(selectedCategory.id, { name: data.name, description: data.description, urlThumbnail: data.urlThumbnail });
+                await updateCategory(selectedCategory.id, { name: data.name, description: data.description, urlThumbnail: data.urlThumbnail, bannerIds: data.bannerIds });
             } else {
-                await createCategory({ name: data.name, description: data.description, urlThumbnail: data.urlThumbnail });
+                await createCategory({ name: data.name, description: data.description, urlThumbnail: data.urlThumbnail, bannerIds: data.bannerIds });
             }
             setEditModalVisible(false);
             setSelectedCategory(null);

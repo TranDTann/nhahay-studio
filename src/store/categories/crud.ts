@@ -53,6 +53,7 @@ export const categoryCrud = {
     name: string
     description?: string
     urlThumbnail?: string
+    bannerIds?: string[]
   }) => {
     try {
       const response = await axiosInstance.post<Category>('/api/category', data)
@@ -67,7 +68,12 @@ export const categoryCrud = {
 
   updateCategory: async (
     id: string,
-    data: { name: string; description?: string; urlThumbnail?: string }
+    data: {
+      name: string
+      description?: string
+      urlThumbnail?: string
+      bannerIds?: string[]
+    }
   ) => {
     try {
       const response = await axiosInstance.put<Category>(`/api/category`, {

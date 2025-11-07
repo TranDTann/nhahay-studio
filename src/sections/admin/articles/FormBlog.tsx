@@ -23,6 +23,7 @@ import CompareImageBlock from '@/components/CompareImageBlock';
 import ContentBlock from '@/components/ContentBlock';
 import ArticleRenderer from '@/components/ArticleRenderer';
 import { PlusOutlined, PictureOutlined, SwapOutlined, FileTextOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import AdvertisementForm from '@/sections/admin/advertisements/components/AdvertisementForm';
 
 // Register highlight.js languages
 hljs.registerLanguage('javascript', javascript);
@@ -86,6 +87,8 @@ export default function FormBlog({ id }: FormBlogProps) {
     const [editingTextBlock, setEditingTextBlock] = useState<string | null>(null);
     const [insertionIndex, setInsertionIndex] = useState<number | null>(null);
     const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
+    const [showAdvertisementModal, setShowAdvertisementModal] = useState(false);
+    const [isCreatingAdvertisement, setIsCreatingAdvertisement] = useState(false);
 
     const [article, setArticle] = useState<Article>({
         title: '',
@@ -708,19 +711,28 @@ export default function FormBlog({ id }: FormBlogProps) {
 
             <div className="form-group">
                 <label className="form-label">Advertisements</label>
-                <Select
-                    mode="multiple"
-                    style={{ width: '100%' }}
-                    value={article.advertisementIds}
-                    onChange={(values: string[]) => setArticle(prev => ({ ...prev, advertisementIds: values }))}
-                    placeholder="Select advertisements to insert into the article"
-                >
-                    {advertisements.map(ad => (
-                        <Select.Option key={ad.id} value={ad.id!}>
-                            {ad.title}
-                        </Select.Option>
-                    ))}
-                </Select>
+                <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                    <Select
+                        mode="multiple"
+                        style={{ flex: 1 }}
+                        value={article.advertisementIds}
+                        onChange={(values: string[]) => setArticle(prev => ({ ...prev, advertisementIds: values }))}
+                        placeholder="Select advertisements to insert into the article"
+                    >
+                        {advertisements.map(ad => (
+                            <Select.Option key={ad.id} value={ad.id!}>
+                                {ad.title}
+                            </Select.Option>
+                        ))}
+                    </Select>
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => setShowAdvertisementModal(true)}
+                    >
+                        Create New
+                    </Button>
+                </div>
             </div>
             <div className="form-group">
                 <label className="form-label">Content</label>
@@ -909,6 +921,35 @@ export default function FormBlog({ id }: FormBlogProps) {
                     </p>
                 </div>
             </Modal>
+
+            {/* Advertisement Create Modal */}
+            <AdvertisementForm
+                visible={showAdvertisementModal}
+                onCancel={() => setShowAdvertisementModal(false)}
+                onSubmit={async (data) => {
+                    try {
+                        setIsCreatingAdvertisement(true);
+                        const newAdvertisement = await advertisementCrud.createAdvertisement(data);
+                        if (newAdvertisement && newAdvertisement.id) {
+                            // Thêm advertisement mới vào danh sách
+                            setAdvertisements(prev => [...prev, newAdvertisement]);
+                            // Tự động gán advertisement mới vào bài viết
+                            setArticle(prev => ({
+                                ...prev,
+                                advertisementIds: [...(prev.advertisementIds || []), newAdvertisement.id!]
+                            }));
+                            messageApi.success('Advertisement created and added to article successfully');
+                            setShowAdvertisementModal(false);
+                        }
+                    } catch (error: any) {
+                        messageApi.error(error.message || 'Failed to create advertisement');
+                    } finally {
+                        setIsCreatingAdvertisement(false);
+                    }
+                }}
+                title="Create New Advertisement"
+                loading={isCreatingAdvertisement}
+            />
         </div>
     );
 }

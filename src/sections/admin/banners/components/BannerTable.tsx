@@ -102,6 +102,13 @@ export default function BannerTable({
             ),
         },
         {
+            title: 'Click Amount',
+            dataIndex: 'clickBannerAmount',
+            key: 'clickBannerAmount',
+            render: (amount) => amount !== undefined && amount !== null ? amount.toLocaleString() : '0',
+            align: 'center',
+        },
+        {
             title: (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span>Created Date</span>
