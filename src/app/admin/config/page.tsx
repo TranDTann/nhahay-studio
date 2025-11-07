@@ -240,13 +240,15 @@ const ConfigPage: React.FC = () => {
                     />
                 </div>
 
-                <ConfigFormModal
-                    visible={modalVisible}
-                    editingConfig={editingConfig}
-                    onCancel={handleModalCancel}
-                    onSubmit={handleSubmit}
-                    loading={loading}
-                />
+                {modalVisible && (
+                    <ConfigFormModal
+                        visible={modalVisible}
+                        editingConfig={editingConfig}
+                        onCancel={handleModalCancel}
+                        onSubmit={handleSubmit}
+                        loading={loading}
+                    />
+                )}
             </Card>
         </div>
     );

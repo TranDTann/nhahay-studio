@@ -9,6 +9,7 @@ export interface Banner {
   position?: string
   status: boolean
   createdAt?: string
+  clickBannerAmount?: number
 }
 
 export interface BannerFilters {

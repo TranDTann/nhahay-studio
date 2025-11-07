@@ -44,9 +44,17 @@ export default function ArticleMeta({
     >
       <Space direction="vertical" size="small" style={{ width: '100%' }}>
         <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-          <Space align="center">
-            <UserOutlined style={{ color: '#8c8c8c' }} />
-            <Text style={{ fontWeight: 600, color: '#00000666', fontSize: '16px' }}>{authorName}</Text>
+          <Space
+            align="center"
+            style={{
+              padding: '8px 16px',
+              display: 'inline-flex'
+            }}
+          >
+            <UserOutlined style={{ color: '#1890ff', fontSize: '20px' }} />
+            <Text style={{ fontWeight: 700, color: '#1890ff', fontSize: '18px', letterSpacing: '0.5px' }}>
+              {authorName}
+            </Text>
           </Space>
         </div>
         <div

@@ -1,13 +1,14 @@
-import { Form, Input, Modal, Upload, Button } from 'antd';
+import { Form, Input, Modal, Upload, Button, Select } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { Category } from '@/store/categories/crud';
 import { useEffect, useState } from 'react';
 import { imageCrud } from '@/store/image/crud';
+import { bannerCrud, Banner } from '@/store/banner/crud';
 
 interface CategoryFormProps {
     visible: boolean;
     onCancel: () => void;
-    onSubmit: (data: { name: string; description?: string; urlThumbnail?: string }) => Promise<void>;
+    onSubmit: (data: { name: string; description?: string; urlThumbnail?: string; bannerIds?: string[] }) => Promise<void>;
     initialValues?: Category | null;
     title: string;
     loading?: boolean;
@@ -17,13 +18,32 @@ export default function CategoryForm({ visible, onCancel, onSubmit, initialValue
     const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState<string>('');
     const [uploading, setUploading] = useState(false);
+    const [banners, setBanners] = useState<Banner[]>([]);
 
     useEffect(() => {
         if (visible) {
             form.resetFields();
+            // Fetch banners when modal opens
+            const fetchBanners = async () => {
+                try {
+                    const response = await bannerCrud.getBanners({ take: 100 });
+                    if (response && response.result) {
+                        setBanners(response.result);
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch banners:', error);
+                }
+            };
+            fetchBanners();
+
             if (initialValues) {
                 setImageUrl(initialValues.urlThumbnail || '');
-                form.setFieldsValue({ ...initialValues });
+                // Set bannerIds if category has banners
+                const bannerIds = (initialValues as any).banners?.map((b: any) => b.id) || (initialValues as any).bannerIds || [];
+                form.setFieldsValue({
+                    ...initialValues,
+                    bannerIds: bannerIds
+                });
             } else {
                 setImageUrl('');
             }
@@ -38,7 +58,8 @@ export default function CategoryForm({ visible, onCancel, onSubmit, initialValue
             await onSubmit({
                 name: values.name,
                 description: values.description,
-                urlThumbnail: imageUrl
+                urlThumbnail: imageUrl,
+                bannerIds: values.bannerIds || []
             });
         } catch (error) {
             console.error('Validation failed:', error);
@@ -129,6 +150,24 @@ export default function CategoryForm({ visible, onCancel, onSubmit, initialValue
                             />
                         </div>
                     )}
+                </Form.Item>
+
+                <Form.Item
+                    name="bannerIds"
+                    label="Banners"
+                >
+                    <Select
+                        mode="multiple"
+                        style={{ width: '100%' }}
+                        placeholder="Select banners"
+                        allowClear
+                    >
+                        {banners.map(banner => (
+                            <Select.Option key={banner.id} value={banner.id!}>
+                                {banner.title}
+                            </Select.Option>
+                        ))}
+                    </Select>
                 </Form.Item>
             </Form>
         </Modal>
