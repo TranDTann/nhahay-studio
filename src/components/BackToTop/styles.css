@@ -1,7 +1,9 @@
 .back-to-top {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 56px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
   z-index: 9999;
   padding: 12px;
   border-radius: 100%;

@@ -8,6 +8,7 @@ import FeaturedPostsSkeleton from '../FeaturedPosts/FeaturedPostsSkeleton/Featur
 import SubFeaturedPostsSkeleton from '../FeaturedPosts/SubFeaturedPost/SubFeaturedPostsSkeleton/SubFeaturedPostsSkeleton'
 import PopularPostsSkeleton from '../PopularPosts/PopularPostsSkeleton/PopularPostsSkeleton'
 import RecentPostsSkeleton from '../RecentPosts/RecentPostsSkeleton/RecentPostsSkeleton'
+import VideosSkeleton from '../Videos/VideosSkeleton/VideosSkeleton'
 import TrendingPostsSkeleton from '../TrendingPosts/TrendingPostsSkeleton/TrendingPostsSkeleton'
 import './styles.scss'
 
@@ -18,6 +19,7 @@ const SubFeaturedPost = lazy(
 const CategoriesBlock = lazy(() => import('../CategoriesBlock'))
 const PopularPosts = lazy(() => import('../PopularPosts'))
 const RecentPosts = lazy(() => import('../RecentPosts'))
+const Videos = lazy(() => import('../Videos'))
 const Advertising = lazy(() => import('../Advertising'))
 const TrendingPosts = lazy(() => import('../TrendingPosts'))
 
@@ -52,11 +54,22 @@ const HomeView = () => {
           />
         </Col>
       </Row>
-      <LazyLoadBlock
-        Component={RecentPosts}
-        minHeight={500}
-        fallback={<RecentPostsSkeleton />}
-      />
+      <Row gutter={[24, 24]}>
+        <Col xs={24} sm={24} md={14} lg={16}>
+          <LazyLoadBlock
+            Component={RecentPosts}
+            minHeight={500}
+            fallback={<RecentPostsSkeleton />}
+          />
+        </Col>
+        <Col xs={24} sm={24} md={10} lg={8}>
+          <LazyLoadBlock
+            Component={Videos}
+            minHeight={500}
+            fallback={<VideosSkeleton />}
+          />
+        </Col>
+      </Row>
       <LazyLoadBlock
         Component={Advertising}
         minHeight={240}
