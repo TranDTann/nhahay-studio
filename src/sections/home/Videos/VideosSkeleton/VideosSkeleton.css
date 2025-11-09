@@ -1,0 +1,30 @@
+#VideosSkeleton {
+  width: 100%;
+
+  .video-skeleton_header {
+    width: 160px;
+    margin-bottom: 24px;
+  }
+
+  .video-image-wrapper_node {
+    width: 100% !important;
+    border-radius: 8px !important;
+    height: 140px;
+  }
+
+  @media screen and (max-width: 991px) {
+    .video-image-wrapper_node {
+      height: 160px !important;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .video-skeleton_header {
+      margin-top: 8px;
+    }
+
+    .video-list {
+      margin-bottom: 8px;
+    }
+  }
+}

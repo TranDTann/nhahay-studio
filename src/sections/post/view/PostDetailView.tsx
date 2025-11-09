@@ -68,6 +68,10 @@ const PostDetailView = () => {
   return (
     <div className="post-detail-container">
       <ArticleDetailPage params={{ id: postId, noHeader: true }} />
+      <p className="note-scroll-comment">
+        Kéo xuống một chút nữa bạn sẽ thấy phần đánh giá, bình luận hoặc truy
+        cập hệ sinh thái của chúng tôi trên các nền tảng phía trên:
+      </p>
       {!isLoggedIn && (
         <Flex
           vertical

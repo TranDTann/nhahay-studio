@@ -37,9 +37,9 @@ const LoginInformation = ({ isTablet }: TLoginInformationProps) => {
           <Button type="default" onClick={() => router.push(paths.auth.login)}>
             Đăng nhập
           </Button>
-          <Button type="text" onClick={handleLoginWithGoogle}>
+          {/* <Button type="text" onClick={handleLoginWithGoogle}>
             <FcGoogle />
-          </Button>
+          </Button> */}
         </div>
       </div>
     )
