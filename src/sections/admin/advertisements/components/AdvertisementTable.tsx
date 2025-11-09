@@ -96,9 +96,9 @@ export default function AdvertisementTable({
         },
         {
             title: 'Click Amount',
-            dataIndex: 'clickAdvertisement',
-            key: 'clickAdvertisement',
-            render: (amount) => amount !== undefined && amount !== null ? amount.toLocaleString() : '0',
+            dataIndex: 'clickAdvertiseAmount',
+            key: 'clickAdvertiseAmount',
+            render: (clickAdvertiseAmount) => clickAdvertiseAmount !== undefined && clickAdvertiseAmount !== null ? clickAdvertiseAmount.toLocaleString() : '0',
             align: 'center',
         },
         {

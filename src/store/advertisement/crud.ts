@@ -7,7 +7,7 @@ export interface Advertisement {
   imageUrl?: string
   link?: string
   positionType?: string
-  clickAdvertisement?: number
+  clickAdvertiseAmount?: number
 }
 
 export interface AdvertisementFilters {
