@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
-import { Table, Button, Space, Popconfirm, Card, Typography, Input, Select } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { Table, Button, Space, Card, Typography, Input, Select } from 'antd';
+import { EditOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import { ConfigItem, ConfigQueryParams } from '@/api/configService';
 import { useConfig } from '@/hooks/useConfig';
 import ConfigFormModal from '@/components/admin/ConfigFormModal';
@@ -150,19 +150,6 @@ const ConfigPage: React.FC = () => {
                         onClick={() => handleEdit(record)}
                         size="small"
                     />
-                    <Popconfirm
-                        title="Are you sure you want to delete this config?"
-                        onConfirm={() => record.id && handleDelete(record.id)}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <Button
-                            type="text"
-                            icon={<DeleteOutlined />}
-                            danger
-                            size="small"
-                        />
-                    </Popconfirm>
                 </Space>
             ),
         },
@@ -180,13 +167,6 @@ const ConfigPage: React.FC = () => {
                             loading={loading}
                         >
                             Refresh
-                        </Button>
-                        <Button
-                            type="primary"
-                            icon={<PlusOutlined />}
-                            onClick={handleAdd}
-                        >
-                            Add Config
                         </Button>
                     </div>
                 </div>

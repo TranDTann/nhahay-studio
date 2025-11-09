@@ -61,7 +61,7 @@ const ConfigFormModal: React.FC<ConfigFormModalProps> = ({
                         }
                     ]}
                 >
-                    <Input placeholder="Enter config key" />
+                    <Input placeholder="Enter config key" disabled={!!editingConfig} />
                 </Form.Item>
 
                 <Form.Item

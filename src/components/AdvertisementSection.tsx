@@ -66,7 +66,6 @@ const AdvertisementSection: React.FC = () => {
             </div>
 
             <div style={{
-                width: '70%',
                 margin: '0 auto',
                 background: '#fafbfc',
                 borderRadius: 16,

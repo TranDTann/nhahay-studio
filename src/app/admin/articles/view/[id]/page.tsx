@@ -8,11 +8,12 @@ import SocialMediaLinks from '@/components/SocialMediaLinks'
 import TableOfContents from '@/components/TableOfContents'
 import paths from '@/routes/paths'
 import { articleCrud } from '@/store/article/crud'
+import { advertisementCrud } from '@/store/advertisement/crud'
 import { Category as ApiCategory, categoryCrud } from '@/store/categories/crud'
 import { Tag as ApiTag, tagCrud } from '@/store/tags/crud'
 import { DownOutlined } from '@ant-design/icons'
 import { App, Button, Card, Collapse, Space, Spin, Tag, Typography } from 'antd'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useSessionConfig } from '@/hooks/useSessionConfig'
 import styles from './page.module.scss'
@@ -48,6 +49,23 @@ export default function ArticleDetailPage({
   params: { id: string; noHeader?: boolean }
 }) {
   const router = useRouter()
+  const pathname = usePathname()
+
+  // Check if this is admin route
+  const isAdminRoute = pathname?.includes('/admin/')
+
+  // Helper function to track advertisement click (only for user, not admin)
+  const handleAdvertisementClick = async (adId: string, link: string) => {
+    console.log(isAdminRoute)
+    console.log(adId)
+    console.log(link)
+    if (!isAdminRoute && adId) {
+      console.log(123)
+      // Track click with isClick = true for user
+      await advertisementCrud.trackClick(adId, true)
+    }
+    window.open(link, '_blank')
+  }
   const { message: messageApi } = App.useApp()
   const { getConfigByKey } = useSessionConfig()
   const [article, setArticle] = useState<Article | null>(null)
@@ -106,6 +124,15 @@ export default function ArticleDetailPage({
   return (
     <div>
       {/* Title */}
+      <ArticleMeta
+        createdAt={article.createdAt}
+        updatedAt={article.updatedAt}
+        publishAt={article?.publishAt}
+        categoryName={article.category?.name || 'No category'}
+        tags={article.tags.map((tag) => tag.name)}
+        ratingAvg={article.ratingAvg || 0}
+        authorName={article.authorName || ''}
+      />
       <div className={styles.articleTitle}>{article.title}</div>
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         {!params.noHeader && (
@@ -143,7 +170,7 @@ export default function ArticleDetailPage({
                         objectFit: 'cover'
                       }}
                       onClick={() => {
-                        window.open(ad.link, '_blank')
+                        handleAdvertisementClick(ad.id, ad.link)
                       }}
                     />
                   </div>
@@ -193,7 +220,7 @@ export default function ArticleDetailPage({
                           cursor: 'pointer'
                         }}
                         onClick={() => {
-                          window.open(ad.link, '_blank')
+                          handleAdvertisementClick(ad.id, ad.link)
                         }}
                       />
                     </div>
@@ -241,15 +268,7 @@ export default function ArticleDetailPage({
             >
 
               {/* Meta Information */}
-              <ArticleMeta
-                createdAt={article.createdAt}
-                updatedAt={article.updatedAt}
-                publishAt={article?.publishAt}
-                categoryName={article.category?.name || 'No category'}
-                tags={article.tags.map((tag) => tag.name)}
-                ratingAvg={article.ratingAvg || 0}
-                authorName={article.authorName || ''}
-              />
+
 
               <div
                 className={styles.introCard}

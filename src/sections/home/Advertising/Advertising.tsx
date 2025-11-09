@@ -1,4 +1,5 @@
 import { useAdvertisementStore } from '@/store/advertisement/advertisementStore'
+import { advertisementCrud } from '@/store/advertisement/crud'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import './styles.css'
@@ -29,9 +30,20 @@ const Advertising = () => {
 
   if (!advertisementView) return null
 
+  const handleClick = async () => {
+    if (advertisementView?.id) {
+      // Track click with isClick = true for user
+      await advertisementCrud.trackClick(advertisementView.id, true)
+    }
+  }
+
   return (
     <div className="advertising-image-container image-hover-zoom-container">
-      <Link href={advertisementView?.link || ''} target="_blank">
+      <Link
+        href={advertisementView?.link || ''}
+        target="_blank"
+        onClick={handleClick}
+      >
         <img
           src={advertisementView?.imageUrl || ''}
           alt="anh-quang-cao"

@@ -90,5 +90,14 @@ export const advertisementCrud = {
         error.response?.status
       )
     }
+  },
+
+  trackClick: async (id: string, isClick: boolean) => {
+    try {
+      await axiosInstance.get(`/api/advertisement/${id}/${isClick}`)
+    } catch (error: any) {
+      // Silently fail for tracking to not interrupt user experience
+      console.error('Failed to track advertisement click:', error)
+    }
   }
 }
