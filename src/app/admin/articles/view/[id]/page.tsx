@@ -6,16 +6,16 @@ import ArticleMeta from '@/components/ArticleMeta'
 import ArticleRenderer from '@/components/ArticleRenderer'
 import SocialMediaLinks from '@/components/SocialMediaLinks'
 import TableOfContents from '@/components/TableOfContents'
+import { useSessionConfig } from '@/hooks/useSessionConfig'
 import paths from '@/routes/paths'
-import { articleCrud } from '@/store/article/crud'
 import { advertisementCrud } from '@/store/advertisement/crud'
+import { articleCrud } from '@/store/article/crud'
 import { Category as ApiCategory, categoryCrud } from '@/store/categories/crud'
 import { Tag as ApiTag, tagCrud } from '@/store/tags/crud'
-import { DownOutlined } from '@ant-design/icons'
+import { EConfig } from '@/types/config'
 import { App, Button, Card, Collapse, Space, Spin, Tag, Typography } from 'antd'
-import { useRouter, usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useSessionConfig } from '@/hooks/useSessionConfig'
 import styles from './page.module.scss'
 
 const { Title, Paragraph, Text } = Typography
@@ -72,7 +72,7 @@ export default function ArticleDetailPage({
   const [tags, setTags] = useState<ApiTag[]>([])
   const [categories, setCategories] = useState<ApiCategory[]>([])
   const [loading, setLoading] = useState(true)
-  const greetingDetail = getConfigByKey('GREETING_DETAIL_ARTICLE_KEY') || ''
+  const greetingDetail = getConfigByKey(EConfig.GREETING_DETAIL_ARTICLE) || ''
 
   useEffect(() => {
     const fetchData = async () => {
@@ -232,10 +232,8 @@ export default function ArticleDetailPage({
             <div className={styles.mobileSocialCollapse}>
               <Collapse
                 ghost
-                activeKey={["1"]}
-                expandIcon={({ isActive }) => (
-                  <></>
-                )}
+                activeKey={['1']}
+                expandIcon={({ isActive }) => <></>}
                 style={{
                   background: 'white',
                   border: '1px solid #f0f0f0',
@@ -261,14 +259,8 @@ export default function ArticleDetailPage({
           </div>
 
           <div className={styles.articleContentWrapper}>
-            <Space
-              direction="vertical"
-              size="large"
-              style={{ width: '100%' }}
-            >
-
+            <Space direction="vertical" size="large" style={{ width: '100%' }}>
               {/* Meta Information */}
-
 
               <div
                 className={styles.introCard}
@@ -435,11 +427,11 @@ export default function ArticleDetailPage({
                 )}
             </div>
           </div>
-        </div >
+        </div>
 
         {/* Advertisement Section */}
-        < AdvertisementSection />
-      </Space >
-    </div >
+        <AdvertisementSection />
+      </Space>
+    </div>
   )
 }
