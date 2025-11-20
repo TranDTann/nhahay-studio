@@ -14,7 +14,7 @@ export const getMenu = ({ categories, isAdmin }: TGetMenuProps) => [
   },
   {
     key: '/categories',
-    label: 'Danh mục sản phẩm',
+    label: 'Danh mục bài viết',
     children: categories.map((categoryItem) => ({
       key: categoryItem.id,
       label: (
