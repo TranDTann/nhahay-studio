@@ -10,8 +10,7 @@
 
 #CategoryPostTabs {
   width: fit-content;
-  position: absolute;
-  top: 192px;
+  padding-top: 8px;
 }
 
 #CategoryPostTabs .ant-tabs,
@@ -32,6 +31,22 @@
 
   .category-post-selection-container {
     display: none;
+  }
+
+  .ant-tabs .ant-tabs-tab:hover .ant-tabs-tab-btn {
+    color: rgba(118, 75, 162, 0.7) !important;
+  }
+
+  .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: rgba(118, 75, 162, 1) !important;
+  }
+
+  .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn:hover {
+    color: rgba(118, 75, 162, 0.7) !important;
+  }
+
+  .ant-tabs .ant-tabs-ink-bar {
+    background-color: rgba(118, 75, 162, 1) !important;
   }
 
   @media (max-width: 479px) {

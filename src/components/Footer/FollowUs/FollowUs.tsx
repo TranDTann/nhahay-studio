@@ -1,4 +1,5 @@
 import { useFooterStore } from '@/store/footer/footerStore'
+import { EConfig } from '@/types/config'
 import { getConfigValue } from '@/utils/getConfig'
 import Link from 'next/link'
 import { FaFacebook, FaTiktok, FaYoutube } from 'react-icons/fa'
@@ -20,19 +21,19 @@ const FollowUs = ({ mode = 'dark' }: TFollowUsProps) => {
       id: 'facebook',
       name: 'Facebook',
       icon: FaFacebook,
-      link: getConfigValue('facebook', configs)
+      link: getConfigValue(EConfig.FACEBOOK, configs)
     },
     {
       id: 'youtube',
       name: 'Youtube',
       icon: FaYoutube,
-      link: getConfigValue('youtube', configs)
+      link: getConfigValue(EConfig.YOUTUBE, configs)
     },
     {
       id: 'tiktok',
       name: 'Tiktok',
       icon: FaTiktok,
-      link: getConfigValue('tiktok', configs)
+      link: getConfigValue(EConfig.TIKTOK, configs)
     }
   ]
 

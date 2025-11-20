@@ -24,7 +24,7 @@ const CategoryPostTabs = () => {
           })
         }
         style={{ backgroundColor: '#fff' }}
-        className="category-post-tabs-container"
+        className="category-post-tabs-container color-primary"
       />
       <Select
         defaultValue={PostTypeEnum.NONE.toString()}

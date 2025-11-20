@@ -23,5 +23,5 @@ export const useCategoryPostsStore = create<CategoryPostsState>((set, get) => ({
   total: 0,
   currentPage: 1,
   pageSize: 10,
-  viewMode: EViewMode.LIST
+  viewMode: EViewMode.GRID
 }))
