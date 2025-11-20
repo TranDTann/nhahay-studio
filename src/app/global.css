@@ -108,3 +108,35 @@
   );
   pointer-events: none;
 }
+
+.background-color-primary {
+  background: linear-gradient(
+    135deg,
+    rgb(102, 126, 234) 0%,
+    rgb(118, 75, 162) 100%
+  ) !important;
+}
+
+.background-color-primary:hover {
+  background: linear-gradient(
+    135deg,
+    rgb(102, 126, 234) 0%,
+    rgb(118, 75, 162) 70%
+  ) !important;
+}
+
+.color-primary {
+  color: rgba(118, 75, 162, 1) !important;
+}
+
+.color-primary:hover {
+  color: rgba(118, 75, 162, 0.7) !important;
+}
+
+.border-color-primary {
+  border-color: rgba(118, 75, 162, 1) !important;
+}
+
+.border-color-primary:hover {
+  border-color: rgba(118, 75, 162, 0.7) !important;
+}

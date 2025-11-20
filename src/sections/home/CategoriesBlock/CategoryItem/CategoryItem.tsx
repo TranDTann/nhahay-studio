@@ -1,7 +1,7 @@
 import paths from '@/routes/paths'
 import { Category } from '@/store/categories/crud'
+import { Tooltip } from 'antd'
 import { useRouter } from 'next/navigation'
-import CategoryTag from '../../components/CategoryTag/CategoryTag'
 import './styles.scss'
 
 type TCategoryItemProps = {
@@ -34,9 +34,11 @@ const CategoryItem = ({ categoryData }: TCategoryItemProps) => {
             alt="category-thumbnail"
             className="category-thumbnail image-hover-zoom"
           />
-        </div>
-        <div className="category-tag">
-          <CategoryTag tagName={categoryData.name} isCategoriesList />
+          <Tooltip title={categoryData.name}>
+            <p className="display-max-2-lines category-name">
+              {categoryData.name}
+            </p>
+          </Tooltip>
         </div>
       </div>
     </div>

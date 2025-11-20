@@ -8,6 +8,7 @@
   object-fit: cover;
   cursor: pointer;
   flex-shrink: 0;
+  border-radius: 4px;
 }
 
 #CategoryViewGrid .category-post-info_grid {
