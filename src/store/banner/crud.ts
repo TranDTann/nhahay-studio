@@ -5,7 +5,7 @@ export interface Banner {
   id?: string
   title: string
   imageUrl: string
-  link?: string
+  redirectUrl?: string
   position?: string
   status: boolean
   createdAt?: string

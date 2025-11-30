@@ -39,9 +39,8 @@ export const configService = {
       if (params.search) queryParams.append('search', params.search)
       if (params.skip !== undefined)
         queryParams.append('skip', params.skip.toString())
-      if (params.take !== undefined)
-        queryParams.append('take', params.take.toString())
     }
+    queryParams.append('take', '1000')
 
     const url = `/api/configsetting${
       queryParams.toString() ? `?${queryParams.toString()}` : ''

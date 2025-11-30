@@ -5,23 +5,32 @@ import { LoginInformation } from './LoginInformation'
 import { Logo } from './Logo'
 import { Menu } from './Menu'
 import './styles.scss'
+import { LedTextBanner } from '../LedTextBanner'
 
-const NavigationBar = () => {
+interface NavigationBarProps {
+  className?: string
+}
+
+const NavigationBar = ({ className }: NavigationBarProps) => {
   const [openMenu, setOpenMenu] = useState(false)
 
   return (
-    <div id="NavigationBar">
+    <div id="NavigationBar" className={className}>
+
       <div className="navigation-bar-container">
-        <div className="navigation-bar-content">
-          <Logo />
-          <Menu />
-          <LoginInformation />
-          <button
-            className="menu-toggle"
-            onClick={() => setOpenMenu(!openMenu)}
-          >
-            <FaBars />
-          </button>
+        <LedTextBanner />
+        <div className="navigation-bar-container-content">
+          <div className="navigation-bar-content">
+            <Logo />
+            <Menu />
+            <LoginInformation />
+            <button
+              className="menu-toggle"
+              onClick={() => setOpenMenu(!openMenu)}
+            >
+              <FaBars />
+            </button>
+          </div>
         </div>
       </div>
       <Drawer

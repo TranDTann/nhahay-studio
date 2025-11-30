@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import { App as AntApp, ConfigProvider } from 'antd';
 import { HomeLayout } from '@/layout/home';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
+import { ConfigProvider as AppConfigProvider } from '@/contexts/ConfigContext';
 import theme from '../../config/themeConfig';
 import '@/styles/variables.scss';
 import '@/styles/global.scss';
@@ -32,13 +33,15 @@ export default function RootLayout({
       </Head>
       <body className={beVietnamPro.className} suppressHydrationWarning>
         <AntdRegistry>
-          <ConfigProvider theme={theme}>
-            <AntApp>
-              <Suspense>
-                <HomeLayout>{children}</HomeLayout>
-              </Suspense>
-            </AntApp>
-          </ConfigProvider>
+          <AppConfigProvider>
+            <ConfigProvider theme={theme}>
+              <AntApp>
+                <Suspense>
+                  <HomeLayout>{children}</HomeLayout>
+                </Suspense>
+              </AntApp>
+            </ConfigProvider>
+          </AppConfigProvider>
         </AntdRegistry>
       </body>
     </html>

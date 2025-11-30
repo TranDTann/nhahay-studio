@@ -11,7 +11,7 @@ import { articleCrud } from '@/store/article/crud'
 import { advertisementCrud } from '@/store/advertisement/crud'
 import { Category as ApiCategory, categoryCrud } from '@/store/categories/crud'
 import { Tag as ApiTag, tagCrud } from '@/store/tags/crud'
-import { DownOutlined } from '@ant-design/icons'
+import { DownOutlined, LinkOutlined } from '@ant-design/icons'
 import { App, Button, Card, Collapse, Space, Spin, Tag, Typography } from 'antd'
 import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -72,6 +72,8 @@ export default function ArticleDetailPage({
   const [tags, setTags] = useState<ApiTag[]>([])
   const [categories, setCategories] = useState<ApiCategory[]>([])
   const [loading, setLoading] = useState(true)
+  const [tocActiveKey, setTocActiveKey] = useState<string[]>([])
+  const [followActiveKey, setFollowActiveKey] = useState<string[]>(['follow'])
   const greetingDetail = getConfigByKey('GREETING_DETAIL_ARTICLE_KEY') || ''
 
   useEffect(() => {
@@ -133,7 +135,6 @@ export default function ArticleDetailPage({
         ratingAvg={article.ratingAvg || 0}
         authorName={article.authorName || ''}
       />
-      <div className={styles.articleTitle}>{article.title}</div>
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
         {!params.noHeader && (
           <ArticleBreadcrumb
@@ -144,123 +145,87 @@ export default function ArticleDetailPage({
 
         {/* Article Layout with Table of Contents */}
         <div className={styles.articleLayout}>
-          <div
-            className={`${styles.tableOfContentsWrapper} ${styles.tocColumn}`}
-          >
+          {/* Left Column - Table of Contents (Desktop) */}
+          <div className={styles.tableOfContentsWrapper}>
             <TableOfContents />
-            {Array.isArray(article.advertisements) &&
-              article.advertisements.slice(1, 2).map((ad, idx) =>
-                ad.imageUrl ? (
-                  <div
-                    key={ad.id || idx}
-                    style={{
-                      width: '100%',
-                      maxWidth: 600,
-                      margin: '24px auto 0 auto'
-                    }}
-                  >
-                    <img
-                      src={ad.imageUrl}
-                      alt={ad.title || 'Advertisement'}
-                      width={280}
-                      height={240}
-                      style={{
-                        width: '100%',
-                        borderRadius: 12,
-                        objectFit: 'cover'
-                      }}
-                      onClick={() => {
-                        handleAdvertisementClick(ad.id, ad.link)
-                      }}
-                    />
-                  </div>
-                ) : null
-              )}
-
-            {/* Laptop version - Social Media and Ads below TOC */}
-            <div className={styles.desktopSocialCard}>
-              <Card
-                className={styles.socialMediaCard}
-                title={
-                  <Space>
-                    <span style={{ fontSize: '16px' }}>📱</span>
-                    <Text strong style={{ fontSize: '16px' }}>
-                      Theo dõi Nhà Hay
-                    </Text>
-                  </Space>
-                }
-                style={{
-                  borderRadius: '8px',
-                  border: '1px solid #f0f0f0',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
-                }}
-              >
-                <SocialMediaLinks size="large" />
-              </Card>
-              {Array.isArray(article.advertisements) &&
-                article.advertisements.slice(0, 1).map((ad, idx) =>
-                  ad.imageUrl ? (
-                    <div
-                      key={ad.id || idx}
-                      style={{
-                        width: '100%',
-                        maxWidth: 600,
-                        margin: '24px auto 0 auto'
-                      }}
-                    >
-                      <img
-                        src={ad.imageUrl}
-                        alt={ad.title || 'Advertisement'}
-                        width={280}
-                        height={240}
-                        style={{
-                          width: '100%',
-                          borderRadius: 12,
-                          objectFit: 'cover',
-                          cursor: 'pointer'
-                        }}
-                        onClick={() => {
-                          handleAdvertisementClick(ad.id, ad.link)
-                        }}
-                      />
-                    </div>
-                  ) : null
-                )}
-            </div>
-
-            {/* Mobile version - Collapse */}
-            <div className={styles.mobileSocialCollapse}>
-              <Collapse
-                ghost
-                activeKey={["1"]}
-                expandIcon={({ isActive }) => (
-                  <></>
-                )}
-                style={{
-                  background: 'white',
-                  border: '1px solid #f0f0f0',
-                  borderRadius: '8px',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
-                }}
-              >
-                <Collapse.Panel
-                  header={
-                    <Space>
-                      <span style={{ fontSize: '16px' }}>📱</span>
-                      <Text strong style={{ fontSize: '16px' }}>
-                        Theo dõi Nhà Hay
-                      </Text>
-                    </Space>
-                  }
-                  key="1"
-                >
-                  <SocialMediaLinks size="middle" />
-                </Collapse.Panel>
-              </Collapse>
-            </div>
           </div>
 
           <div className={styles.articleContentWrapper}>
+            <div className={styles.articleTitle}>{article.title}</div>
+
+            {/* Mobile version - Collapse for Table of Contents and Follow (at top) */}
+            <div className={styles.mobileCollapseWrapper}>
+              {/* Mobile - Table of Contents Collapse (default closed) */}
+              <div className={styles.mobileTocCollapseWrapper}>
+                <Collapse
+                  ghost
+                  activeKey={tocActiveKey}
+                  onChange={(keys) => setTocActiveKey(keys as string[])}
+                  expandIcon={({ isActive }) => (
+                    <DownOutlined rotate={isActive ? 180 : 0} />
+                  )}
+                  style={{
+                    background: 'white',
+                    border: '1px solid #f0f0f0',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+                    marginBottom: '16px'
+                  }}
+                >
+                  <Collapse.Panel
+                    header={
+                      <Space>
+                        <LinkOutlined />
+                        <Text strong style={{ fontSize: '16px' }}>
+                          Mục lục
+                        </Text>
+                      </Space>
+                    }
+                    key="toc"
+                  >
+                    <div style={{ padding: '8px 0' }}>
+                      {tocActiveKey.includes('toc') && (
+                        <TableOfContents renderOnly={true} />
+                      )}
+                    </div>
+                  </Collapse.Panel>
+                </Collapse>
+              </div>
+
+              {/* Mobile - Follow Collapse (default open) */}
+              <div className={styles.mobileSocialCollapse}>
+                <Collapse
+                  ghost
+                  activeKey={followActiveKey}
+                  onChange={(keys) => setFollowActiveKey(keys as string[])}
+                  expandIcon={({ isActive }) => (
+                    <DownOutlined rotate={isActive ? 180 : 0} />
+                  )}
+                  style={{
+                    background: 'white',
+                    border: '1px solid #f0f0f0',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+                    marginBottom: '16px'
+                  }}
+                >
+                  <Collapse.Panel
+                    header={
+                      <Space>
+                        <span style={{ fontSize: '16px' }}>📱</span>
+                        <Text strong style={{ fontSize: '16px' }}>
+                          Theo dõi Nhà Hay
+                        </Text>
+                      </Space>
+                    }
+                    key="follow"
+                  >
+                    <SocialMediaLinks size="middle" />
+                  </Collapse.Panel>
+                </Collapse>
+              </div>
+            </div>
+
             <Space
               direction="vertical"
               size="large"
@@ -383,7 +348,7 @@ export default function ArticleDetailPage({
             </Space>
           </div>
 
-          {/* Desktop version - Third column for Social Media and Ads */}
+          {/* Desktop version - Right column for Social Media and Ads */}
           <div className={styles.desktopLargeSocialWrapper}>
             <div className={styles.desktopLargeSocialCard}>
               <Card
@@ -427,7 +392,7 @@ export default function ArticleDetailPage({
                           cursor: 'pointer'
                         }}
                         onClick={() => {
-                          window.open(ad.link, '_blank')
+                          handleAdvertisementClick(ad.id, ad.link)
                         }}
                       />
                     </div>
@@ -437,8 +402,8 @@ export default function ArticleDetailPage({
           </div>
         </div >
 
-        {/* Advertisement Section */}
-        < AdvertisementSection />
+
+        <AdvertisementSection />
       </Space >
     </div >
   )

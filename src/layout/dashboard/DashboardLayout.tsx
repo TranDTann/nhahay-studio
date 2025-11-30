@@ -1,8 +1,12 @@
+'use client'
+
 import useAuthRouter from '@/auth/useAuthRouter'
 import { BackToTop } from '@/components/BackToTop'
 import { Footer } from '@/components/Footer'
 import { LoadingScreen } from '@/components/LoadingScreen'
+import { PopupBanner } from '@/components/PopupBanner'
 import NavigationBar from '@/components/Navigation/NavigationBar'
+import { useConfigContext } from '@/contexts/ConfigContext'
 import paths from '@/routes/paths'
 import { useAuthStore } from '@/store/auth/authStore'
 import { usePathname } from 'next/navigation'
@@ -13,6 +17,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
   const pathname = usePathname()
   const { isLoggingIn, isSigningUp } = useAuthStore((state) => state)
+  const { getConfigByKey } = useConfigContext()
+  const ledText = getConfigByKey('LED_TEXT')
+  const hasLedText = ledText && ledText.trim() !== ''
 
   let content: React.ReactNode = null
 
@@ -35,15 +42,16 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <NavigationBar />
       <div
         id="main-body"
-        className={`main-container ${
-          isPostDetailPage && 'main-container-width-80'
-        }`}
+        className={`main-container ${isPostDetailPage && 'main-container-width-80'} 
+        ${hasLedText && 'main-container-led-text'}
+          `}
       >
         {content}
       </div>
       <Footer />
       <BackToTop />
-    </div>
+      <PopupBanner />
+    </div >
   )
 }
 

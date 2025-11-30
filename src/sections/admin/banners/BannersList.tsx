@@ -81,6 +81,15 @@ export default function BannersList() {
     };
 
     const handleDelete = (record: Banner) => {
+        // Không cho phép xóa banner có title là POPUP_BANNER
+        if (record.title === 'POPUP_BANNER') {
+            Modal.warning({
+                title: 'Cannot delete this banner',
+                content: 'The POPUP_BANNER cannot be deleted as it is a system banner.',
+            });
+            return;
+        }
+
         Modal.confirm({
             title: 'Are you sure you want to delete this banner?',
             content: 'This action cannot be undone.',

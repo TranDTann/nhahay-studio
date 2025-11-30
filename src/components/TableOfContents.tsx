@@ -9,6 +9,7 @@ const { Text } = Typography;
 
 interface TableOfContentsProps {
     className?: string;
+    renderOnly?: boolean; // If true, only render the items without wrapper
 }
 
 interface TocItem {
@@ -17,15 +18,15 @@ interface TocItem {
     level: number;
 }
 
-export default function TableOfContents({ className = '' }: TableOfContentsProps) {
+export default function TableOfContents({ className = '', renderOnly = false }: TableOfContentsProps) {
     const [tocItems, setTocItems] = useState<TocItem[]>([]);
     const [activeId, setActiveId] = useState<string>('');
 
     useEffect(() => {
-        // Wait for content to be rendered
-        const timer = setTimeout(() => {
-            // Extract h2 headings from the article content
-            const headings = document.querySelectorAll('.article-renderer h2');
+        // Function to extract headings
+        const extractHeadings = () => {
+            // Try multiple selectors to find headings
+            const headings = document.querySelectorAll('.article-renderer h2, .articleContent h2');
             const items: TocItem[] = Array.from(headings).map((heading, index) => {
                 // Use existing id or create a new one
                 let id = heading.id;
@@ -41,9 +42,29 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
             });
             console.log('Table of Contents items:', items);
             setTocItems(items);
-        }, 500); // Wait for content to be fully rendered
+        };
 
-        return () => clearTimeout(timer);
+        // Wait for content to be rendered - try multiple times
+        const timer1 = setTimeout(extractHeadings, 500);
+        const timer2 = setTimeout(extractHeadings, 1000);
+        const timer3 = setTimeout(extractHeadings, 2000);
+
+        // Also listen for DOM changes
+        const observer = new MutationObserver(() => {
+            extractHeadings();
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+        return () => {
+            clearTimeout(timer1);
+            clearTimeout(timer2);
+            clearTimeout(timer3);
+            observer.disconnect();
+        };
     }, []);
 
     useEffect(() => {
@@ -116,45 +137,61 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
         }, 200);
     };
 
+    const renderTocItems = () => {
+        if (tocItems.length === 0) {
+            return (
+                <div style={{ padding: '8px 0', color: '#999', fontSize: '14px' }}>
+                    Chưa có mục lục
+                </div>
+            );
+        }
+
+        return (
+            <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                {tocItems.map((item) => (
+                    <div
+                        key={item.id}
+                        onClick={() => scrollToHeading(item.id)}
+                        style={{
+                            cursor: 'pointer',
+                            padding: '8px 12px',
+                            borderRadius: '6px',
+                            backgroundColor: activeId === item.id ? '#f0f0f0' : 'transparent',
+                            borderLeft: activeId === item.id ? '3px solid #1890ff' : '3px solid transparent',
+                            transition: 'all 0.2s ease',
+                            fontSize: '14px',
+                            lineHeight: '1.4'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#f5f5f5';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = activeId === item.id ? '#f0f0f0' : 'transparent';
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: activeId === item.id ? '#1890ff' : '#333',
+                                fontWeight: activeId === item.id ? '500' : 'normal'
+                            }}
+                        >
+                            {item.text}
+                        </Text>
+                    </div>
+                ))}
+            </Space>
+        );
+    };
+
+    // If renderOnly, just return the items
+    if (renderOnly) {
+        return <>{renderTocItems()}</>;
+    }
+
+    // If no items and not renderOnly, return null
     if (tocItems.length === 0) {
         return null;
     }
-
-    const renderTocItems = () => (
-        <Space direction="vertical" size="small" style={{ width: '100%' }}>
-            {tocItems.map((item) => (
-                <div
-                    key={item.id}
-                    onClick={() => scrollToHeading(item.id)}
-                    style={{
-                        cursor: 'pointer',
-                        padding: '8px 12px',
-                        borderRadius: '6px',
-                        backgroundColor: activeId === item.id ? '#f0f0f0' : 'transparent',
-                        borderLeft: activeId === item.id ? '3px solid #1890ff' : '3px solid transparent',
-                        transition: 'all 0.2s ease',
-                        fontSize: '14px',
-                        lineHeight: '1.4'
-                    }}
-                    onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#f5f5f5';
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = activeId === item.id ? '#f0f0f0' : 'transparent';
-                    }}
-                >
-                    <Text
-                        style={{
-                            color: activeId === item.id ? '#1890ff' : '#333',
-                            fontWeight: activeId === item.id ? '500' : 'normal'
-                        }}
-                    >
-                        {item.text}
-                    </Text>
-                </div>
-            ))}
-        </Space>
-    );
 
     return (
         <div className={`table-of-contents-wrapper ${styles.tableOfContentsWrapper} ${className}`}>
@@ -202,4 +239,4 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
             </div>
         </div>
     );
-} 
+}

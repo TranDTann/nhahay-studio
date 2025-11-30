@@ -1,0 +1,63 @@
+.led-text-banner {
+  height: 50px;
+  background-color: #000;
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  z-index: 1000;
+}
+
+.led-text-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.led-text-scroll {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: scroll-left-to-right 20s linear infinite;
+  will-change: transform;
+  width: 100%;
+}
+
+.led-text-item {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 50px;
+  padding: 0 20px;
+  color: #fff;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* Animation: text di chuyển từ trái sang phải */
+/* Text bắt đầu từ bên trái (ngoài màn hình) và di chuyển sang phải */
+@keyframes scroll-left-to-right {
+  0% {
+    transform: translateX(-20%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .led-text-banner {
+    height: 45px;
+  }
+  
+  .led-text-item {
+    font-size: 14px;
+    line-height: 45px;
+    padding: 0 15px;
+  }
+}
+

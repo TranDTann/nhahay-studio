@@ -7,7 +7,7 @@ import { imageCrud } from '@/store/image/crud';
 interface BannerFormProps {
     visible: boolean;
     onCancel: () => void;
-    onSubmit: (data: Omit<Banner, 'id' | 'createdAt'>) => Promise<void>;
+    onSubmit: (data: Omit<Banner, 'id' | 'createdAt' | 'redirectUrl'>) => Promise<void>;
     initialValues?: Banner | null;
     title: string;
     loading?: boolean;
@@ -99,7 +99,10 @@ export default function BannerForm({
                     label="Title"
                     rules={[{ required: true, message: 'Please enter banner title!' }]}
                 >
-                    <Input placeholder="Enter banner title" />
+                    <Input
+                        placeholder="Enter banner title"
+                        disabled={initialValues?.title === 'POPUP_BANNER'}
+                    />
                 </Form.Item>
 
                 {/* Trường ẩn để đồng bộ imageUrl với form */}
@@ -115,7 +118,7 @@ export default function BannerForm({
                 </Form.Item>
 
                 <Form.Item
-                    name="link"
+                    name="redirectUrl"
                     label="Link"
                     rules={[
                         { type: 'url', message: 'Please enter a valid URL!' }

@@ -123,6 +123,14 @@ export const useBannerStore = create<BannerState>((set, get) => ({
   deleteBanner: async (id: string) => {
     set({ loading: true, error: null })
     try {
+      // Kiểm tra xem banner có phải là POPUP_BANNER không
+      const bannerToDelete = get().banners.find((b) => b.id === id)
+      if (bannerToDelete?.title === 'POPUP_BANNER') {
+        message.error('Cannot delete POPUP_BANNER. This is a system banner.')
+        set({ loading: false })
+        return
+      }
+
       await bannerCrud.deleteBanner(id)
       message.success('Banner deleted successfully')
       // Fetch updated list after deleting with current pagination

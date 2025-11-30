@@ -141,6 +141,7 @@ export default function BannerTable({
                         danger
                         icon={<DeleteOutlined />}
                         onClick={() => onDelete(record)}
+                        disabled={record.title === 'POPUP_BANNER'}
                     >
                         {!isMobile && 'Delete'}
                     </Button>

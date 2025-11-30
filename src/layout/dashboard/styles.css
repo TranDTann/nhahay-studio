@@ -10,6 +10,9 @@
   padding: 24px 0 64px;
   flex: 1;
 }
+.main-container-led-text {
+  margin-top: 130px !important;
+}
 
 .main-container-width-80 {
   width: 80%;
@@ -31,7 +34,7 @@
 
 @media (max-width: 1199px) and (min-width: 768px) {
   .main-container {
-    width: 95%;
+    width: 97%;
     padding: 20px 0 48px;
   }
 }

@@ -1,6 +1,7 @@
 'use client'
 import React from 'react';
 import { Image } from 'antd';
+import { YoutubeOutlined, TikTokOutlined, FacebookOutlined } from '@ant-design/icons';
 import { useSessionConfig } from '@/hooks/useSessionConfig';
 import '@/assets/style/AdvertisementSection.scss';
 
@@ -10,25 +11,29 @@ const AdvertisementSection: React.FC = () => {
     // Lấy các config từ session storage
     const websiteUrl = getConfigByKey('website') || 'https://nhahaystudio.com';
     const siteName = getConfigByKey('site_name') || 'nhahaystudio.vn';
-    const facebookUrl = getConfigByKey('facebook');
-    const youtubeUrl = getConfigByKey('youtube');
-    const tiktokUrl = getConfigByKey('tiktok');
+    const slogan = getConfigByKey('slogan') || `${siteName} là sản phẩm nằm trong hệ sinh thái Nhà của chúng tôi gồm:`;
+    const facebookUrl = getConfigByKey('FACEBOOK');
+    const youtubeUrl = getConfigByKey('YOUTUBE');
+    const tiktokUrl = getConfigByKey('TIKTOK');
 
     const socialPlatforms = [
         {
             name: 'Youtube',
+            iconComponent: YoutubeOutlined,
             color: '#e53935',
             description: 'Chia sẻ những clip chuyên sâu và thú vị',
             url: youtubeUrl
         },
         {
             name: 'Tiktok',
-            color: '#1da1f2',
+            iconComponent: TikTokOutlined,
+            color: '#000000',
             description: 'Tóm tắt tin và những đánh giá nhanh',
             url: tiktokUrl
         },
         {
             name: 'Facebook',
+            iconComponent: FacebookOutlined,
             color: '#1877f2',
             description: 'Cập nhật các thông báo mới nhất tới bạn đọc',
             url: facebookUrl
@@ -73,7 +78,7 @@ const AdvertisementSection: React.FC = () => {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
             }}>
                 <p style={{ fontSize: 15, marginBottom: 24 }}>
-                    {siteName} là sản phẩm nằm trong hệ sinh thái Nhà của chúng tôi gồm:
+                    {slogan}
                     {socialPlatforms.map((platform, index) => (
                         <React.Fragment key={platform.name}>
                             {index > 0 && index === socialPlatforms.length - 1 && ' và '}
@@ -86,7 +91,7 @@ const AdvertisementSection: React.FC = () => {
                     ...vv
                 </p>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 32 }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 16 }}>
                     {socialPlatforms.map((platform) => (
                         <div
                             key={platform.name}
@@ -98,14 +103,16 @@ const AdvertisementSection: React.FC = () => {
                                 borderRadius: 12,
                                 boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
                                 padding: 16,
-                                marginBottom: 16
+                                marginBottom: 4
                             }}
                             onClick={() => platform.url && handleSocialClick(platform.url, platform.name)}
                             title={platform.url ? `Click để truy cập ${platform.name}` : ''}
                         >
-                            <h4 className="platform-name" style={{ color: platform.color }}>
-                                {platform.name}
-                            </h4>
+                            <div className="platform-name" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+                                <span style={{ fontSize: '32px', color: platform.color }}>
+                                    {React.createElement(platform.iconComponent, { style: { color: platform.color } })}
+                                </span>
+                            </div>
                             <p className="platform-description">
                                 {platform.description}
                             </p>

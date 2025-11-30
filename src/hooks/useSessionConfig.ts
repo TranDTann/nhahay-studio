@@ -19,13 +19,13 @@ export const useSessionConfig = () => {
   // Lấy social media URLs
   const getSocialMediaUrls = () => {
     return {
-      facebook: getConfigByKey('facebook') || '',
-      instagram: getConfigByKey('instagram') || '',
-      tiktok: getConfigByKey('tiktok') || '',
-      youtube: getConfigByKey('youtube') || '',
-      twitter: getConfigByKey('twitter') || '',
-      linkedin: getConfigByKey('linkedin') || '',
-      zalo: getConfigByKey('zalo') || ''
+      FACEBOOK: getConfigByKey('FACEBOOK') || '',
+      INSTAGRAM: getConfigByKey('INSTAGRAM') || '',
+      TIKTOK: getConfigByKey('TIKTOK') || '',
+      YOUTUBE: getConfigByKey('YOUTUBE') || '',
+      TWITTER: getConfigByKey('TWITTER') || '',
+      LINKEDIN: getConfigByKey('LINKEDIN') || '',
+      ZALO: getConfigByKey('ZALO') || ''
     }
   }
 
