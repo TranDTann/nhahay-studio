@@ -10,7 +10,7 @@
   .category-details-controller-wrapper {
     width: 100%;
     height: 254px;
-    margin-top: 110px;
+    margin-top: 60px;
     position: fixed;
     left: 0;
     top: 0;
@@ -54,22 +54,6 @@
   @media (max-width: 1536px) {
     .category-details-controller {
       width: 95%;
-    }
-  }
-
-  @media (max-width: 767px) and (min-width: 480px) {
-    .category-details-content {
-      margin-top: 220px;
-    }
-  }
-
-  @media (max-width: 479px) {
-    .category-details-controller-wrapper {
-      height: 232px;
-    }
-
-    .category-details-content {
-      margin-top: 196px;
     }
   }
 }

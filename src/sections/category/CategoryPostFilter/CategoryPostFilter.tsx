@@ -18,6 +18,8 @@ const CategoryPostFilter = () => {
 
   const { viewMode, filters } = useCategoryPostsStore((state) => state)
 
+  const gridMode = viewMode === EViewMode.GRID
+
   useEffect(() => {
     useCategoryPostsStore.setState({
       filters: { ...filters, search: searchQuery ? searchQuery : undefined }
@@ -51,21 +53,6 @@ const CategoryPostFilter = () => {
       />
       <div className="category-post-view-mode">
         <Tooltip
-          styles={tooltipStyles}
-          placement="topRight"
-          title="Chế độ xem danh sách"
-        >
-          <Button
-            onClick={() =>
-              useCategoryPostsStore.setState({ viewMode: EViewMode.LIST })
-            }
-            type={viewMode === EViewMode.LIST ? 'primary' : 'text'}
-            style={{ marginRight: 8 }}
-          >
-            <FaList />
-          </Button>
-        </Tooltip>
-        <Tooltip
           placement="topLeft"
           title="Chế độ xem lưới"
           styles={tooltipStyles}
@@ -74,9 +61,26 @@ const CategoryPostFilter = () => {
             onClick={() =>
               useCategoryPostsStore.setState({ viewMode: EViewMode.GRID })
             }
-            type={viewMode === EViewMode.GRID ? 'primary' : 'text'}
+            type={gridMode ? 'primary' : 'text'}
+            style={{ marginRight: 8 }}
+            className={`${gridMode && 'background-color-primary'}`}
           >
             <FaThLarge />
+          </Button>
+        </Tooltip>
+        <Tooltip
+          styles={tooltipStyles}
+          placement="topRight"
+          title="Chế độ xem danh sách"
+        >
+          <Button
+            onClick={() =>
+              useCategoryPostsStore.setState({ viewMode: EViewMode.LIST })
+            }
+            type={gridMode ? 'text' : 'primary'}
+            className={`${!gridMode && 'background-color-primary'}`}
+          >
+            <FaList />
           </Button>
         </Tooltip>
       </div>

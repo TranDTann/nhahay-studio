@@ -13,9 +13,7 @@ const CategoriesBlock = () => {
   return (
     <div id="CategoriesBlock">
       <div className="categories-container">
-        <h2 className="categories-block-title">
-          Danh mục hàng đầu của chúng tôi
-        </h2>
+        <h2 className="categories-block-title">Danh mục khác</h2>
         <div className="categories-list">
           <CategoryCarousel categories={categories} />
         </div>

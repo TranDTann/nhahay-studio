@@ -7,7 +7,7 @@
 .main-container {
   width: 85%;
   margin: 80px auto 0;
-  padding: 24px 0 64px;
+  padding: 24px 0 48px;
   flex: 1;
 }
 .main-container-led-text {
@@ -42,13 +42,13 @@
 @media (min-width: 1200px) {
   .main-container {
     width: 95%;
-    padding: 24px 0 64px;
+    padding: 24px 0 48px;
   }
 }
 
 @media (min-width: 1536px) {
   .main-container {
     width: 85%;
-    padding: 24px 0 64px;
+    padding: 24px 0 48px;
   }
 }

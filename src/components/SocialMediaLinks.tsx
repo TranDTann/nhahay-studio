@@ -24,48 +24,48 @@ const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({
     showLabels = false
 }) => {
     const { loading, getSocialMediaUrls } = useSessionConfig();
-    const { FACEBOOK, INSTAGRAM, TIKTOK, YOUTUBE, TWITTER, LINKEDIN } = getSocialMediaUrls();
+    const { facebook, instagram, tiktok, youtube, twitter, linkedin, zalo } = getSocialMediaUrls();
 
     const socialLinks = [
         {
             key: 'facebook',
             icon: <FacebookOutlined />,
-            url: FACEBOOK,
+            url: facebook,
             label: 'Facebook',
             color: '#1877f2'
         },
         {
             key: 'instagram',
             icon: <InstagramOutlined />,
-            url: INSTAGRAM,
+            url: instagram,
             label: 'Instagram',
             color: '#e4405f'
         },
         {
             key: 'tiktok',
             icon: <TikTokOutlined />,
-            url: TIKTOK,
+            url: tiktok,
             label: 'TikTok',
             color: '#000000'
         },
         {
             key: 'youtube',
             icon: <YoutubeOutlined />,
-            url: YOUTUBE,
+            url: youtube,
             label: 'YouTube',
             color: '#ff0000'
         },
         {
             key: 'twitter',
             icon: <TwitterOutlined />,
-            url: TWITTER,
+            url: twitter,
             label: 'Twitter',
             color: '#1da1f2'
         },
         {
             key: 'linkedin',
             icon: <LinkedinOutlined />,
-            url: LINKEDIN,
+            url: linkedin,
             label: 'LinkedIn',
             color: '#0077b5'
         }

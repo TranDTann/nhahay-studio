@@ -1,5 +1,6 @@
 import { useConfig } from '@/hooks/useConfig'
 import { useFooterStore } from '@/store/footer/footerStore'
+import { EConfig } from '@/types/config'
 import { getConfigValue } from '@/utils/getConfig'
 import { Button, Col, Modal, Row } from 'antd'
 import { useEffect, useState } from 'react'
@@ -21,7 +22,7 @@ const Footer = () => {
     return null
   }
 
-  const description = getConfigValue('ABOUT-US', configs)
+  const description = getConfigValue(EConfig.ABOUT_US, configs)
 
   const isTablet = window.innerWidth < 767
 

@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
-import { sessionStorageUtils } from '@/utils/sessionStorage'
 import { configService } from '@/api/configService'
+import { EConfig } from '@/types/config'
+import { sessionStorageUtils } from '@/utils/sessionStorage'
+import { useEffect, useState } from 'react'
 
 export const useSessionConfig = () => {
   const [configs, setConfigs] = useState<any[]>([])
@@ -12,20 +13,20 @@ export const useSessionConfig = () => {
   }
 
   // Lấy config value theo key
-  const getConfigByKey = (key: string): string | null => {
+  const getConfigByKey = (key: EConfig): string | null => {
     return sessionStorageUtils.getConfigByKey(key)
   }
 
   // Lấy social media URLs
   const getSocialMediaUrls = () => {
     return {
-      FACEBOOK: getConfigByKey('FACEBOOK') || '',
-      INSTAGRAM: getConfigByKey('INSTAGRAM') || '',
-      TIKTOK: getConfigByKey('TIKTOK') || '',
-      YOUTUBE: getConfigByKey('YOUTUBE') || '',
-      TWITTER: getConfigByKey('TWITTER') || '',
-      LINKEDIN: getConfigByKey('LINKEDIN') || '',
-      ZALO: getConfigByKey('ZALO') || ''
+      facebook: getConfigByKey(EConfig.FACEBOOK) || '',
+      instagram: getConfigByKey(EConfig.INSTAGRAM) || '',
+      tiktok: getConfigByKey(EConfig.TIKTOK) || '',
+      youtube: getConfigByKey(EConfig.YOUTUBE) || '',
+      twitter: getConfigByKey(EConfig.TWITTER) || '',
+      linkedin: getConfigByKey(EConfig.LINKEDIN) || '',
+      zalo: getConfigByKey(EConfig.ZALO) || ''
     }
   }
 

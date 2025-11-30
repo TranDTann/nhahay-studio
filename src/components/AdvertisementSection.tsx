@@ -4,17 +4,18 @@ import { Image } from 'antd';
 import { YoutubeOutlined, TikTokOutlined, FacebookOutlined } from '@ant-design/icons';
 import { useSessionConfig } from '@/hooks/useSessionConfig';
 import '@/assets/style/AdvertisementSection.scss';
+import { EConfig } from '@/types/config';
 
 const AdvertisementSection: React.FC = () => {
     const { getConfigByKey } = useSessionConfig();
 
     // Lấy các config từ session storage
-    const websiteUrl = getConfigByKey('website') || 'https://nhahaystudio.com';
-    const siteName = getConfigByKey('site_name') || 'nhahaystudio.vn';
-    const slogan = getConfigByKey('slogan') || `${siteName} là sản phẩm nằm trong hệ sinh thái Nhà của chúng tôi gồm:`;
-    const facebookUrl = getConfigByKey('FACEBOOK');
-    const youtubeUrl = getConfigByKey('YOUTUBE');
-    const tiktokUrl = getConfigByKey('TIKTOK');
+    const websiteUrl = getConfigByKey(EConfig.WEBSITE_URL) || 'https://nhahaystudio.com';
+    const siteName = getConfigByKey(EConfig.SITE_NAME) || 'nhahaystudio.vn';
+    const slogan = getConfigByKey(EConfig.CATEGORY_PAGE_SLOGAN) || `${siteName} là sản phẩm nằm trong hệ sinh thái Nhà của chúng tôi gồm:`;
+    const facebookUrl = getConfigByKey(EConfig.FACEBOOK);
+    const youtubeUrl = getConfigByKey(EConfig.YOUTUBE);
+    const tiktokUrl = getConfigByKey(EConfig.TIKTOK);
 
     const socialPlatforms = [
         {
