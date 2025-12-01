@@ -18,7 +18,7 @@ const SignUpView = () => {
         <p>Bạn đã có tài khoản?</p>
         <Button
           type="link"
-          className="login-now-button"
+          className="login-now-button color-primary"
           onClick={() => router.push(paths.auth.login)}
         >
           Đăng nhập

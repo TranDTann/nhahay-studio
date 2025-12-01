@@ -42,7 +42,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <NavigationBar />
       <div
         id="main-body"
-        className={`main-container ${isPostDetailPage && 'main-container-width-80'} 
+        className={`main-container ${
+          isPostDetailPage && 'main-container-width-80'
+        } 
         ${hasLedText && 'main-container-led-text'}
           `}
       >
@@ -51,7 +53,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <Footer />
       <BackToTop />
       <PopupBanner />
-    </div >
+    </div>
   )
 }
 

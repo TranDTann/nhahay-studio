@@ -40,3 +40,31 @@
 .login-now-button {
   padding: 0 !important;
 }
+
+@media (max-width: 1440px) {
+  .signup-wrapper {
+    width: 40%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 991px) {
+  .signup-wrapper {
+    width: 50%;
+    max-width: 60%;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 480px) {
+  .signup-wrapper {
+    width: 60%;
+    max-width: 70%;
+  }
+}
+
+@media (max-width: 479px) {
+  .signup-wrapper {
+    width: 80%;
+    max-width: 80%;
+  }
+}

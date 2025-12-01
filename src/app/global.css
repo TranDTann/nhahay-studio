@@ -140,3 +140,8 @@
 .border-color-primary:hover {
   border-color: rgba(118, 75, 162, 0.7) !important;
 }
+
+.ant-drawer-content-wrapper {
+  width: 100vw !important;
+  box-shadow: none !important;
+}

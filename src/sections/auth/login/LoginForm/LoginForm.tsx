@@ -77,7 +77,12 @@ const LoginForm = () => {
         </Flex>
       </Form.Item>
       <Form.Item className="login-button-wrapper">
-        <Button block type="primary" htmlType="submit" className="login-button">
+        <Button
+          block
+          type="primary"
+          htmlType="submit"
+          className="login-button background-color-primary"
+        >
           Đăng nhập
         </Button>
       </Form.Item>

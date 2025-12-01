@@ -1,22 +1,21 @@
+import { useNavigationBarStore } from '@/store/navigationBar/navigationBarStore'
 import { Drawer } from 'antd'
-import { useState } from 'react'
 import { FaBars } from 'react-icons/fa'
+import { LedTextBanner } from '../LedTextBanner'
 import { LoginInformation } from './LoginInformation'
 import { Logo } from './Logo'
 import { Menu } from './Menu'
 import './styles.scss'
-import { LedTextBanner } from '../LedTextBanner'
 
 interface NavigationBarProps {
   className?: string
 }
 
 const NavigationBar = ({ className }: NavigationBarProps) => {
-  const [openMenu, setOpenMenu] = useState(false)
+  const { openMenu } = useNavigationBarStore((state) => state)
 
   return (
     <div id="NavigationBar" className={className}>
-
       <div className="navigation-bar-container">
         <LedTextBanner />
         <div className="navigation-bar-container-content">
@@ -26,7 +25,9 @@ const NavigationBar = ({ className }: NavigationBarProps) => {
             <LoginInformation />
             <button
               className="menu-toggle"
-              onClick={() => setOpenMenu(!openMenu)}
+              onClick={() =>
+                useNavigationBarStore.setState({ openMenu: !openMenu })
+              }
             >
               <FaBars />
             </button>
@@ -39,7 +40,7 @@ const NavigationBar = ({ className }: NavigationBarProps) => {
         style={{
           width: '80%'
         }}
-        onClose={() => setOpenMenu(false)}
+        onClose={() => useNavigationBarStore.setState({ openMenu: false })}
         open={openMenu}
       >
         <Menu mode="inline" />

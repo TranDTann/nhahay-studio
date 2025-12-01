@@ -3,7 +3,13 @@ import { Spin } from 'antd'
 import './styles.css'
 
 const LoadingSpinner = () => {
-  return <Spin indicator={<LoadingOutlined className="loading-icon" spin />} />
+  return (
+    <Spin
+      indicator={
+        <LoadingOutlined className="loading-icon color-primary" spin />
+      }
+    />
+  )
 }
 
 export default LoadingSpinner

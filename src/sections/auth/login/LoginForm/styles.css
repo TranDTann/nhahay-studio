@@ -18,6 +18,13 @@
   border-radius: 14px !important;
 }
 
+.email-address-input:hover,
+.email-address-input:focus,
+.email-address-input:focus-within,
+.email-address-input:active {
+  border-color: rgba(118, 75, 162, 1) !important;
+}
+
 /* password-input */
 .password-input {
   font-size: 30px;
@@ -25,6 +32,13 @@
   opacity: 80% !important;
   height: 52px;
   border-radius: 14px !important;
+}
+
+.password-input:hover,
+.password-input:focus,
+.password-input:focus-within,
+.password-input:active {
+  border-color: rgba(118, 75, 162, 1) !important;
 }
 
 /* Login button */
@@ -45,12 +59,16 @@
   margin-bottom: 12px !important;
 }
 .remember-checkbox .ant-checkbox-checked .ant-checkbox-inner {
-  /* background-color: #7754f6 !important;
-  border-color: #7754f6 !important; */
+  background: linear-gradient(
+    135deg,
+    rgb(102, 126, 234) 0%,
+    rgb(118, 75, 162) 70%
+  ) !important;
 }
 .remember-checkbox .ant-checkbox-inner {
   border-color: #d9d9d9 !important;
 }
+
 .remember-checkbox .ant-checkbox-checked .ant-checkbox-inner::after {
   border-color: white;
 }

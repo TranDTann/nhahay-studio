@@ -40,7 +40,7 @@
 
 .sign-up-button {
   padding: 0 !important;
-  color: #52c41a !important;
+  font-weight: 600 !important;
 }
 
 /* login-with-others */
@@ -61,4 +61,32 @@
 .login-with-others p:nth-of-type(2) {
   font-weight: 400;
   font-size: 16px;
+}
+
+@media (max-width: 1440px) {
+  .login-wrapper {
+    width: 40%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 991px) {
+  .login-wrapper {
+    width: 50%;
+    max-width: 60%;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 480px) {
+  .login-wrapper {
+    width: 60%;
+    max-width: 70%;
+  }
+}
+
+@media (max-width: 479px) {
+  .login-wrapper {
+    width: 80%;
+    max-width: 80%;
+  }
 }

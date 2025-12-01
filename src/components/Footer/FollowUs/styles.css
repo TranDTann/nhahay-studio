@@ -32,7 +32,7 @@
 }
 
 .social-item:hover {
-  color: #52c41a;
+  color: rgba(118, 75, 162, 1);
 }
 
 .social-item_icon {

@@ -1,5 +1,6 @@
 import paths from '@/routes/paths'
 import { Category } from '@/store/categories/crud'
+import { useNavigationBarStore } from '@/store/navigationBar/navigationBarStore'
 import Link from 'next/link'
 
 type TGetMenuProps = {
@@ -10,11 +11,19 @@ type TGetMenuProps = {
 export const getMenu = ({ categories, isAdmin }: TGetMenuProps) => [
   {
     key: '/home',
-    label: <Link href="/home">Trang chủ</Link>
+    label: (
+      <Link
+        href="/home"
+        onClick={() => useNavigationBarStore.setState({ openMenu: false })}
+      >
+        Trang chủ
+      </Link>
+    )
   },
   {
     key: '/categories',
     label: 'Danh mục bài viết',
+    popupClassName: 'category-menu-popup',
     children: categories.map((categoryItem) => ({
       key: categoryItem.id,
       label: (
@@ -23,6 +32,7 @@ export const getMenu = ({ categories, isAdmin }: TGetMenuProps) => [
             id: categoryItem.id,
             title: categoryItem.name
           })}
+          onClick={() => useNavigationBarStore.setState({ openMenu: false })}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <img
@@ -46,7 +56,16 @@ export const getMenu = ({ categories, isAdmin }: TGetMenuProps) => [
     ? [
         {
           key: '/admin',
-          label: <Link href={paths.admin.articles()}>Admin</Link>,
+          label: (
+            <Link
+              href={paths.admin.articles()}
+              onClick={() =>
+                useNavigationBarStore.setState({ openMenu: false })
+              }
+            >
+              Admin
+            </Link>
+          ),
           hidden: true
         }
       ]

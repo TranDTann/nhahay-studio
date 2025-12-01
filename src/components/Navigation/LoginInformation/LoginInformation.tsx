@@ -19,12 +19,12 @@ const LoginInformation = ({ isTablet }: TLoginInformationProps) => {
   const router = useRouter()
   const { loginWithGoogle, authUser } = useAuthStore((state) => state)
 
-  const handleLoginWithGoogle = async () => {
-    try {
-      await loginWithGoogle({})
-      router.push(paths.dashboard.home())
-    } catch (error) {}
-  }
+  // const handleLoginWithGoogle = async () => {
+  //   try {
+  //     await loginWithGoogle({})
+  //     router.push(paths.dashboard.home())
+  //   } catch (error) {}
+  // }
 
   if (!authUser) {
     return (

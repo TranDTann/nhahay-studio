@@ -5,7 +5,11 @@ import './styles.css'
 const LoadingScreen = () => {
   return (
     <div className="loading-screen">
-      <Spin indicator={<LoadingOutlined className="loading-icon" spin />} />
+      <Spin
+        indicator={
+          <LoadingOutlined className="loading-icon color-primary" spin />
+        }
+      />
     </div>
   )
 }
