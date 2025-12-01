@@ -41,6 +41,7 @@ const Footer = () => {
             <Button
               type="primary"
               style={{ marginTop: '16px' }}
+              className="background-color-primary"
               onClick={() => setIsOpenContactFormModal(true)}
             >
               Gửi liên hệ

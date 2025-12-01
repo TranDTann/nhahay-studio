@@ -30,7 +30,9 @@ const BackToTop: React.FC = () => {
   return (
     <button
       onClick={scrollToTop}
-      className={`back-to-top ${visible ? 'show' : ''}`}
+      className={`background-color-primary back-to-top ${
+        visible ? 'show' : ''
+      }`}
     >
       <FaArrowUp style={{ width: '17px', height: '17px' }} />
     </button>

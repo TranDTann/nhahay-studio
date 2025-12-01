@@ -39,7 +39,7 @@ const ContactForm = () => {
         layout="vertical"
       >
         <Row gutter={16} style={{ height: '48px' }}>
-          <Col span={15} style={{ padding: '0 4px 0 12px' }}>
+          <Col span={15} style={{ padding: '0 4px 0 8px' }}>
             <Form.Item
               name="userName"
               rules={[
@@ -54,7 +54,7 @@ const ContactForm = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={9} style={{ padding: '0 12px 0 4px' }}>
+          <Col span={9} style={{ padding: '0 8px 0 4px' }}>
             <Form.Item
               name="phone"
               rules={[
@@ -74,7 +74,7 @@ const ContactForm = () => {
           </Col>
         </Row>
         <Row gutter={24} style={{ height: '48px' }}>
-          <Col span={24} style={{ padding: '0 4px 0 12px' }}>
+          <Col span={24} style={{ padding: '0 12px 0 12px' }}>
             <Form.Item
               name="email"
               rules={[
@@ -92,14 +92,18 @@ const ContactForm = () => {
         </Row>
         <Form.Item name="note">
           <TextArea
-            prefix="1111"
+            prefix="Ghi chú"
             placeholder="Ghi chú"
             autoSize={{ minRows: 3, maxRows: 5 }}
             className="contact-input"
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="submit-button">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="submit-button background-color-primary"
+          >
             Gửi Liên hệ
           </Button>
         </Form.Item>

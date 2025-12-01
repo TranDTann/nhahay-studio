@@ -6,6 +6,12 @@
     color: rgb(34 34 34 / 88%);
   }
 
+  .menu-container .ant-menu-item-selected::after,
+  .menu-container .ant-menu-item-active::after,
+  .menu-container .ant-menu-submenu-active::after {
+    border-bottom-color: rgba(118, 75, 162, 1) !important;
+  }
+
   @media (max-width: 767px) {
     .menu-container {
       display: none;
@@ -13,6 +19,18 @@
 
     .menu-tablet {
       display: block;
+      max-height: 80vh;
+      overflow-y: auto;
     }
   }
+}
+
+.category-menu-popup {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.category-menu-popup .ant-menu {
+  max-height: none !important;
+  overflow: visible !important;
 }

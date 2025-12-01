@@ -35,7 +35,7 @@
 
 .popup-banner-close:hover {
   background-color: #f5f5f5;
-  border-color: #40a9ff;
+  border-color: rgba(118, 75, 162, 1);
   transform: scale(1.1);
 }
 
@@ -89,4 +89,3 @@
     font-size: 14px;
   }
 }
-

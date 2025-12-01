@@ -18,6 +18,13 @@
   border-radius: 14px !important;
 }
 
+.email-address-input:hover,
+.email-address-input:focus,
+.email-address-input:focus-within,
+.email-address-input:active {
+  border-color: rgba(118, 75, 162, 1) !important;
+}
+
 /* password-input */
 .password-input {
   font-size: 30px;
@@ -25,6 +32,13 @@
   opacity: 80% !important;
   height: 52px;
   border-radius: 14px !important;
+}
+
+.password-input:hover,
+.password-input:focus,
+.password-input:focus-within,
+.password-input:active {
+  border-color: rgba(118, 75, 162, 1) !important;
 }
 
 /* Login button */

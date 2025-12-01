@@ -7,17 +7,12 @@
   z-index: 9999;
   padding: 12px;
   border-radius: 100%;
-  background-color: #52c41a;
   color: #fff;
-  box-shadow: 0 2px 8px #3aad00;
+  box-shadow: 0 2px 8px rgb(118, 75, 162);
   border: none;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.2s ease;
-}
-
-.back-to-top:hover {
-  background-color: #67cc35;
 }
 
 .back-to-top.show {

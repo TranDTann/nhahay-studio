@@ -1,7 +1,7 @@
 #VideoItem {
   .video-title {
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 16x;
+    line-height: 22px;
     font-weight: 600;
     cursor: pointer;
   }
@@ -11,17 +11,15 @@
 
   @media screen and (max-width: 767px) {
     .video-title {
-      font-size: 18px;
-      line-height: 26px;
-      font-weight: 600;
+      font-size: 16px;
+      line-height: 22px;
     }
   }
 
-  @media screen and (max-width: 576px) {
+  @media screen and (max-width: 478px) {
     .video-title {
-      font-size: 18px;
-      line-height: 24px;
-      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
     }
   }
 }

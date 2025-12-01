@@ -103,7 +103,7 @@ const SignupForm = () => {
           block
           type="primary"
           htmlType="submit"
-          className="signup-button"
+          className="signup-button background-color-primary"
         >
           Tạo tài khoản
         </Button>

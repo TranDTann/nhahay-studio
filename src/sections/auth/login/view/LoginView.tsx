@@ -18,7 +18,7 @@ const LoginView = () => {
         <p>Bạn chưa có tài khoản?</p>
         <Button
           type="link"
-          className="sign-up-button"
+          className="sign-up-button color-primary"
           onClick={() => router.push(paths.auth.signup)}
         >
           Đăng ký
@@ -29,7 +29,8 @@ const LoginView = () => {
           Sử dụng không cần đăng nhập
         </p>
         <Button
-          style={{ padding: '4px', color: '#52c41a' }}
+          style={{ padding: '4px', fontWeight: 600 }}
+          className="color-primary"
           type="link"
           onClick={() => router.push(paths.dashboard.home())}
         >
