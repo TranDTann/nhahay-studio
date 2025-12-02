@@ -12,7 +12,7 @@
 }
 
 .post-detail-container {
-  margin: 0 auto;
+  margin: -24px auto 0 auto;
   display: flex;
   flex-direction: column;
   gap: 28px;

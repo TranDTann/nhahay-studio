@@ -36,6 +36,22 @@
   }
 }
 
+// Article Meta Rate Component
+.article-meta-rate {
+  .ant-rate-star {
+    color: rgba(255, 255, 255, 0.4) !important;
+
+    &.ant-rate-star-full,
+    &.ant-rate-star-half .ant-rate-star-first {
+      color: #ffd700 !important;
+    }
+
+    &.ant-rate-star-zero {
+      color: rgba(255, 255, 255, 0.3) !important;
+    }
+  }
+}
+
 // Article Breadcrumb Component
 .article-breadcrumb {
   padding: $spacing-md 0;

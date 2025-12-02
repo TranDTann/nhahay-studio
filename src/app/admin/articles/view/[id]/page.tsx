@@ -12,7 +12,7 @@ import { advertisementCrud } from '@/store/advertisement/crud'
 import { articleCrud } from '@/store/article/crud'
 import { Category as ApiCategory, categoryCrud } from '@/store/categories/crud'
 import { Tag as ApiTag, tagCrud } from '@/store/tags/crud'
-import { DownOutlined, LinkOutlined } from '@ant-design/icons'
+import { DownOutlined, LinkOutlined, UserOutlined } from '@ant-design/icons'
 import { EConfig } from '@/types/config'
 import { App, Button, Card, Collapse, Space, Spin, Tag, Typography } from 'antd'
 import { usePathname, useRouter } from 'next/navigation'
@@ -126,6 +126,20 @@ export default function ArticleDetailPage({
 
   return (
     <div>
+      {!params.noHeader && (
+        <ArticleBreadcrumb
+          articleTitle={article.title}
+          articleId={article.id}
+        />
+      )}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <UserOutlined style={{ color: '#1890ff', fontSize: '20px' }} />
+        <Text style={{ fontWeight: 700, color: '#777', fontSize: '18px', letterSpacing: '0.5px', marginLeft: '8px' }}>
+          {article.authorName}
+        </Text>
+      </div>
+      <div className={styles.articleTitle}>{article.title}</div>
+
       {/* Title */}
       <ArticleMeta
         createdAt={article.createdAt}
@@ -137,12 +151,6 @@ export default function ArticleDetailPage({
         authorName={article.authorName || ''}
       />
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
-        {!params.noHeader && (
-          <ArticleBreadcrumb
-            articleTitle={article.title}
-            articleId={article.id}
-          />
-        )}
 
         {/* Article Layout with Table of Contents */}
         <div className={styles.articleLayout}>
@@ -152,7 +160,6 @@ export default function ArticleDetailPage({
           </div>
 
           <div className={styles.articleContentWrapper}>
-            <div className={styles.articleTitle}>{article.title}</div>
 
             {/* Mobile version - Collapse for Table of Contents and Follow (at top) */}
             <div className={styles.mobileCollapseWrapper}>
@@ -242,7 +249,6 @@ export default function ArticleDetailPage({
                     'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   borderRadius: '12px',
                   padding: '20px',
-                  margin: '24px 0',
                   border: '1px solid #e8e8e8',
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                   position: 'relative',
