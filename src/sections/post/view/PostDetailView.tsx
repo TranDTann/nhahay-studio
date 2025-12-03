@@ -81,7 +81,11 @@ const PostDetailView = () => {
           className="comment-container_not-login"
         >
           <p>Bạn cần đăng nhập để bình luận và đánh giá về bài viết này</p>
-          <Button type="primary" onClick={handleClickLogin}>
+          <Button
+            className="background-color-primary"
+            type="primary"
+            onClick={handleClickLogin}
+          >
             Đăng nhập
           </Button>
         </Flex>
