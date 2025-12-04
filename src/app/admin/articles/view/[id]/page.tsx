@@ -40,7 +40,7 @@ interface Article {
     imageUrl: string
     link: string
   }[]
-  ratingAvg: number
+  valueRating: number
   authorName: string
 }
 
@@ -147,7 +147,7 @@ export default function ArticleDetailPage({
         publishAt={article?.publishAt}
         categoryName={article.category?.name || 'No category'}
         tags={article.tags.map((tag) => tag.name)}
-        ratingAvg={article.ratingAvg || 0}
+        valueRating={article.valueRating || 0}
         authorName={article.authorName || ''}
       />
       <Space direction="vertical" size="large" style={{ width: '100%' }}>

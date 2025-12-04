@@ -29,7 +29,7 @@ const PostDetailHeader = ({ postData }: TPostDetailHeaderProps) => {
           <div>
             <span>{postData.readingTimeMinutes} phút đọc</span>
             <Divider type="vertical" style={{ borderColor: '#bababa' }} />
-            <span>{postData.ratingAvg}*</span>
+            <span>{postData.valueRating}*</span>
           </div>
         </div>
       </div>

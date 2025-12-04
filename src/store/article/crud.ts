@@ -12,7 +12,7 @@ export interface Article {
   publishAt: string | null
   status: number
   viewAmount: number
-  ratingAvg: number
+  valueRating: number
   commentAmount: number
   category: {
     id: string

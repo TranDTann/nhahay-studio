@@ -1,19 +1,26 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
 import { Modal } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
 import { bannerCrud, Banner } from '@/store/banner/crud'
 import './styles.css'
 
+const POPUP_BANNER_SEEN_KEY = 'popup_banner_seen'
+
 const PopupBanner = () => {
-    const pathname = usePathname()
     const [popupBanner, setPopupBanner] = useState<Banner | null>(null)
     const [visible, setVisible] = useState(false)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        // Kiểm tra xem user đã xem popup trong session này chưa
+        const hasSeenPopup = sessionStorage.getItem(POPUP_BANNER_SEEN_KEY)
+        if (hasSeenPopup === 'true') {
+            setLoading(false)
+            return
+        }
+
         const fetchPopupBanner = async () => {
             try {
                 setLoading(true)
@@ -40,10 +47,12 @@ const PopupBanner = () => {
         }
 
         fetchPopupBanner()
-    }, [pathname])
+    }, [])
 
     const handleClose = () => {
         setVisible(false)
+        // Lưu vào sessionStorage để không hiển thị lại trong session này
+        sessionStorage.setItem(POPUP_BANNER_SEEN_KEY, 'true')
     }
 
     const handleBannerClick = (e: React.MouseEvent<HTMLDivElement>) => {
