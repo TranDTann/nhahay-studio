@@ -48,7 +48,7 @@ interface Article {
     isFeatured?: boolean;
     // New fields
     authorName?: string;
-    ratingAvg?: number;
+    valueRating?: number;
 }
 
 interface Category {
@@ -102,7 +102,7 @@ export default function FormBlog({ id }: FormBlogProps) {
         publishAt: null,
         isFeatured: false,
         authorName: '',
-        ratingAvg: undefined
+        valueRating: undefined
     });
 
     useEffect(() => {
@@ -135,7 +135,7 @@ export default function FormBlog({ id }: FormBlogProps) {
                         publishAt: detail.publishAt || null,
                         isFeatured: detail.isFeatured || false,
                         authorName: detail.authorName || '',
-                        ratingAvg: typeof detail.ratingAvg === 'number' ? detail.ratingAvg : undefined
+                        valueRating: typeof detail.valueRating === 'number' ? detail.valueRating : undefined
                     });
 
                     // Parse content blocks if they exist, otherwise convert from content
@@ -371,8 +371,8 @@ export default function FormBlog({ id }: FormBlogProps) {
         }
 
         // Normalize rating to 0-5 if provided
-        const normalizedRating = typeof article.ratingAvg === 'number'
-            ? Math.max(0, Math.min(5, article.ratingAvg))
+        const normalizedRating = typeof article.valueRating === 'number'
+            ? Math.max(0, Math.min(5, article.valueRating))
             : undefined;
 
         try {
@@ -408,7 +408,7 @@ export default function FormBlog({ id }: FormBlogProps) {
                 publishAt: article.publishAt,
                 isFeatured: article.isFeatured,
                 authorName: article.authorName,
-                ratingAvg: normalizedRating
+                valueRating: normalizedRating
             }
 
             if (id && id !== 'new') {
@@ -666,11 +666,11 @@ export default function FormBlog({ id }: FormBlogProps) {
                     max={5}
                     step={0.5}
                     className="form-input"
-                    value={typeof article.ratingAvg === 'number' ? article.ratingAvg : ''}
+                    value={typeof article.valueRating === 'number' ? article.valueRating : ''}
                     onChange={(e) => {
                         const value = e.target.value;
                         const num = value === '' ? undefined : parseFloat(value);
-                        setArticle(prev => ({ ...prev, ratingAvg: isNaN(num as number) ? undefined : num }));
+                        setArticle(prev => ({ ...prev, valueRating: isNaN(num as number) ? undefined : num }));
                     }}
                     placeholder="Enter rating"
                 />

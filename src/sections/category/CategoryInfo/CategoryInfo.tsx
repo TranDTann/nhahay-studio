@@ -14,7 +14,7 @@ type TCategoryInfoProps = {
 const CategoryInfo = ({ categoryData }: TCategoryInfoProps) => {
   const { configs } = useConfig()
 
-  const slogan = getConfigValue(EConfig.CATEGORY_PAGE_SLOGAN, configs)
+  const slogan = getConfigValue(EConfig.SLOGAN_BOTTOM, configs)
 
   return (
     <div id="CategoryInfo">

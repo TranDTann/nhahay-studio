@@ -19,7 +19,7 @@ interface ArticleMetaProps {
   publishAt: string
   categoryName: string
   tags: string[]
-  ratingAvg: number
+  valueRating: number
   authorName: string
 }
 
@@ -29,7 +29,7 @@ export default function ArticleMeta({
   publishAt,
   categoryName,
   tags,
-  ratingAvg,
+  valueRating,
   authorName
 }: ArticleMetaProps) {
   const formatDate = (dateString: string) => {
@@ -78,7 +78,7 @@ export default function ArticleMeta({
             >
               <Rate
                 disabled
-                value={ratingAvg || 0}
+                value={valueRating || 0}
                 allowHalf
                 style={{ fontSize: '14px' }}
                 className="article-meta-rate"

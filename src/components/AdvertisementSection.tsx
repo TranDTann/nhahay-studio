@@ -12,7 +12,8 @@ const AdvertisementSection: React.FC = () => {
     // Lấy các config từ session storage
     const websiteUrl = getConfigByKey(EConfig.WEBSITE_URL) || 'https://nhahaystudio.com';
     const siteName = getConfigByKey(EConfig.SITE_NAME) || 'nhahaystudio.vn';
-    const slogan = getConfigByKey(EConfig.CATEGORY_PAGE_SLOGAN) || `${siteName} là sản phẩm nằm trong hệ sinh thái Nhà của chúng tôi gồm:`;
+    const sloganBottom = getConfigByKey(EConfig.SLOGAN_BOTTOM) || `${siteName} là sản phẩm nằm trong hệ sinh thái Nhà của chúng tôi gồm:`;
+    const sloganTop = getConfigByKey(EConfig.SLOGAN_TOP) || '';
     const facebookUrl = getConfigByKey(EConfig.FACEBOOK);
     const youtubeUrl = getConfigByKey(EConfig.YOUTUBE);
     const tiktokUrl = getConfigByKey(EConfig.TIKTOK);
@@ -49,19 +50,11 @@ const AdvertisementSection: React.FC = () => {
 
     return (
         <div className="advertisement-section" style={{ width: '100%', margin: '32px 0', textAlign: 'center' }}>
-            <p style={{ fontSize: 16, marginBottom: 16 }}>
-                Những người theo dõi <span className="site-name">{siteName}</span> đã lâu khi muốn tìm mua các sản phẩm mà chúng tôi review họ sẽ truy cập vào
-                <a
-                    className="website-link"
-                    style={{ marginLeft: 4 }}
-                    href={websiteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {websiteUrl.replace(/^https?:\/\//, '')}
-                </a>
-                (đây là website con nằm trong hệ sinh thái NHÀ, tại đây trưng bày các sản phẩm mà chúng tôi đánh giá là HAY!)
-            </p>
+            {sloganTop && (
+                <p style={{ fontSize: 16, marginBottom: 16 }}>
+                    {sloganTop}
+                </p>
+            )}
 
             <div style={{ width: 'auto', maxWidth: 600, margin: '0 auto 24px auto' }}>
                 <img
@@ -79,17 +72,7 @@ const AdvertisementSection: React.FC = () => {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
             }}>
                 <p style={{ fontSize: 15, marginBottom: 24 }}>
-                    {slogan}
-                    {socialPlatforms.map((platform, index) => (
-                        <React.Fragment key={platform.name}>
-                            {index > 0 && index === socialPlatforms.length - 1 && ' và '}
-                            {index > 0 && index < socialPlatforms.length - 1 && ', '}
-                            <a style={{ color: platform.color }} href={platform.url} target="_blank" rel="noopener noreferrer">
-                                {platform.name} Nhà hay Studio
-                            </a>
-                        </React.Fragment>
-                    ))}
-                    ...vv
+                    {sloganBottom}
                 </p>
 
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 16 }}>
