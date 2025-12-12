@@ -2,4 +2,18 @@
   .rating-author {
     font-size: 13px;
   }
+
+  .rate-icon {
+    font-size: 16px;
+  }
+
+  @media screen and (max-width: 479px) {
+    .rate-total {
+      font-size: 14px;
+    }
+
+    .rating-author {
+      width: 30%;
+    }
+  }
 }
