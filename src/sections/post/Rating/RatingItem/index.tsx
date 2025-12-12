@@ -20,8 +20,8 @@ const RatingItem = ({ rating }: TRatingItemProps) => {
       <p className="rating-author display-max-1-lines">
         {rating.ratingUserName}
       </p>
-      <Rate allowHalf value={rating.rating} style={{ fontSize: 16 }} />
-      <p>({rating.rating} sao)</p>
+      <Rate className="rate-icon" allowHalf value={rating.rating} />
+      <p className="rate-total">({rating.rating} sao)</p>
     </Flex>
   )
 }

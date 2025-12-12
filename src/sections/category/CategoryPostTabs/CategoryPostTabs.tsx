@@ -35,7 +35,7 @@ const CategoryPostTabs = () => {
           })
         }
         className="category-post-selection-container"
-        style={{ backgroundColor: '#fff', width: 200 }}
+        style={{ backgroundColor: '#fff' }}
         options={tabItems.map((item) => ({
           label: item.label,
           value: item.key

@@ -15,6 +15,11 @@
     .comment-textarea {
       width: 100%;
     }
+
+    .comment-textarea:hover,
+    .comment-textarea:focus {
+      border-color: rgba(118, 75, 162, 1) !important;
+    }
   }
 
   .comment-container_not-login {
@@ -58,7 +63,6 @@
 
   .send-button {
     font-size: 24px;
-    color: #52c41a;
   }
 
   .comment-user-icon {
@@ -81,7 +85,6 @@
   .send-reply-button {
     font-size: 14px;
     padding: 0;
-    color: #52c41a;
   }
 
   .reply-input {

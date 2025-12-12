@@ -10,6 +10,11 @@
   padding: 24px 0 48px;
   flex: 1;
 }
+
+.main-container-category {
+  padding: 0 0 48px;
+}
+
 .main-container-led-text {
   margin-top: 130px !important;
 }
@@ -22,6 +27,10 @@
   .main-container {
     width: 100%;
     padding: 20px 12px;
+  }
+
+  .main-container-led-text {
+    margin-top: 120px !important;
   }
 }
 
@@ -44,6 +53,10 @@
     width: 90%;
     padding: 20px 0 48px;
   }
+
+  .main-container-category {
+    padding: 0 0 48px;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -51,11 +64,19 @@
     width: 85%;
     padding: 24px 0 48px;
   }
+
+  .main-container-category {
+    padding: 0 0 48px;
+  }
 }
 
 @media (min-width: 1536px) {
   .main-container {
     width: 80%;
     padding: 24px 0 48px;
+  }
+
+  .main-container-category {
+    padding: 0 0 48px;
   }
 }

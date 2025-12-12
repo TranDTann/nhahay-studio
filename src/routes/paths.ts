@@ -2,10 +2,12 @@ import { generateDetailPath } from '@/utils/generatePath'
 
 type TPageParams = { title: string; id: string }
 
-const roots = {
+export const roots = {
   auth: '/auth',
   dashboard: '/dashboard',
-  admin: '/admin'
+  admin: '/admin',
+  category: '/category',
+  postDetail: '/post'
 }
 
 const paths = {

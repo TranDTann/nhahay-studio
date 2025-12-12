@@ -73,7 +73,7 @@ const Comment = ({ postData }: TCommentProps) => {
         disabled={!commentValue}
         loading={isPostCommentLoading}
       >
-        <SendOutlined className="send-button" />
+        <SendOutlined className="send-button color-primary" />
       </Button>
     </Flex>
   ) : null

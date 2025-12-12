@@ -64,9 +64,12 @@
 @media (max-width: 479px) {
   #CategoryPostTabs {
     top: 188px;
+    width: 77.5%;
+    margin-left: calc(-5% / 2);
 
     .category-post-selection-container {
       padding-left: 0;
+      width: 95%;
     }
   }
 }

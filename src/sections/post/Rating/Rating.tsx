@@ -26,9 +26,18 @@ const Rating = ({ postData }: TRatingProps) => {
   const [myRating, setMyRating] = useState<TRating>()
   const [ratingOthers, setRatingOthers] = useState<TRating[]>([])
   const [isPostRatingLoading, setIsPostRatingLoading] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+
     return () => {
+      window.removeEventListener('resize', checkScreenSize)
       resetRatingPostData()
     }
   }, [])
@@ -135,8 +144,9 @@ const Rating = ({ postData }: TRatingProps) => {
           Bạn chưa đánh giá về bài viết này
         </p>
       )}
+      {isMobile && <p style={{ fontSize: '14px' }}> Đánh giá của bạn:</p>}
       <Flex align="center" gap={8}>
-        <p style={{ fontSize: '14px' }}> Đánh giá của bạn:</p>
+        {!isMobile && <p style={{ fontSize: '14px' }}> Đánh giá của bạn:</p>}
         <Rate
           allowHalf
           value={rating}

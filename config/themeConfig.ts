@@ -4,7 +4,7 @@ const theme: ThemeConfig = {
   token: {
     fontFamily: 'Be Vietnam Pro, sans-serif',
     fontSize: 16,
-    colorPrimary: '#52c41a'
+    colorPrimary: 'rgba(118, 75, 162, 1)'
   }
 }
 

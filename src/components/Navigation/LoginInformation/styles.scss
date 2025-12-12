@@ -37,6 +37,11 @@
     cursor: pointer;
   }
 
+  .login-button:hover {
+    color: rgba(118, 75, 162, 0.7) !important;
+    border-color: rgba(118, 75, 162, 0.7) !important;
+  }
+
   @media (max-width: 767px) {
     .desktop-menu {
       display: none;
