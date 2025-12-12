@@ -27,7 +27,6 @@
   }
 
   .reply-button {
-    color: #a1a1a1;
     font-size: 12px;
     font-weight: 500;
     padding: 0;
@@ -38,9 +37,15 @@
     width: 80%;
   }
 
+  .reply-input.ant-input:hover,
+  .reply-input.ant-input:focus,
+  .reply-input.ant-input:focus-within {
+    border-color: rgba(118, 75, 162, 1) !important;
+    box-shadow: none !important;
+  }
+
   .send-reply-button {
     font-size: 14px;
     padding: 0;
-    color: #52c41a;
   }
 }

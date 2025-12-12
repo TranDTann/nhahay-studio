@@ -93,7 +93,7 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
                     {commentItem.commentUserName}
                   </p>
                   <p className="comment-content">{commentItem.content}</p>
-                  {isLoggedIn ? (
+                  {/* {isLoggedIn ? (
                     <Button
                       type="link"
                       className="reply-button"
@@ -103,8 +103,8 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
                     </Button>
                   ) : (
                     <div style={{ height: '8px' }} />
-                  )}
-                  {repliedComment?.id === commentItem.id && (
+                  )} */}
+                  {/* {repliedComment?.id === commentItem.id && (
                     <Flex>
                       <Input
                         placeholder={`Trả lời ${repliedComment.commentUserName}`}
@@ -118,10 +118,10 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
                         disabled={!repliedCommentValue}
                         loading={isReplyCommentLoading}
                       >
-                        <SendOutlined className="send-reply-button" />
+                        <SendOutlined className="send-reply-button color-primary" />
                       </Button>
                     </Flex>
-                  )}
+                  )} */}
                 </div>
               </Flex>
             )
@@ -140,7 +140,7 @@ const CommentItem = ({ comment }: TCommentItemProps) => {
               disabled={!repliedCommentValue}
               loading={isReplyCommentLoading}
             >
-              <SendOutlined className="send-reply-button" />
+              <SendOutlined className="send-reply-button color-primary" />
             </Button>
           </Flex>
         )}

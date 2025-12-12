@@ -34,7 +34,11 @@ const LoginInformation = ({ isTablet }: TLoginInformationProps) => {
             isTablet ? 'tablet-menu' : 'desktop-menu'
           }`}
         >
-          <Button type="default" onClick={() => router.push(paths.auth.login)}>
+          <Button
+            type="default"
+            className="login-button"
+            onClick={() => router.push(paths.auth.login)}
+          >
             Đăng nhập
           </Button>
           {/* <Button type="text" onClick={handleLoginWithGoogle}>
