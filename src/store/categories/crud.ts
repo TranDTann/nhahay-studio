@@ -8,6 +8,7 @@ export interface Category {
   description?: string
   urlThumbnail?: string
   createdAt?: string
+  isTopBar?: boolean
 }
 
 export interface CategoryFilters {

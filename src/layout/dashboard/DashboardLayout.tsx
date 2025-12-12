@@ -7,7 +7,7 @@ import { LoadingScreen } from '@/components/LoadingScreen'
 import { PopupBanner } from '@/components/PopupBanner'
 import NavigationBar from '@/components/Navigation/NavigationBar'
 import { useConfigContext } from '@/contexts/ConfigContext'
-import paths from '@/routes/paths'
+import paths, { roots } from '@/routes/paths'
 import { useAuthStore } from '@/store/auth/authStore'
 import { usePathname } from 'next/navigation'
 import './styles.css'
@@ -33,13 +33,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     content = children
   }
 
-  const isPostDetailPage = pathname.includes(
-    paths.dashboard.postDetail({ id: '', title: '' })
-  )
+  const isPostDetailPage = pathname.includes(roots.postDetail)
 
-  const isCategoryPage = pathname.includes(
-    paths.dashboard.category({ id: '', title: '' })
-  )
+  const isCategoryPage = pathname.includes(roots.category)
 
   return (
     <div className="dashboard-container">
@@ -49,8 +45,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         className={`main-container ${
           isPostDetailPage && 'main-container-width-80'
         } 
-        ${isCategoryPage && 'main-container-category'} 
         ${hasLedText && 'main-container-led-text'}
+        ${isCategoryPage && 'main-container-category'} 
           `}
       >
         {content}
