@@ -37,6 +37,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     paths.dashboard.postDetail({ id: '', title: '' })
   )
 
+  const isCategoryPage = pathname.includes(
+    paths.dashboard.category({ id: '', title: '' })
+  )
+
   return (
     <div className="dashboard-container">
       <NavigationBar />
@@ -45,6 +49,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         className={`main-container ${
           isPostDetailPage && 'main-container-width-80'
         } 
+        ${isCategoryPage && 'main-container-category'} 
         ${hasLedText && 'main-container-led-text'}
           `}
       >

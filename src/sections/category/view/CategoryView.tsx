@@ -28,24 +28,6 @@ const CategoryView = () => {
   const [isPostsLoading, setIsPostsLoading] = useState(false)
 
   const controllerRef = useRef(null)
-  const [controllerHeight, setControllerHeight] = useState(0)
-
-  useLayoutEffect(() => {
-    if (!controllerRef.current) return
-
-    const el = controllerRef.current
-
-    const updateHeight = () => {
-      setControllerHeight(el.offsetHeight)
-    }
-
-    const observer = new ResizeObserver(updateHeight)
-    observer.observe(el)
-
-    updateHeight()
-
-    return () => observer.disconnect()
-  }, [isPostsLoading])
 
   const {
     categories,
@@ -160,12 +142,7 @@ const CategoryView = () => {
           <CategoryPostTabs />
         </div>
       </div>
-      <div
-        className="category-details-content"
-        style={{
-          marginTop: controllerHeight ? `${controllerHeight - 40}px` : '0px'
-        }}
-      >
+      <div className="category-details-content">
         <CategoryPostFilter />
         {postsContent}
         {categoryPosts.length < total && (
