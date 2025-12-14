@@ -138,7 +138,6 @@ export default function ArticleDetailPage({
           {article.authorName}
         </Text>
       </div>
-      <div className={styles.articleTitle}>{article.title}</div>
 
       {/* Title */}
       <ArticleMeta
@@ -150,6 +149,7 @@ export default function ArticleDetailPage({
         valueRating={article.valueRating || 0}
         authorName={article.authorName || ''}
       />
+      <div className={styles.articleTitle}>{article.title}</div>
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
 
         {/* Article Layout with Table of Contents */}

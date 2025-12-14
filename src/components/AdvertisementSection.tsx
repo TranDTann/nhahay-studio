@@ -75,7 +75,7 @@ const AdvertisementSection: React.FC = () => {
                     {sloganBottom}
                 </p>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 16 }}>
+                <div className="social-platforms-container" style={{ display: 'flex', flexWrap: 'nowrap', justifyContent: 'center', gap: 16 }}>
                     {socialPlatforms.map((platform) => (
                         <div
                             key={platform.name}
@@ -87,7 +87,8 @@ const AdvertisementSection: React.FC = () => {
                                 borderRadius: 12,
                                 boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
                                 padding: 16,
-                                marginBottom: 4
+                                marginBottom: 4,
+                                flex: '0 0 auto'
                             }}
                             onClick={() => platform.url && handleSocialClick(platform.url, platform.name)}
                             title={platform.url ? `Click để truy cập ${platform.name}` : ''}
