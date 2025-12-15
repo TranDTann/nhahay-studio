@@ -59,17 +59,17 @@ export const getMenu = ({ categories, isAdmin }: TGetMenuProps) => {
   }
 
   return [
-    {
-      key: '/home',
-      label: (
-        <Link
-          href="/home"
-          onClick={() => useNavigationBarStore.setState({ openMenu: false })}
-        >
-          Trang Chủ
-        </Link>
-      )
-    },
+    // {
+    //   key: '/home',
+    //   label: (
+    //     <Link
+    //       href="/home"
+    //       onClick={() => useNavigationBarStore.setState({ openMenu: false })}
+    //     >
+    //       Trang Chủ
+    //     </Link>
+    //   )
+    // },
     {
       key: '/categories',
       label: 'Tin Tức Gia Dụng',
