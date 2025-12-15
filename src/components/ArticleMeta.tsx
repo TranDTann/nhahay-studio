@@ -58,7 +58,14 @@ export default function ArticleMeta({
           color: '#fff'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '8px'
+          }}
+        >
           <div
             style={{
               display: 'flex',
@@ -122,25 +129,6 @@ export default function ArticleMeta({
               {categoryName}
             </Tag>
           </div>
-
-          {tags.length > 0 && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <TagOutlined style={{ color: '#fff' }} />
-              <Space wrap style={{ marginLeft: '8px' }}>
-                {tags.map((tag, index) => (
-                  <Tag key={index} color="green">
-                    {tag} <span></span>
-                  </Tag>
-                ))}
-              </Space>
-            </div>
-          )}
         </div>
       </div>
     </div>
