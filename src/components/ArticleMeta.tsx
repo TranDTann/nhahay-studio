@@ -40,29 +40,57 @@ export default function ArticleMeta({
     <div
       style={{
         padding: '0 16px',
-        textAlign: 'center',
-
+        textAlign: 'center'
       }}
     >
-      <div style={{
-        textAlign: 'center', marginBottom: '16px',
-        background: 'linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%)',
-        borderRadius: '12px',
-        padding: '16px',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        border: '1px solid #e8e8e8',
-        width: 'fit-content',
-        margin: '0 auto 16px',
-        color: '#fff',
-      }}>
-
-        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div
+        style={{
+          textAlign: 'center',
+          marginBottom: '16px',
+          background:
+            'linear-gradient(135deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%)',
+          borderRadius: '12px',
+          padding: '16px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+          border: '1px solid #e8e8e8',
+          width: 'fit-content',
+          margin: '0 auto 16px',
+          color: '#fff'
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '8px'
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             <CalendarOutlined />
-            <Text type="secondary" style={{ marginLeft: '8px', color: '#fff' }}>{formatDate(publishAt || createdAt)}</Text>
+            <Text type="secondary" style={{ marginLeft: '8px', color: '#fff' }}>
+              {formatDate(publishAt || createdAt)}
+            </Text>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Text type="secondary" style={{ marginRight: '8px', color: '#fff' }}>Điểm đánh giá:</Text>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Text
+              type="secondary"
+              style={{ marginRight: '8px', color: '#fff' }}
+            >
+              Rate:
+            </Text>
             <div
               style={{
                 display: 'inline-flex',
@@ -86,10 +114,20 @@ export default function ArticleMeta({
             </div>
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', marginTop: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div
+          style={{ display: 'flex', alignItems: 'center', marginTop: '8px' }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
             <FolderOutlined style={{ color: '#fff' }} />
-            <Tag color="blue" style={{ marginLeft: '8px' }}>{categoryName}</Tag>
+            <Tag color="blue" style={{ marginLeft: '8px' }}>
+              {categoryName}
+            </Tag>
           </div>
         </div>
       </div>
