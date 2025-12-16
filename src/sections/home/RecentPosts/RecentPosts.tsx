@@ -21,7 +21,7 @@ const RecentPosts = () => {
         setIsLoading(true)
         const response = await articleCrud.getArticles({
           listType: PostTypeEnum.LATEST,
-          pageSize: 4,
+          pageSize: 5,
           isPublished: true
         })
         setRecentPosts(response.result || [])

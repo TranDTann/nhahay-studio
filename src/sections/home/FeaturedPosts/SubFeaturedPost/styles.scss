@@ -40,6 +40,12 @@
     line-height: 28px;
   }
 
+  @media screen and (min-width: 991px) {
+    .sub-featured-post-image {
+      height: 507px !important;
+    }
+  }
+
   @media screen and (max-width: 991px) {
     .sub-featured-post-image {
       width: 100%;

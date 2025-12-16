@@ -32,6 +32,12 @@
     cursor: pointer;
   }
 
+  @media screen and (min-width: 991px) {
+    .trending-post-item-container {
+      height: 80px;
+    }
+  }
+
   @media screen and (max-width: 991px) {
     .trending-post-item-container {
       display: flex !important;

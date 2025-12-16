@@ -102,9 +102,12 @@ const CategoryView = () => {
     return null
   }
 
+  const isInitialLoading =
+    (isGetCategoryLoading || isPostsLoading) && currentPage === 1
+
   let postsContent: ReactNode
 
-  if (isPostsLoading || isGetCategoryLoading) {
+  if (isInitialLoading) {
     postsContent = (
       <div className="category-details-container_loading">
         <LoadingSpinner />
@@ -147,17 +150,24 @@ const CategoryView = () => {
         {postsContent}
         {categoryPosts.length < total && (
           <div className="view-more-button-container">
-            <Button
-              className="view-more-button border-color-primary color-primary"
-              variant="solid"
-              onClick={() => {
-                useCategoryPostsStore.setState({ currentPage: currentPage + 1 })
-              }}
-            >
-              Xem thêm
-            </Button>
+            {isPostsLoading && currentPage > 1 ? (
+              <LoadingSpinner />
+            ) : (
+              <Button
+                className="view-more-button border-color-primary color-primary"
+                onClick={() => {
+                  useCategoryPostsStore.setState({
+                    currentPage: currentPage + 1
+                  })
+                }}
+              >
+                Xem thêm
+              </Button>
+            )}
           </div>
         )}
+
+        {/* )} */}
         <div style={{ marginTop: '16px' }}>
           <CategoriesBlock />
         </div>
