@@ -21,7 +21,7 @@ const TrendingPosts = () => {
         setIsLoading(true)
         const response = await articleCrud.getArticles({
           listType: PostTypeEnum.TRENDING_POSTS,
-          pageSize: 4,
+          pageSize: 5,
           isPublished: true
         })
         setTrendingPosts(response.result || [])
