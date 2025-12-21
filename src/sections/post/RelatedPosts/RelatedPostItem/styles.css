@@ -3,7 +3,7 @@
 
 .related-post-item-container {
   height: 348px;
-  width: 260px;
+  width: 360px;
   overflow: hidden;
   margin: 0 auto;
   padding: 0 8px;
@@ -36,4 +36,22 @@
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;
+}
+
+@media screen and (max-width: 991px) {
+  .related-post-item-container {
+    width: 320px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .related-post-item-container {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .related-post-item-container {
+    width: 260px;
+  }
 }

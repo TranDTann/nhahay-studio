@@ -41,8 +41,12 @@
   }
 
   @media screen and (min-width: 991px) {
+    .sub-featured-post-image-lv2 {
+      height: 228.5px !important;
+    }
+
     .sub-featured-post-image {
-      height: 507px !important;
+      height: 100%;
     }
   }
 

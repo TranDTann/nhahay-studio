@@ -61,7 +61,7 @@
 
 @media (min-width: 1200px) {
   .main-container {
-    width: 85%;
+    width: 95%;
     padding: 24px 0 48px;
   }
 
@@ -72,7 +72,7 @@
 
 @media (min-width: 1536px) {
   .main-container {
-    width: 80%;
+    width: 85%;
     padding: 24px 0 48px;
   }
 

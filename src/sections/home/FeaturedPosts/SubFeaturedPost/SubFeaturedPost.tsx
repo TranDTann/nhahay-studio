@@ -22,50 +22,56 @@ const SubFeaturedPost = ({ postData }: TSubFeaturedPostProps) => {
     return <SubFeaturedPostsSkeleton />
   }
 
-  const subPost = featuredPosts?.[2]
+  const subsPost = featuredPosts?.slice(2, 4)?.filter(Boolean)
 
-  let postView: Article
+  let postsView: Article[]
 
   if (postData) {
-    postView = postData
+    postsView = [postData]
   } else {
-    postView = subPost
+    postsView = [...subsPost]
   }
 
-  if (!postView) {
+  if (!postsView?.length) {
     return
   }
 
-  const navigateToPostDetail = () => {
-    router.push(
-      paths.dashboard.postDetail({ id: postView.id, title: postView.title })
-    )
+  const isSubPotsLv2 = !postData
+
+  const navigateToPostDetail = (id: string, title: string) => {
+    router.push(paths.dashboard.postDetail({ id, title }))
   }
 
   return (
     <div id="SubFeaturedPost">
-      <div
-        className="sub-featured-post-container image-hover-zoom-container"
-        onClick={navigateToPostDetail}
-      >
-        <div className="sub-featured-post-image-container background-img--scrim-bottom">
-          <img
-            src={postView.image}
-            alt="FeaturedPost-image"
-            className="sub-featured-post-image image-hover-zoom"
-          />
+      {postsView.map((item, index) => (
+        <div
+          key={index}
+          style={{ marginTop: index === 1 ? 24 : 0 }}
+          className="sub-featured-post-container image-hover-zoom-container"
+          onClick={() => navigateToPostDetail(item.id, item.title)}
+        >
+          <div className="sub-featured-post-image-container background-img--scrim-bottom">
+            <img
+              src={item.image}
+              alt="FeaturedPost-image"
+              className={`sub-featured-post-image image-hover-zoom ${
+                isSubPotsLv2 && 'sub-featured-post-image-lv2'
+              }`}
+            />
+          </div>
+          <div className="sub-featured-post-content">
+            <CategoryTag tagName={item.category?.name} />
+            <h3 className="sub-featured-post-title display-max-3-lines">
+              {item.title}
+            </h3>
+            <PostMeta
+              author={item?.authorName ?? item?.createdByUser?.username}
+              publishTime={item.publishAt}
+            />
+          </div>
         </div>
-        <div className="sub-featured-post-content">
-          <CategoryTag tagName={postView.category?.name} />
-          <h3 className="sub-featured-post-title display-max-3-lines">
-            {postView.title}
-          </h3>
-          <PostMeta
-            author={postView?.authorName ?? postView?.createdByUser?.username}
-            publishTime={postView.publishAt}
-          />
-        </div>
-      </div>
+      ))}
     </div>
   )
 }
