@@ -39,8 +39,8 @@ const RelatedPostItem = ({ postData }: TRelatedPostItemProps) => {
         </h3>
         <PostMeta
           author={postData?.authorName ?? postData.createdByUser.username}
+          publishTime={postData.publishAt}
         />
-        <PostMeta publishTime={postData.publishAt} />
       </div>
     </div>
   )

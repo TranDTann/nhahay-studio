@@ -24,7 +24,7 @@ const FeaturedPosts = () => {
 
         const response = await articleCrud.getArticles({
           listType: PostTypeEnum.FEATURED_POSTS,
-          pageSize: 3,
+          pageSize: 4,
           isPublished: true
         })
 

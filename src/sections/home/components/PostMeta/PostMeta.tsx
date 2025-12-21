@@ -19,19 +19,19 @@ const PostMeta = ({
 }: TPostMetaProps) => {
   return (
     <div className="post-meta-container">
-      {author && (
+      {!!author && (
         <div className="post-meta-item">
           <FaRegUserCircle color="#bacce1" />
           <p>{author}</p>
         </div>
       )}
-      {readingTimeMinutes && (
+      {!!readingTimeMinutes && (
         <div className="post-meta-item post-reading-time-minutes">
           <IoIosTimer color="#bacce1" />
           <p>{readingTimeMinutes} phút đọc</p>
         </div>
       )}
-      {publishTime && (
+      {!!publishTime && (
         <div className="post-meta-item">
           <MdOutlineDateRange color="#bacce1" />
           <p>{formatDateDisplay(publishTime)}</p>
