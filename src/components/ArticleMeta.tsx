@@ -58,6 +58,12 @@ export default function ArticleMeta({
           color: '#fff'
         }}
       >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
+          <UserOutlined style={{ color: '#1890ff', fontSize: '20px', marginBottom: '4px' }} />
+          <Text style={{ fontWeight: 700, color: '#fff', fontSize: '18px', letterSpacing: '0.5px', marginLeft: '8px' }}>
+            {authorName}
+          </Text>
+        </div>
         <div
           style={{
             display: 'flex',

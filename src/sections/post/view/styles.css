@@ -17,3 +17,8 @@
   flex-direction: column;
   gap: 28px;
 }
+@media screen and (min-width: 993px) and (max-width: 1199px) {
+  .post-detail-container {
+    margin: -24px -3% 0 -3%;
+  }
+}

@@ -132,12 +132,7 @@ export default function ArticleDetailPage({
           articleId={article.id}
         />
       )}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <UserOutlined style={{ color: '#1890ff', fontSize: '20px' }} />
-        <Text style={{ fontWeight: 700, color: '#777', fontSize: '18px', letterSpacing: '0.5px', marginLeft: '8px' }}>
-          {article.authorName}
-        </Text>
-      </div>
+
 
       {/* Title */}
       <ArticleMeta
